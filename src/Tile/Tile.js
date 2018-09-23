@@ -8,8 +8,8 @@ class Tile extends Component {
         const style = {
             height: settings.tileHeight,
             width: settings.tileWidth,
-            top: this.props.y * 20,
-            left: this.props.x * 20,
+            top: this.props.y * settings.tileHeight,
+            left: this.props.x * settings.tileWidth,
             backgroundColor: this.props.backgroundColor,
         }
         return (

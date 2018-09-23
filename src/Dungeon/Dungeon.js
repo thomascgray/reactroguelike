@@ -15,7 +15,12 @@ class Dungeon extends Component {
         return <div>
             {this.state.map.map((row, rowIndex) => {
                 return row.map((value, columnIndex) => {
-                    return <Tile key={`${rowIndex}-${columnIndex}`} value={value} x={rowIndex} y={columnIndex} />
+                    return <Tile
+                        key={`${rowIndex}-${columnIndex}`}
+                        value={value}
+                        x={rowIndex}
+                        y={columnIndex}
+                    />
                 });
             })}
         </div>

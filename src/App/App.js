@@ -4,6 +4,7 @@ import './App.css'
 import keyMap from '../keyMap'
 import Dungeon from '../Dungeon/Dungeon'
 import Player from '../Player/Player'
+import Log from '../Log/Log'
 
 class App extends Component {
     constructor (props) {
@@ -45,9 +46,17 @@ class App extends Component {
     }
 
     render() {
-        return <div className='app'>
-            <Dungeon width={20} height={20} />
-            <Player position={this.state.playerPosition} />
+        return <div style={{ position: "relative" }}>
+            <div className='app'>
+                <Dungeon width={20} height={20} />
+                <Player position={this.state.playerPosition} />
+            </div>
+            <div className='log'>
+                {/* <Log messages={[
+                    "this is a message",
+                    "this is another message"
+                ]}/> */}
+            </div>
         </div>
     }
 }
