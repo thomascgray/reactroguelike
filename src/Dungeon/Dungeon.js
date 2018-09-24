@@ -4,16 +4,9 @@ import Tile from '../Tile/Tile'
 import {generate} from '../DungeonGenerator/DungeonGenerator'
 
 class Dungeon extends Component {
-    constructor (props) {
-        super(props);
-        this.state = {
-            map: generate(this.props.width, this.props.height)
-        }
-    }
-    
     render () {
         return <div>
-            {this.state.map.map((row, rowIndex) => {
+            {this.props.map.map((row, rowIndex) => {
                 return row.map((value, columnIndex) => {
                     return <Tile
                         key={`${rowIndex}-${columnIndex}`}
@@ -23,13 +16,18 @@ class Dungeon extends Component {
                     />
                 });
             })}
+            <Tile
+                backgroundColor={'#3498db'}
+                x={this.props.exit.x}
+                y={this.props.exit.y}
+            />
         </div>
     }
 }
 
 Dungeon.proptypes = {
-    width: PropTypes.number,
-    height: PropTypes.number,
+    // width: PropTypes.number,
+    // height: PropTypes.number,
 }
 
 export default Dungeon;
