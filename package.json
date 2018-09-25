@@ -2,6 +2,7 @@
   "name": "webbasedroguelike",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "lodash": "^4.17.11",
     "pathfinding": "^0.4.18",

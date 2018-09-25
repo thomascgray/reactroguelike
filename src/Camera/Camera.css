@@ -1,0 +1,4 @@
+.camera {
+    position:relative;
+    transition: all 0.08s ease 0s;
+}

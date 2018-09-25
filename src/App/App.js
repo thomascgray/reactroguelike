@@ -4,39 +4,31 @@ import './App.css'
 import keyMap from '../keyMap'
 import Dungeon from '../Dungeon/Dungeon'
 import Player from '../Player/Player'
+import Camera from '../Camera/Camera'
 import Enemy from '../Enemy/Enemy'
 import Log from '../Log/Log'
 import PF from 'pathfinding';
 import { generate } from '../DungeonGenerator/DungeonGenerator'
+
+const dungeonMap = generate(100, 100);
 
 class App extends Component {
     constructor (props) {
         super(props);
 
         this.state = {
-            player: {
+            camera: {
                 position: {
-                    x: 5,
-                    y: 9
+                    x: 1,
+                    y: 1
                 },
             },
-            dungeonMap: generate(20, 20),
-            enemies: [
-                {
-                    id: 1,
-                    position: {
-                        x: 19,
-                        y: 11
-                    },
+            player: {
+                position: {
+                    x: 15,
+                    y: 10
                 },
-                {
-                    id: 2,
-                    position: {
-                        x: 6,
-                        y: 5
-                    },
-                }
-            ]
+            },
         }
     }
 
@@ -46,31 +38,30 @@ class App extends Component {
         });
 
         this.setState({
-            grid: new PF.Grid(this.state.dungeonMap),
+            grid: new PF.Grid(dungeonMap),
         })
     }
 
     handleKeyDown(e) {
         e = e || window.event;
-        console.log('e.keyCode', e.keyCode);
         const player = this.state.player;
-
+        const camera = this.state.camera;
         switch (e.keyCode) {
             case keyMap.LEFT:
                 player.position.x -= 1;
-                this.runEnemyActions();
+                camera.position.x -= 1;
                 break;
             case keyMap.RIGHT:
                 player.position.x += 1;
-                this.runEnemyActions();
+                camera.position.x += 1;
                 break;
             case keyMap.UP:
                 player.position.y -= 1;
-                this.runEnemyActions();
+                camera.position.y -= 1;
                 break;
             case keyMap.DOWN:
                 player.position.y += 1;
-                this.runEnemyActions();
+                camera.position.y += 1;
                 break;
             case keyMap.INTERACT:
                 console.log('interating');
@@ -79,56 +70,29 @@ class App extends Component {
                 }
                 break;
             case keyMap.SPACE:
-                this.runEnemyActions();
+                
                 break;
             default:
                 break;
         }
 
-        this.setState({ player })
-    }
-
-    buildPathfindingGridFromDungeonMap () {
-
-    }
-
-    runEnemyActions () {
-        const grid = this.state.grid.clone();
-        const finder = new PF.AStarFinder();
-
-        const enemies = this.state.enemies;
-        enemies.map(enemy => {
-            const path = finder.findPath(enemy.position.x, enemy.position.y, this.state.player.position.x, this.state.player.position.y, this.state.grid.clone());
-            enemy.position.x = path[1][0];
-            enemy.position.y = path[1][1];
-            return enemy;
-        })
-
         this.setState({
-            enemies,
+            player,
+            camera
         })
     }
 
     render() {
-        return <div style={{ position: "relative" }}>
-            <div className='app'>
+        return <div style={{ position: 'relative' }}>
+            <Camera {...this.state.camera}>
                 <Dungeon
-                    map={this.state.dungeonMap}
-                    exit={{
-                        x: 3, y: 5
-                    }}
+                    map={dungeonMap}
                 />
                 <Player
                     {...this.state.player}
                 />
-                {this.state.enemies.map(enemy => <Enemy key={`${enemy.id}`} {...enemy} />)}
-            </div>
-            <div className='log'>
-                {/* <Log messages={[
-                    "this is a message",
-                    "this is another message"
-                ]}/> */}
-            </div>
+                {/* {this.state.enemies.map(enemy => <Enemy key={`${enemy.id}`} {...enemy} />)} */}
+            </Camera>
         </div>
     }
 }

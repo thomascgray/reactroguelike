@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Tile from '../Tile/Tile'
 import {generate} from '../DungeonGenerator/DungeonGenerator'
+import _ from 'lodash';
+import settings from '../settings.json'
 
 class Dungeon extends Component {
+    shouldComponentUpdate (data) {
+        return !_.isEqual(data.map, this.props.map)
+    }
+
     render () {
         return <div>
             {this.props.map.map((row, rowIndex) => {
@@ -16,11 +22,6 @@ class Dungeon extends Component {
                     />
                 });
             })}
-            <Tile
-                backgroundColor={'#3498db'}
-                x={this.props.exit.x}
-                y={this.props.exit.y}
-            />
         </div>
     }
 }
