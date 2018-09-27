@@ -1,14 +1,12 @@
 import HasInventory from '../Behaviours/HasInventory'
-import HasHp from '../Behaviours/HasHp'
 import HasPosition from '../Behaviours/HasPosition'
 import Uuid from 'uuid/v4'
 
-class EnemyEntity {
-  constructor(position, hp = 3) {
+class LootEntity {
+  constructor(position, items) {
     this.id = Uuid()
     this.behaviours = [
-      new HasInventory(),
-      new HasHp(hp),
+      new HasInventory(items),
       new HasPosition(position)
     ]
 
@@ -32,4 +30,4 @@ class EnemyEntity {
   }
 }
 
-export default EnemyEntity;
+export default LootEntity;

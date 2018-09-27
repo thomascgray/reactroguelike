@@ -6,10 +6,9 @@ class HasInventory {
 
     this.functions = {
         addItem: item => {
-            this.items.push(item)
+            this.items.push(_.cloneDeep(item))
         },
         getItems: () => {
-            console.log('this.items', this.items);
             return this.items;
         }
     }

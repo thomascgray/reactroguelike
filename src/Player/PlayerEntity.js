@@ -1,6 +1,7 @@
 import HasInventory from '../Behaviours/HasInventory'
 import HasHp from '../Behaviours/HasHp'
 import HasPosition from '../Behaviours/HasPosition'
+import _ from 'lodash';
 
 class PlayerEntity {
   constructor(position, hp = 10) {
@@ -16,6 +17,17 @@ class PlayerEntity {
       })
     })
   }
+
+  getActiveMeleeWeapon () {
+    let activeMeleeWeapon = _.find(this.getItems(), item => item.isActive)
+
+    if (!activeMeleeWeapon) {
+      activeMeleeWeapon = _.find(this.getItems(), item => item.type === 'melee')
+    }
+
+    return activeMeleeWeapon;
+  }
+
 
   toState () {
     const state = {}

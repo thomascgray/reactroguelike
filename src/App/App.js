@@ -8,11 +8,16 @@ import Enemy from '../Enemy/Enemy'
 import EnemyEntity from '../Enemy/EnemyEntity'
 import Camera from '../Camera/Camera'
 import CameraEntity from '../Camera/CameraEntity'
+
+import Loot from '../Loot/Loot'
+import LootEntity from '../Loot/LootEntity'
+
 import PF from 'pathfinding';
 import HasPosition from '../Behaviours/HasPosition'
 import { generate } from '../DungeonGenerator/DungeonGenerator'
 import _ from 'lodash';
 import PlayerEnemyCollision from '../Resolvers/PlayerEnemyCollision';
+import PlayerLootCollision from '../Resolvers/PlayerLootCollision';
 
 const dungeonMap = generate(20, 20);
 
@@ -24,9 +29,19 @@ window.enemies = [
     new EnemyEntity({ x: 7, y: 11}),
 ]
 
-const getCollidedEnemy = (enemies, playerPosition) => {
+window.loots = [
+    new LootEntity({ x: 4, y: 0 }, [
+        {
+            'name': 'sword',
+            'type': 'melee',
+            'damage': 4
+        }
+    ])
+]
+
+const getCollidedPositionableItem = (positionableItems, playerPosition) => {
     let match = null;
-    enemies.forEach(enemy => {
+    positionableItems.forEach(enemy => {
         if (enemy.getPosition().x === playerPosition.x && enemy.getPosition().y === playerPosition.y) {
             match = enemy;
         }
@@ -45,7 +60,8 @@ class App extends Component {
         this.state = {
             camera: window.camera.toState(),
             player: window.player.toState(),
-            enemies: window.enemies.map(e => e.toState())
+            enemies: window.enemies.map(e => e.toState()),
+            loots: window.loots.map(l => l.toState())
         }
     }
 
@@ -76,14 +92,19 @@ class App extends Component {
                 break;
         }
 
-        const collidedEnemy = getCollidedEnemy(window.enemies, pos.position)
+        // replace this whole section with some kind of thing where
+        // the individual items register themselves as "colliable"
+        const collidedEnemy = getCollidedPositionableItem(window.enemies, pos.position)
+        const collidedLoot = getCollidedPositionableItem(window.loots, pos.position)
         if (collidedEnemy) {
             PlayerEnemyCollision(window.enemies, window.player, collidedEnemy)
-
-
-
             this.setState({
                 enemies: window.enemies.map(e => e.toState())
+            })
+        } else if (collidedLoot) {
+            PlayerLootCollision(window.loots, window.player, collidedLoot)
+            this.setState({
+                loots: window.loots.map(e => e.toState())
             })
         } else {
             window.player.setPosition(pos.position);
@@ -101,6 +122,9 @@ class App extends Component {
                 <Player {...this.state.player.HasPosition} />
                 {this.state.enemies.map(e => {
                     return <Enemy key={e.id} {...e.HasPosition} />
+                })}
+                {this.state.loots.map(l => {
+                    return <Loot key={l.id} {...l.HasPosition} />
                 })}
             </Camera>
         </div>
