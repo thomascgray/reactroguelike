@@ -19,6 +19,8 @@ import _ from 'lodash';
 import PlayerEnemyCollision from '../Resolvers/PlayerEnemyCollision';
 import PlayerLootCollision from '../Resolvers/PlayerLootCollision';
 
+import Log from '../Log/Log'
+
 const dungeonMap = generate(20, 20);
 
 window.player = new PlayerEntity()
@@ -61,13 +63,22 @@ class App extends Component {
             camera: window.camera.toState(),
             player: window.player.toState(),
             enemies: window.enemies.map(e => e.toState()),
-            loots: window.loots.map(l => l.toState())
+            loots: window.loots.map(l => l.toState()),
+            logMessages: [],
         }
     }
 
     componentDidMount () {
         document.addEventListener("keydown", e => {
             this.handleKeyDown(e);
+        });
+
+        document.addEventListener("log-action", e => {
+            const logMessages = this.state.logMessages;
+            logMessages.unshift(e.detail);
+            this.setState({
+                logMessages
+            })
         });
     }
 
@@ -116,17 +127,22 @@ class App extends Component {
     }
 
     render() {
-        return <div style={{ position: 'relative' }}>
-            <Camera {...this.state.camera.HasPixelPosition}>
-                <Dungeon map={dungeonMap} />
-                <Player {...this.state.player.HasPosition} />
-                {this.state.enemies.map(e => {
-                    return <Enemy key={e.id} {...e.HasPosition} />
-                })}
-                {this.state.loots.map(l => {
-                    return <Loot key={l.id} {...l.HasPosition} />
-                })}
-            </Camera>
+        return <div>
+            <div className='dungeon' style={{ position: 'absolute' }}>
+                <Camera {...this.state.camera.HasPixelPosition}>
+                    <Dungeon map={dungeonMap} />
+                    <Player {...this.state.player.HasPosition} />
+                    {this.state.enemies.map(e => {
+                        return <Enemy key={e.id} {...e.HasPosition} />
+                    })}
+                    {this.state.loots.map(l => {
+                        return <Loot key={l.id} {...l.HasPosition} />
+                    })}
+                </Camera>
+            </div>
+            <div className='log' style={{ position: 'absolute', top: 600 }}>
+                <Log messages={this.state.logMessages} />
+            </div>
         </div>
     }
 }
