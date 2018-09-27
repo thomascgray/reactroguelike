@@ -4,12 +4,9 @@ import settings from '../settings.json'
 
 class Camera extends Component {
     render() {
-        const _x = (this.props.position.x * -1)
-        const _y = (this.props.position.y * -1)
-
         const style = {
             position: 'absolute',
-            transform: `translate(${_x * settings.tileWidth}px, ${_y * settings.tileHeight}px)` 
+            transform: `translate(${this.props.position.x}px, ${this.props.position.y}px)` 
         }
         return <div className='camera' style={style}>
             {this.props.children}
