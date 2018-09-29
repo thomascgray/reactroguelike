@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import './App.css'
 import keyMap from '../keyMap'
-import Dungeon from '../Dungeon/Dungeon'
+import DungeonRenderer from '../Dungeon/DungeonRenderer'
+import PlayerRenderer from '../Player/PlayerRenderer'
 import Player from '../Player/Player'
-import PlayerEntity from '../Player/PlayerEntity'
+import EnemyRenderer from '../Enemy/EnemyRenderer'
 import Enemy from '../Enemy/Enemy'
-import EnemyEntity from '../Enemy/EnemyEntity'
+import CameraRenderer from '../Camera/CameraRenderer'
 import Camera from '../Camera/Camera'
-import CameraEntity from '../Camera/CameraEntity'
 
+import LootRenderer from '../Loot/LootRenderer'
 import Loot from '../Loot/Loot'
-import LootEntity from '../Loot/LootEntity'
 
 import PF from 'pathfinding';
 import HasPosition from '../Behaviours/HasPosition'
@@ -23,18 +23,18 @@ import Inventory from '../UI/Inventory'
 
 import Log from '../Log/Log'
 
-const dungeonMap = generate(20, 20);
+const dungeonMap = generate(30, 30);
 
-window.player = new PlayerEntity()
-window.camera = new CameraEntity()
+window.player = new Player()
+window.camera = new Camera()
 
 window.enemies = [
-    new EnemyEntity({ x: 0, y: 2}),
-    new EnemyEntity({ x: 7, y: 11}),
+    new Enemy({ x: 0, y: 2}),
+    new Enemy({ x: 7, y: 11}),
 ]
 
 window.loots = [
-    new LootEntity({ x: 4, y: 0 }, [
+    new Loot({ x: 4, y: 0 }, [
         {
             id: Uuid(),
             name: 'sword',
@@ -42,7 +42,7 @@ window.loots = [
             damage: 4
         }
     ]),
-    new LootEntity({ x: 11, y: 7 }, [
+    new Loot({ x: 11, y: 7 }, [
         {
             id: Uuid(),
             name: 'axe',
@@ -50,7 +50,7 @@ window.loots = [
             damage: 7
         }
     ]),
-    new LootEntity({ x: 9, y: 18 }, [
+    new Loot({ x: 9, y: 18 }, [
         {
             id: Uuid(),
             name: 'dagger',
@@ -159,16 +159,16 @@ class App extends Component {
         return <div>
             <div className='dungeon' style={{ position: 'absolute' }}>
                 {this.state.ui.inventory && <Inventory player={window.player} items={this.state.player.HasInventory}/>}
-                <Camera {...this.state.camera.HasPixelPosition}>
-                    <Dungeon map={dungeonMap} />
-                    <Player {...this.state.player.HasPosition} />
+                <CameraRenderer {...this.state.camera.HasPixelPosition}>
+                    <DungeonRenderer map={dungeonMap} />
+                    <PlayerRenderer {...this.state.player.HasPosition} />
                     {this.state.enemies.map(e => {
-                        return <Enemy key={e.id} {...e.HasPosition} />
+                        return <EnemyRenderer key={e.id} {...e.HasPosition} />
                     })}
                     {this.state.loots.map(l => {
-                        return <Loot key={l.id} {...l.HasPosition} />
+                        return <LootRenderer key={l.id} {...l.HasPosition} />
                     })}
-                </Camera>
+                </CameraRenderer>
             </div>
             <div className='log' style={{ position: 'absolute', top: 600 }}>
                 <Log messages={this.state.logMessages} />

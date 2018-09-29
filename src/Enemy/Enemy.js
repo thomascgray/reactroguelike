@@ -1,13 +1,24 @@
-import React, { Component } from 'react';
+import HasInventory from '../Behaviours/HasInventory'
+import HasHp from '../Behaviours/HasHp'
+import HasPosition from '../Behaviours/HasPosition'
+import HasId from '../Behaviours/HasId'
+import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
 
-import Tile from '../Tile/Tile'
+class EnemyEntity {
+  constructor(position, hp = 3) {
+    this.behaviours = [
+      new HasInventory(),
+      new HasHp(hp),
+      new HasPosition(position),
+      new HasId()
+    ]
 
-class Enemy extends Component {
-    render() {
-        return (
-            <Tile x={this.props.position.x} y={this.props.position.y} backgroundColor={'#34495e'} />
-        );
-    }
+    attachFunctions(this, this.behaviours)
+  }
+
+  toState () {
+    return toState(this.behaviours)
+  }
 }
 
-export default Enemy;
+export default EnemyEntity;

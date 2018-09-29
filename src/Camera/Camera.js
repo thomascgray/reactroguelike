@@ -1,17 +1,27 @@
-import React, { Component } from 'react';
-import './Camera.css'
-import settings from '../settings.json'
+import HasPixelPosition from '../Behaviours/HasPixelPosition'
 
-class Camera extends Component {
-    render() {
-        const style = {
-            position: 'absolute',
-            transform: `translate(${this.props.position.x}px, ${this.props.position.y}px)` 
-        }
-        return <div className='camera' style={style}>
-            {this.props.children}
-        </div>
-    }
+class Camera {
+  constructor(position) {
+    this.behaviours = [
+      new HasPixelPosition(position),
+    ]
+
+    this.behaviours.forEach(behaviour => {
+      Object.keys(behaviour.functions).forEach(f => {
+        this[f] = behaviour.functions[f]
+      })
+    })
+  }
+
+  toState () {
+    const state = {}
+
+    this.behaviours.forEach(behaviour => {
+      state[behaviour.constructor.name] = behaviour.toState();
+    });
+
+    return state;
+  }
 }
 
 export default Camera;
