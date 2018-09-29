@@ -141,6 +141,9 @@ class App extends Component {
                 break;
         }
 
+        console.log('pos.position.x', pos.position.x);
+        console.log('pos.position.y', pos.position.y);
+
         // replace this whole section with some kind of thing where
         // the individual items register themselves as "collideble"
         const collidedEnemy = getCollidedPositionableItem(window.enemies, pos.position)
@@ -155,6 +158,9 @@ class App extends Component {
             this.setState({
                 loots: window.loots.map(e => e.toState())
             })
+        } else if (dungeon.map[pos.position.x][pos.position.y] === 1) {
+            // TODO IMRPOVE THIS
+            // its a wall
         } else {
             window.player.HasPosition.setPosition(pos.position);
         }

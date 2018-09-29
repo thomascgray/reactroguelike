@@ -11,7 +11,7 @@ const generate = (dungeonTemplate) => {
 }
 
 const generateRooms = (dungeonTemplate, map) => {
-    const allRooms = [];
+    // const allRooms = [];
 
     dungeonTemplate.rooms.forEach(roomTemplate => {
         for(let i = 0; i < roomTemplate.count; i++) {
