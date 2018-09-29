@@ -10,12 +10,21 @@ class HasInventory {
         },
         getItems: () => {
             return this.items;
+        },
+        appendItemDataById: (itemId, newData) => {
+            //TODO make use of this for a player setting their active weapon
+            this.items = this.items.map(i => {
+                if (i.id === itemId) {
+                    i = {...i, ...newData}
+                }
+                return i;
+            });
         }
     }
   }
 
   toState () {
-      
+      return this.items;
   }
 }
 

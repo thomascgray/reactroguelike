@@ -18,6 +18,8 @@ import { generate } from '../DungeonGenerator/DungeonGenerator'
 import _ from 'lodash';
 import PlayerEnemyCollision from '../Resolvers/PlayerEnemyCollision';
 import PlayerLootCollision from '../Resolvers/PlayerLootCollision';
+import Uuid from 'uuid/v4'
+import Inventory from '../UI/Inventory'
 
 import Log from '../Log/Log'
 
@@ -34,18 +36,35 @@ window.enemies = [
 window.loots = [
     new LootEntity({ x: 4, y: 0 }, [
         {
-            'name': 'sword',
-            'type': 'melee',
-            'damage': 4
+            id: Uuid(),
+            name: 'sword',
+            type: 'melee',
+            damage: 4
+        }
+    ]),
+    new LootEntity({ x: 11, y: 7 }, [
+        {
+            id: Uuid(),
+            name: 'axe',
+            type: 'melee',
+            damage: 7
+        }
+    ]),
+    new LootEntity({ x: 9, y: 18 }, [
+        {
+            id: Uuid(),
+            name: 'dagger',
+            type: 'melee',
+            damage: 2
         }
     ])
 ]
 
 const getCollidedPositionableItem = (positionableItems, playerPosition) => {
     let match = null;
-    positionableItems.forEach(enemy => {
-        if (enemy.getPosition().x === playerPosition.x && enemy.getPosition().y === playerPosition.y) {
-            match = enemy;
+    positionableItems.forEach(item => {
+        if (item.HasPosition.getPosition().x === playerPosition.x && item.HasPosition.getPosition().y === playerPosition.y) {
+            match = item;
         }
 
         if (match) {
@@ -65,6 +84,10 @@ class App extends Component {
             enemies: window.enemies.map(e => e.toState()),
             loots: window.loots.map(l => l.toState()),
             logMessages: [],
+
+            ui: {
+                inventory: false
+            }
         }
     }
 
@@ -84,7 +107,8 @@ class App extends Component {
 
     handleKeyDown(e) {
         e = e || window.event;
-        const pos = new HasPosition(window.player.getPosition())
+        console.log('e.keyCode', e.keyCode);
+        const pos = new HasPosition(window.player.HasPosition.getPosition())
 
         switch (e.keyCode) {
             case keyMap.LEFT:
@@ -98,6 +122,11 @@ class App extends Component {
                 break;
             case keyMap.DOWN:
                 pos.functions.moveDown();
+                break;
+            case keyMap.INVENTORY:
+                const uiState = this.state.ui;
+                uiState.inventory = !uiState.inventory;
+                this.setState({ ui: uiState })
                 break;
             default:
                 break;
@@ -118,7 +147,7 @@ class App extends Component {
                 loots: window.loots.map(e => e.toState())
             })
         } else {
-            window.player.setPosition(pos.position);
+            window.player.HasPosition.setPosition(pos.position);
         }
 
         this.setState({
@@ -129,6 +158,7 @@ class App extends Component {
     render() {
         return <div>
             <div className='dungeon' style={{ position: 'absolute' }}>
+                {this.state.ui.inventory && <Inventory player={window.player} items={this.state.player.HasInventory}/>}
                 <Camera {...this.state.camera.HasPixelPosition}>
                     <Dungeon map={dungeonMap} />
                     <Player {...this.state.player.HasPosition} />

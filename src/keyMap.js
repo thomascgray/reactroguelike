@@ -4,7 +4,8 @@ const map = {
     RIGHT: 68, // d
     DOWN: 83, // s
     INTERACT: 69, // e
-    SPACE: 32
+    SPACE: 32, // space bar
+    INVENTORY: 73, // i
 }
 
 export default map

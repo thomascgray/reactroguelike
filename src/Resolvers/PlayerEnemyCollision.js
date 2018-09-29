@@ -7,7 +7,7 @@ export default (enemies, player, enemy) => {
     let damageDone = activeMeleeWeapon ? activeMeleeWeapon.damage : 1;
 
     enemy.removeHp(damageDone);
-    LogMessage(`you hurt the enemy for ${damageDone}`)
+    LogMessage(`you hurt the enemy for ${damageDone} with ${activeMeleeWeapon.name}`)
 
     if (enemy.getHp() <= 0) {
         _.remove(enemies, e => e.id === enemy.id);

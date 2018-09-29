@@ -1,32 +1,21 @@
 import HasInventory from '../Behaviours/HasInventory'
 import HasPosition from '../Behaviours/HasPosition'
-import Uuid from 'uuid/v4'
+import HasId from '../Behaviours/HasId'
+import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
 
 class LootEntity {
   constructor(position, items) {
-    this.id = Uuid()
     this.behaviours = [
       new HasInventory(items),
-      new HasPosition(position)
+      new HasPosition(position),
+      new HasId()
     ]
 
-    this.behaviours.forEach(behaviour => {
-      Object.keys(behaviour.functions).forEach(f => {
-        this[f] = behaviour.functions[f]
-      })
-    })
+    attachFunctions(this, this.behaviours)
   }
 
   toState () {
-    const state = {}
-
-    this.behaviours.forEach(behaviour => {
-      state[behaviour.constructor.name] = behaviour.toState();
-    });
-
-    state.id = this.id
-
-    return state;
+    return toState(this.behaviours)
   }
 }
 

@@ -1,21 +1,28 @@
 import HasInventory from '../Behaviours/HasInventory'
 import HasHp from '../Behaviours/HasHp'
 import HasPosition from '../Behaviours/HasPosition'
+import HasId from '../Behaviours/HasId'
 import _ from 'lodash';
+import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
 
 class PlayerEntity {
   constructor(position, hp = 10) {
     this.behaviours = [
       new HasInventory(),
       new HasHp(hp),
-      new HasPosition(position)
+      new HasPosition(position),
+      new HasId(),
     ]
 
-    this.behaviours.forEach(behaviour => {
-      Object.keys(behaviour.functions).forEach(f => {
-        this[f] = behaviour.functions[f]
-      })
-    })
+    attachFunctions(this, this.behaviours)
+  }
+
+  getUnarmedMeleeWeapon () {
+    return {
+      name: 'fists',
+      type: 'melee',
+      damage: 1
+    }
   }
 
   getActiveMeleeWeapon () {
@@ -25,18 +32,27 @@ class PlayerEntity {
       activeMeleeWeapon = _.find(this.getItems(), item => item.type === 'melee')
     }
 
+    if (!activeMeleeWeapon) {
+      activeMeleeWeapon = this.getUnarmedMeleeWeapon();
+    }
+
     return activeMeleeWeapon;
   }
 
+  setActiveMeleeWeapon (itemId) {
+    this.getItems().forEach(i => {
+      this.appendItemDataById(i.id, {
+        isActive: false
+      })  
+    });
+    
+    this.appendItemDataById(itemId, {
+      isActive: true
+    })
+  }
 
   toState () {
-    const state = {}
-
-    this.behaviours.forEach(behaviour => {
-      state[behaviour.constructor.name] = behaviour.toState();
-    });
-
-    return state;
+    return toState(this.behaviours)
   }
 }
 
