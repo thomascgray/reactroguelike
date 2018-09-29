@@ -23,7 +23,16 @@ import Inventory from '../UI/Inventory'
 
 import Log from '../Log/Log'
 
-const dungeonMap = generate(30, 30);
+const dungeon = generate({
+    width: 20,
+    height: 20,
+    rooms: [
+        {
+            count: 1,
+            size: 'sm',
+        }
+    ],
+});
 
 window.player = new Player()
 window.camera = new Camera()
@@ -133,7 +142,7 @@ class App extends Component {
         }
 
         // replace this whole section with some kind of thing where
-        // the individual items register themselves as "colliable"
+        // the individual items register themselves as "collideble"
         const collidedEnemy = getCollidedPositionableItem(window.enemies, pos.position)
         const collidedLoot = getCollidedPositionableItem(window.loots, pos.position)
         if (collidedEnemy) {
@@ -157,10 +166,10 @@ class App extends Component {
 
     render() {
         return <div>
-            <div className='dungeon' style={{ position: 'absolute' }}>
+            <div className='app'>
                 {this.state.ui.inventory && <Inventory player={window.player} items={this.state.player.HasInventory}/>}
                 <CameraRenderer {...this.state.camera.HasPixelPosition}>
-                    <DungeonRenderer map={dungeonMap} />
+                    <DungeonRenderer dungeon={dungeon} />
                     <PlayerRenderer {...this.state.player.HasPosition} />
                     {this.state.enemies.map(e => {
                         return <EnemyRenderer key={e.id} {...e.HasPosition} />
@@ -170,7 +179,7 @@ class App extends Component {
                     })}
                 </CameraRenderer>
             </div>
-            <div className='log' style={{ position: 'absolute', top: 600 }}>
+            <div className='log-wrapper'>
                 <Log messages={this.state.logMessages} />
             </div>
         </div>

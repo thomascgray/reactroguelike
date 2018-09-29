@@ -8,10 +8,13 @@ class Tile extends Component {
         const _x = this.props.x || 0
         const _y = this.props.y || 0
         const style = {
+            position: 'absolute',
             height: settings.tileHeight,
             width: settings.tileWidth,
             backgroundColor: this.props.backgroundColor,
-            transform: `translate(${_x * settings.tileWidth}px, ${_y * settings.tileHeight}px)` 
+            top: `${_y * settings.tileHeight}px`,
+            left: `${_x * settings.tileWidth}px`,
+            // transform: `translate(${_x * settings.tileWidth}px, ${_y * settings.tileHeight}px)` 
         }
         return (
             <div className="tile" style={style} />

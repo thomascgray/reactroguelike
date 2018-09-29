@@ -1,5 +1,15 @@
+.app {
+    height: calc(60vw); 
+    overflow: hidden;
+}
+
+.log-wrapper {
+    height: calc(20vw);
+    /* overflow-y: scroll; */
+}
+
 .ui {
-    background:white;
-    width:400px;
-    border:1px solid red;
+    background: white;
+    width: 400px;
+    border: 1px solid red;
 }

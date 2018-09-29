@@ -5,7 +5,7 @@ import settings from '../settings.json'
 class CameraRenderer extends Component {
     render() {
         const style = {
-            position: 'absolute',
+            // position: 'absolute',
             transform: `translate(${this.props.position.x}px, ${this.props.position.y}px)` 
         }
         return <div className='camera' style={style}>

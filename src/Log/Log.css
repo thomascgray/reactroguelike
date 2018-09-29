@@ -1,0 +1,8 @@
+.log-parent {
+    height: 100%;
+}
+.log {
+    border:5px solid green;
+    height:100%;
+    overflow-y: scroll;
+}

@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Tile from '../Tile/Tile'
-import {generate} from '../DungeonGenerator/DungeonGenerator'
 import _ from 'lodash';
-import settings from '../settings.json'
+import './Dungeon.css'
 
-class Dungeon extends Component {
+class DungeonRenderer extends Component {
     shouldComponentUpdate (data) {
-        return !_.isEqual(data.map, this.props.map)
+        return !_.isEqual(data.dungeon.map, this.props.dungeon.map)
     }
 
     render () {
-        return <div>
-            {this.props.map.map((row, rowIndex) => {
+        return <div className='dungeon'>
+            {this.props.dungeon.map.map((row, rowIndex) => {
                 return row.map((value, columnIndex) => {
+                    let backgroundColor = '#ecf0f1';
+                    if (value === 1) {
+                        backgroundColor = '#2c3e50';
+                    }
                     return <Tile
                         key={`${rowIndex}-${columnIndex}`}
                         value={value}
                         x={rowIndex}
                         y={columnIndex}
+                        backgroundColor={backgroundColor}
                     />
                 });
             })}
@@ -26,9 +29,4 @@ class Dungeon extends Component {
     }
 }
 
-Dungeon.proptypes = {
-    // width: PropTypes.number,
-    // height: PropTypes.number,
-}
-
-export default Dungeon;
+export default DungeonRenderer;

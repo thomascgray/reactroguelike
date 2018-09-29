@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import './Log.css'
 
 class Log extends Component {
     render() {
-        return <div>
-            <h2>Log</h2>
-            {this.props.messages.map(message => <p key={message.id}>{message.message}</p>)}
+        return <div className='log-parent'>
+            <div className='log'>
+                {this.props.messages.map(message => <p key={message.id}>{message.message}</p>)}
+            </div>
         </div>
     }
 }
