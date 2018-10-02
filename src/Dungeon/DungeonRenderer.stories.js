@@ -3,27 +3,58 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { generate } from '../DungeonGenerator/DungeonGenerator'
 import DungeonRenderer from './DungeonRenderer'
+import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
 
-storiesOf('Dungeon Renderer', module)
-    .add('with no rooms', () => {
+const stories = storiesOf('Dungeon Renderer', module);
+
+stories.addDecorator(withKnobs);
+
+stories.add('type rooms: with no rooms', () => {
         const dungeonTemplate = {
-            width: 20,
-            height: 20,
+            width: number('width', 20),
+            height: number('height', 20),
+            type: 'rooms',
             rooms: [],
         }
         const dungeon = generate(dungeonTemplate);
         return <DungeonRenderer dungeon={dungeon} />
     })
-    .add('with 3 small rooms', () => {
+    .add('type: rooms, with small room(s)', () => {
         const dungeonTemplate = {
             width: 20,
             height: 20,
+            type: 'rooms',
             rooms: [
                 {
-                    count: 1,
+                    count: number('room count', 1),
                     size: 'sm',
                 }
             ],
+        }
+        const dungeon = generate(dungeonTemplate);
+        return <DungeonRenderer dungeon={dungeon} />
+    })
+    .add('type: rogue', () => {
+        const dungeonTemplate = {
+            width: number('width', 20),
+            height: number('height', 20),
+            type: 'rogue',
+            rogue: {
+                rows: number('rows', 2),
+                columns: number('columns', 2),
+            }
+        }
+        const dungeon = generate(dungeonTemplate);
+        return <DungeonRenderer dungeon={dungeon} />
+    })
+    .add('type: isaacdungeon', () => {
+        const dungeonTemplate = {
+            width: number('width', 50),
+            height: number('height', 50),
+            type: 'isaacdungeon',
+            isaacdungeon: {
+                roomCount: 2
+            },
         }
         const dungeon = generate(dungeonTemplate);
         return <DungeonRenderer dungeon={dungeon} />

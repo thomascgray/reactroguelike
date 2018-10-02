@@ -1,11 +1,10 @@
 .app {
-    height: calc(60vw); 
+    height: 70vh; 
     overflow: hidden;
 }
 
 .log-wrapper {
-    height: calc(20vw);
-    /* overflow-y: scroll; */
+    height: 30vh;
 }
 
 .ui {
