@@ -19,6 +19,7 @@ import { generate } from '../DungeonGenerator/Gerty'
 import _ from 'lodash';
 import PlayerEnemyCollision from '../Resolvers/PlayerEnemyCollision';
 import PlayerLootCollision from '../Resolvers/PlayerLootCollision';
+// import PlayerNonZeroTileCollision from '../Resolvers/PlayerNonZeroTileCollision';
 import Uuid from 'uuid/v4'
 import Inventory from '../UI/Inventory'
 
@@ -27,45 +28,19 @@ import Log from '../Log/Log'
 const dungeon = generate({
     sectionWidth: 10,
     sectionHeight: 10,
+    theme: 'crypt'
 });
 
 window.player = new Player({
     x: 4,
     y: 5
 })
+
 window.camera = new Camera()
 
-window.enemies = [
-    // new Enemy({ x: 0, y: 2}),
-    // new Enemy({ x: 7, y: 11}),
-]
+window.enemies = []
 
-window.loots = [
-    // new Loot({ x: 4, y: 0 }, [
-    //     {
-    //         id: Uuid(),
-    //         name: 'sword',
-    //         type: 'melee',
-    //         damage: 4
-    //     }
-    // ]),
-    // new Loot({ x: 11, y: 7 }, [
-    //     {
-    //         id: Uuid(),
-    //         name: 'axe',
-    //         type: 'melee',
-    //         damage: 7
-    //     }
-    // ]),
-    // new Loot({ x: 9, y: 18 }, [
-    //     {
-    //         id: Uuid(),
-    //         name: 'dagger',
-    //         type: 'melee',
-    //         damage: 2
-    //     }
-    // ])
-]
+window.loots = []
 
 const getCollidedPositionableItem = (positionableItems, playerPosition) => {
     let match = null;
@@ -139,29 +114,40 @@ class App extends Component {
                 break;
         }
 
-        console.log('pos.position.x', pos.position.x);
-        console.log('pos.position.y', pos.position.y);
+        // console.log('pos.position.x', pos.position.x);
+        // console.log('pos.position.y', pos.position.y);
 
         // replace this whole section with some kind of thing where
         // the individual items register themselves as "collideble"
-        const collidedEnemy = getCollidedPositionableItem(window.enemies, pos.position)
-        const collidedLoot = getCollidedPositionableItem(window.loots, pos.position)
-        if (collidedEnemy) {
-            PlayerEnemyCollision(window.enemies, window.player, collidedEnemy)
-            this.setState({
-                enemies: window.enemies.map(e => e.toState())
-            })
-        } else if (collidedLoot) {
-            PlayerLootCollision(window.loots, window.player, collidedLoot)
-            this.setState({
-                loots: window.loots.map(e => e.toState())
-            })
-        } else if (dungeon.map[pos.position.x][pos.position.y] === 1) {
+        // const collidedEnemy = getCollidedPositionableItem(window.enemies, pos.position)
+        // const collidedLoot = getCollidedPositionableItem(window.loots, pos.position)
+        // if (collidedEnemy) {
+        //     PlayerEnemyCollision(window.enemies, window.player, collidedEnemy)
+        //     this.setState({
+        //         enemies: window.enemies.map(e => e.toState())
+        //     })
+        // } else if (collidedLoot) {
+        //     PlayerLootCollision(window.loots, window.player, collidedLoot)
+        //     this.setState({
+        //         loots: window.loots.map(e => e.toState())
+        //     })
+        // } else if (dungeon.map[pos.position.x][pos.position.y] === 1) {
+        //     // TODO IMRPOVE THIS
+        //     // its a wall
+        // } else {
+        //     window.player.HasPosition.setPosition(pos.position);
+        // }
+
+        if (dungeon.map[pos.position.x][pos.position.y] > 0) {
             // TODO IMRPOVE THIS
-            // its a wall
+            // anything non 0 is a thing to hit
         } else {
             window.player.HasPosition.setPosition(pos.position);
         }
+
+
+
+
 
         this.setState({
             player: window.player.toState()

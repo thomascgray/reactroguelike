@@ -1,9 +1,8 @@
 .log-wrapper {
     height: 100vh;
-    width: 30vw;
+    width: 28vw; /*not 30 cus of scrollbar*/
     float: left;
 }
-
 .app {
     width: 70vw;
     height: 100vh; 
