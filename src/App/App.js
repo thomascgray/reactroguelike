@@ -14,7 +14,8 @@ import Loot from '../Loot/Loot'
 
 import PF from 'pathfinding';
 import HasPosition from '../Behaviours/HasPosition'
-import { generate } from '../DungeonGenerator/DungeonGenerator'
+// import { generate } from '../DungeonGenerator/DungeonGenerator'
+import { generate } from '../DungeonGenerator/Gerty'
 import _ from 'lodash';
 import PlayerEnemyCollision from '../Resolvers/PlayerEnemyCollision';
 import PlayerLootCollision from '../Resolvers/PlayerLootCollision';
@@ -24,49 +25,46 @@ import Inventory from '../UI/Inventory'
 import Log from '../Log/Log'
 
 const dungeon = generate({
-    width: 20,
-    height: 20,
-    rooms: [
-        {
-            count: 1,
-            size: 'sm',
-        }
-    ],
+    sectionWidth: 10,
+    sectionHeight: 10,
 });
 
-window.player = new Player()
+window.player = new Player({
+    x: 4,
+    y: 5
+})
 window.camera = new Camera()
 
 window.enemies = [
-    new Enemy({ x: 0, y: 2}),
-    new Enemy({ x: 7, y: 11}),
+    // new Enemy({ x: 0, y: 2}),
+    // new Enemy({ x: 7, y: 11}),
 ]
 
 window.loots = [
-    new Loot({ x: 4, y: 0 }, [
-        {
-            id: Uuid(),
-            name: 'sword',
-            type: 'melee',
-            damage: 4
-        }
-    ]),
-    new Loot({ x: 11, y: 7 }, [
-        {
-            id: Uuid(),
-            name: 'axe',
-            type: 'melee',
-            damage: 7
-        }
-    ]),
-    new Loot({ x: 9, y: 18 }, [
-        {
-            id: Uuid(),
-            name: 'dagger',
-            type: 'melee',
-            damage: 2
-        }
-    ])
+    // new Loot({ x: 4, y: 0 }, [
+    //     {
+    //         id: Uuid(),
+    //         name: 'sword',
+    //         type: 'melee',
+    //         damage: 4
+    //     }
+    // ]),
+    // new Loot({ x: 11, y: 7 }, [
+    //     {
+    //         id: Uuid(),
+    //         name: 'axe',
+    //         type: 'melee',
+    //         damage: 7
+    //     }
+    // ]),
+    // new Loot({ x: 9, y: 18 }, [
+    //     {
+    //         id: Uuid(),
+    //         name: 'dagger',
+    //         type: 'melee',
+    //         damage: 2
+    //     }
+    // ])
 ]
 
 const getCollidedPositionableItem = (positionableItems, playerPosition) => {
@@ -172,6 +170,9 @@ class App extends Component {
 
     render() {
         return <div>
+            <div className='log-wrapper'>
+                <Log messages={this.state.logMessages} />
+            </div>
             <div className='app'>
                 {this.state.ui.inventory && <Inventory player={window.player} items={this.state.player.HasInventory}/>}
                 <CameraRenderer {...this.state.camera.HasPixelPosition}>
@@ -184,9 +185,6 @@ class App extends Component {
                         return <LootRenderer key={l.id} {...l.HasPosition} />
                     })}
                 </CameraRenderer>
-            </div>
-            <div className='log-wrapper'>
-                <Log messages={this.state.logMessages} />
             </div>
         </div>
     }

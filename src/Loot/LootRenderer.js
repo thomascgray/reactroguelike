@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Tile from '../Tile/Tile'
+import Tile from '../Tile/TileRenderer'
 
 class Loot extends Component {
     render() {

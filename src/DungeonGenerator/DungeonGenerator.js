@@ -13,76 +13,6 @@ const generate = (dungeonTemplate) => {
             rooms 
         }
     }
-
-    // if (dungeonTemplate.type === 'rogue') {
-    //     const map = generateMap(dungeonTemplate.width, dungeonTemplate.height);
-    //     const sections = []
-
-    //     const sectionWidth = dungeonTemplate.width / dungeonTemplate.rogue.columns;
-    //     const sectionHeight = dungeonTemplate.height / dungeonTemplate.rogue.rows;
-
-    //     for (let x = 0; x < dungeonTemplate.rogue.columns; x++) {
-    //         for (let y = 0; y < dungeonTemplate.rogue.rows; y++) {
-    //             const corner = {
-    //                 x: x * sectionWidth,
-    //                 y: y * sectionHeight
-    //             }
-
-    //             console.log('corner', corner);
-    //         }
-            
-    //     }
-
-    //     return {
-    //         map,
-    //     }
-    // }
-
-    // if (dungeonTemplate.type === 'isaacdungeon') {
-    //     const map = generateMap(dungeonTemplate.width, dungeonTemplate.height);
-    
-    //     let roomCount = dungeonTemplate.isaacdungeon.roomCount;
-
-    //     let rooms = []
-
-    //     while(roomCount > 0) {
-    //         // generate and add a room
-    //         const room = generateSmallRoom(dungeonTemplate)
-    //         rooms.push(room);
-
-    //         const constructs = generateCorridorRoomPair(dungeonTemplate, room, getRandomDirection())
-
-    //         roomCount -=1;
-    //     }
-
-    //     rooms.forEach(room => {
-    //         room.wallTiles.forEach(tile => {
-    //             map[tile.x][tile.y] = 1;
-    //         });
-    //     })
-
-    //     return {
-    //         map,
-    //         rooms 
-    //     }
-    // }
-}
-
-// const generateRoomForSection = () => {
-
-// }
-
-// const generateCorridorRoomPair = (dungeonTemplate, originalRoom, direction) => {
-//     const startingTileForCorridor = Random.pick(getDirectionWallTiles(direction, originalRoom));
-
-//     console.log('startingTileForCorridor', startingTileForCorridor);
-
-
-
-// }
-
-const generateCorridor = (direction, room) => {
-
 }
 
 const generateRooms = (dungeonTemplate, map) => {
@@ -211,10 +141,6 @@ const generateMap = (width, height) => {
 
     return map;
 }
-
-const getDirectionWallTiles = (direction, room) => room.directionWallTiles[direction]
-
-const getRandomDirection = () => Random.pick(['north', 'east', 'south', 'west'])
 
 export {
     generate

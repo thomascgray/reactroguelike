@@ -2,6 +2,7 @@ import React from 'react';
 
 import { storiesOf } from '@storybook/react';
 import { generate } from '../DungeonGenerator/DungeonGenerator'
+import { generate as gertyGenerate } from '../DungeonGenerator/Gerty'
 import DungeonRenderer from './DungeonRenderer'
 import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
 
@@ -9,7 +10,8 @@ const stories = storiesOf('Dungeon Renderer', module);
 
 stories.addDecorator(withKnobs);
 
-stories.add('type rooms: with no rooms', () => {
+stories
+    .add('type rooms: with no rooms', () => {
         const dungeonTemplate = {
             width: number('width', 20),
             height: number('height', 20),
@@ -57,5 +59,13 @@ stories.add('type rooms: with no rooms', () => {
             },
         }
         const dungeon = generate(dungeonTemplate);
+        return <DungeonRenderer dungeon={dungeon} />
+    })
+    .add('gerty', () => {
+        const dungeonTemplate = {
+            sectionWidth: 15,
+            sectionHeight: 15,
+        }
+        const dungeon = gertyGenerate(dungeonTemplate);
         return <DungeonRenderer dungeon={dungeon} />
     })
