@@ -16,17 +16,20 @@ class TileRenderer extends Component {
             left: `${_x * settings.tileWidth}px`,
         }
 
+        const className = this.props.className ? `tile ${this.props.className}` : 'tile'
+
         if (this.props.image) {
-            return <img src={`${this.props.image}`} style={style} />
+            return <img className={className} src={`${this.props.image}`} style={style} />
         }
 
-        return <div className="tile" style={style} />;
+        return <div className={className} style={style} />;
     }
 }
 
 TileRenderer.proptypes = {
     image: PropTypes.any,
     theme: PropTypes.string,
+    className: PropTypes.string,
     x: PropTypes.number,
     y: PropTypes.number,
 }

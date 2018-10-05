@@ -2,6 +2,8 @@ import HasInventory from '../Behaviours/HasInventory'
 import HasHp from '../Behaviours/HasHp'
 import HasPosition from '../Behaviours/HasPosition'
 import HasId from '../Behaviours/HasId'
+import HasDirection from '../Behaviours/HasDirection'
+
 import _ from 'lodash';
 import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
 
@@ -12,6 +14,7 @@ class PlayerEntity {
       new HasHp(hp),
       new HasPosition(position),
       new HasId(),
+      new HasDirection()
     ]
 
     attachFunctions(this, this.behaviours)

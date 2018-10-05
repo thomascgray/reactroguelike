@@ -28,7 +28,12 @@ import Log from '../Log/Log'
 const dungeon = generate({
     sectionWidth: 7,
     sectionHeight: 7,
-    theme: 'crypt'
+    theme: 'crypt',
+    doors: {
+        north: true,
+        west: true,
+    },
+    doorPlacement: 'random',
 });
 
 window.player = new Player({
@@ -36,11 +41,7 @@ window.player = new Player({
     y: 5
 })
 
-window.camera = new Camera()
-
-window.enemies = []
-
-window.loots = []
+window.worldObjects = []
 
 class App extends Component {
     constructor (props) {
@@ -48,8 +49,8 @@ class App extends Component {
         this.state = {
             // camera: window.camera.toState(),
             player: window.player.toState(),
-            enemies: window.enemies.map(e => e.toState()),
-            loots: window.loots.map(l => l.toState()),
+            // enemies: window.enemies.map(e => e.toState()),
+            // loots: window.loots.map(l => l.toState()),
             logMessages: [],
 
             ui: {
@@ -76,19 +77,24 @@ class App extends Component {
         e = e || window.event;
         console.log('e.keyCode', e.keyCode);
         const pos = new HasPosition(window.player.HasPosition.getPosition())
+        let newDirection;
 
         switch (e.keyCode) {
             case keyMap.LEFT:
                 pos.functions.moveLeft();
+                newDirection = 'left';
                 break;
             case keyMap.RIGHT:
                 pos.functions.moveRight();
+                newDirection = 'right';
                 break;
             case keyMap.UP:
                 pos.functions.moveUp();
+                newDirection = 'up';
                 break;
             case keyMap.DOWN:
                 pos.functions.moveDown();
+                newDirection = 'down';
                 break;
             case keyMap.INVENTORY:
                 const uiState = this.state.ui;
@@ -131,11 +137,8 @@ class App extends Component {
             // anything non 0 is a thing to hit
         } else {
             window.player.HasPosition.setPosition(pos.position);
+            window.player.HasDirection.setDirection(newDirection);
         }
-
-
-
-
 
         this.setState({
             player: window.player.toState()
@@ -151,13 +154,13 @@ class App extends Component {
                 {this.state.ui.inventory && <Inventory player={window.player} items={this.state.player.HasInventory}/>}
                 
                 <DungeonRenderer dungeon={dungeon} />
-                <PlayerRenderer {...this.state.player.HasPosition} />
-                {this.state.enemies.map(e => {
+                <PlayerRenderer player={this.state.player} />
+                {/* {this.state.enemies.map(e => {
                     return <EnemyRenderer key={e.id} {...e.HasPosition} />
                 })}
                 {this.state.loots.map(l => {
                     return <LootRenderer key={l.id} {...l.HasPosition} />
-                })}
+                })} */}
                 
             </div>
         </div>

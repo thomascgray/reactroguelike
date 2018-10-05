@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
+    "animate.css": "^3.7.0",
     "lodash": "^4.17.11",
     "pathfinding": "^0.4.18",
     "random-js": "^1.0.8",

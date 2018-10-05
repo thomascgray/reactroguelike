@@ -1,7 +1,6 @@
 .tile {
-    /* position: absolute; */
-    border:1px solid black;
     top:0;
     left:0;
-    /* transition: all 0.5s ease 0s; */
+    transition: top 0.3s, left 0.3s;
+    animation: 0.8s flipInX ease;
 }

@@ -8,6 +8,7 @@
     height: 100vh; 
     overflow: hidden;
     float: left;
+    position: relative;
 }
 
 .ui {

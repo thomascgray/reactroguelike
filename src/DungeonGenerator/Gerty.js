@@ -13,8 +13,6 @@ const generate = (dungeonTemplate) => {
     
     const map = generateMap(mapWidth, mapHeight);
     
-    console.log('map', map);
-
     fillCrossSectionWalls(dungeonTemplate, map);
     fillBoundaryWalls(dungeonTemplate, map);
     carveDoors(dungeonTemplate, map)
@@ -62,30 +60,12 @@ const patchWalls = (mapWidth, mapHeight, map) => {
 }
 
 const carveDoors = (dungeonTemplate, map) => {
-
     switch (dungeonTemplate.doorPlacement) {
+        case 'center':
+            return carveDoorsRandom(dungeonTemplate, map);
         case 'random':
-        return carveDoorsRandom(dungeonTemplate, map);
+            return carveDoorsRandom(dungeonTemplate, map);
     }
-    // // top door
-    // map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4) - 1] = 0;
-    // map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4)] = 0;
-    // map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.ceil(dungeonTemplate.mapHeight / 4)] = 0;
-
-    // // bottom door
-    // map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4 * 3)] = 0;
-    // map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4 * 3) - 1] = 0;
-    // map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.ceil(dungeonTemplate.mapHeight / 4 * 3)] = 0;
-
-    // // left door
-    // map[Math.floor(dungeonTemplate.mapWidth / 4)][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
-    // map[Math.floor(dungeonTemplate.mapWidth / 4) - 1][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
-    // map[Math.ceil(dungeonTemplate.mapWidth / 4)][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
-
-    // // right
-    // map[Math.floor(dungeonTemplate.mapWidth / 4 * 3)][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
-    // map[Math.floor(dungeonTemplate.mapWidth / 4 * 3) - 1][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
-    // map[Math.ceil(dungeonTemplate.mapWidth / 4 * 3)][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
 }
 
 const carveDoorsRandom = (dungeonTemplate, map) => {
@@ -113,6 +93,19 @@ const carveDoorsRandom = (dungeonTemplate, map) => {
             map[startTile + 1][dungeonTemplate.crossSectionY] = 0
         }
     }
+
+    // right door
+    //todo finish this
+    // if (dungeonTemplate.doors.west) {
+    //     const startTile = Random.integer(2, dungeonTemplate.sectionWidth - 1);
+    //     const alt = Random.bool();
+    //     map[startTile][dungeonTemplate.crossSectionY] = 0
+    //     if (alt) {
+    //         map[startTile - 1][dungeonTemplate.crossSectionY] = 0
+    //     } else {
+    //         map[startTile + 1][dungeonTemplate.crossSectionY] = 0
+    //     }
+    // }
 }
 
 const generateMap = (width, height) => {
