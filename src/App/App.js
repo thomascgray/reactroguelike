@@ -26,8 +26,8 @@ import Inventory from '../UI/Inventory'
 import Log from '../Log/Log'
 
 const dungeon = generate({
-    sectionWidth: 10,
-    sectionHeight: 10,
+    sectionWidth: 7,
+    sectionHeight: 7,
     theme: 'crypt'
 });
 
@@ -42,26 +42,11 @@ window.enemies = []
 
 window.loots = []
 
-const getCollidedPositionableItem = (positionableItems, playerPosition) => {
-    let match = null;
-    positionableItems.forEach(item => {
-        if (item.HasPosition.getPosition().x === playerPosition.x && item.HasPosition.getPosition().y === playerPosition.y) {
-            match = item;
-        }
-
-        if (match) {
-            return match;
-        }
-    });
-    return match;
-}
-
 class App extends Component {
     constructor (props) {
         super(props);
-
         this.state = {
-            camera: window.camera.toState(),
+            // camera: window.camera.toState(),
             player: window.player.toState(),
             enemies: window.enemies.map(e => e.toState()),
             loots: window.loots.map(l => l.toState()),
@@ -114,29 +99,32 @@ class App extends Component {
                 break;
         }
 
-        // console.log('pos.position.x', pos.position.x);
-        // console.log('pos.position.y', pos.position.y);
-
-        // replace this whole section with some kind of thing where
-        // the individual items register themselves as "collideble"
-        // const collidedEnemy = getCollidedPositionableItem(window.enemies, pos.position)
-        // const collidedLoot = getCollidedPositionableItem(window.loots, pos.position)
-        // if (collidedEnemy) {
-        //     PlayerEnemyCollision(window.enemies, window.player, collidedEnemy)
-        //     this.setState({
-        //         enemies: window.enemies.map(e => e.toState())
-        //     })
-        // } else if (collidedLoot) {
-        //     PlayerLootCollision(window.loots, window.player, collidedLoot)
-        //     this.setState({
-        //         loots: window.loots.map(e => e.toState())
-        //     })
-        // } else if (dungeon.map[pos.position.x][pos.position.y] === 1) {
-        //     // TODO IMRPOVE THIS
-        //     // its a wall
-        // } else {
-        //     window.player.HasPosition.setPosition(pos.position);
-        // }
+        // TODO
+        /**
+         * should be a list of "world objects"
+         * each has or hasnt a "collidable" behaviour
+         * 
+         * new behaviours should be like "is enemy", can work with like "is inventory"?
+         * 
+         * // get world object(s) you hit - can you collide with more than 1 thing at once?
+         * can world objects be stacked?
+         * 
+         * hitThings = worldObjects.find(wo => (wo.HasPosition && wo.HasPosition.position === player.pos)) // some wo might not have a position? i mean they absolutely should though, they're in the fucking world
+         * 
+         * ...THEN
+         * hitThings.forEach(wo => {
+         *  wo.IsEnemy && wo.isEnemy.isStillAlive
+         *    hit the enemy
+         *  wo.isLoot
+         *    loot the objects
+         *  wo.isItem
+         *    loot the object
+         * })
+         * 
+         * fit collidable in ^ here somewhere? you should be able to "interact" with wo without them being collidable e.g walking over an item
+         * 
+         * 
+         */
 
         if (dungeon.map[pos.position.x][pos.position.y] > 0) {
             // TODO IMRPOVE THIS
@@ -161,16 +149,16 @@ class App extends Component {
             </div>
             <div className='app'>
                 {this.state.ui.inventory && <Inventory player={window.player} items={this.state.player.HasInventory}/>}
-                <CameraRenderer {...this.state.camera.HasPixelPosition}>
-                    <DungeonRenderer dungeon={dungeon} />
-                    <PlayerRenderer {...this.state.player.HasPosition} />
-                    {this.state.enemies.map(e => {
-                        return <EnemyRenderer key={e.id} {...e.HasPosition} />
-                    })}
-                    {this.state.loots.map(l => {
-                        return <LootRenderer key={l.id} {...l.HasPosition} />
-                    })}
-                </CameraRenderer>
+                
+                <DungeonRenderer dungeon={dungeon} />
+                <PlayerRenderer {...this.state.player.HasPosition} />
+                {this.state.enemies.map(e => {
+                    return <EnemyRenderer key={e.id} {...e.HasPosition} />
+                })}
+                {this.state.loots.map(l => {
+                    return <LootRenderer key={l.id} {...l.HasPosition} />
+                })}
+                
             </div>
         </div>
     }
