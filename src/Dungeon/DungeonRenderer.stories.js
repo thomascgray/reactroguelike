@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react';
 import { generate } from '../DungeonGenerator/DungeonGenerator'
 import { generate as gertyGenerate } from '../DungeonGenerator/Gerty'
 import DungeonRenderer from './DungeonRenderer'
-import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
+import { withKnobs, text, boolean, number, select } from '@storybook/addon-knobs';
 
 const stories = storiesOf('Dungeon Renderer', module);
 
@@ -63,8 +63,19 @@ stories
     })
     .add('gerty', () => {
         const dungeonTemplate = {
-            sectionWidth: 15,
-            sectionHeight: 15,
+            sectionWidth: number('section width', 15),
+            sectionHeight: number('section height', 15),
+            theme: select('theme', ['crypt', 'dungeon'], 'crypt'),
+            doors: {
+                north: true,
+                east: true,
+                south: true,
+                west: true,
+            },
+            doorPlacement: select('door placement', [
+                'center',
+                'random',
+            ], 'random')
         }
         const dungeon = gertyGenerate(dungeonTemplate);
         return <DungeonRenderer dungeon={dungeon} />

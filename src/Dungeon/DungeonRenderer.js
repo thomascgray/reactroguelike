@@ -4,17 +4,6 @@ import _ from 'lodash';
 import './Dungeon.css'
 import RandomWeightedChoice from 'random-weighted-choice';
 
-// case -4:
-// return <img src={`${themes[this.props.theme].floor_e}`} style={style}/>
-// case -3:
-// return <img src={`${themes[this.props.theme].floor_d}`} style={style}/>
-// case -2:
-// return <img src={`${themes[this.props.theme].floor_c}`} style={style}/>
-// case -1:
-// return <img src={`${themes[this.props.theme].floor_b}`} style={style}/>
-// case 0:
-// return <img src={`${themes[this.props.theme].floor_a}`} style={style}/>
-
 class DungeonRenderer extends Component {
     shouldComponentUpdate (data) {
         return !_.isEqual(data.dungeon.map, this.props.dungeon.map)
@@ -34,9 +23,6 @@ class DungeonRenderer extends Component {
 
         return image;
     }
-
-    
-
 
     render () {
         let theme = require(`../DungeonThemes/${this.props.dungeon.theme}`);

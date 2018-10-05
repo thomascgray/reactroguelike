@@ -3,6 +3,11 @@
 its a roguelike made in react. incomprehensibly WIP
 
 
+# level design and consistency
+
+rooms should be 7x7, probably? with doors in the cross sections being 2 tiles wide
+
+
 # dealing with assets
 
 ## scaling

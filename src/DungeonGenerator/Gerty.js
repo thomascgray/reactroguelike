@@ -1,5 +1,5 @@
 // generates the 4 by 4 style grid, also know as isaac clone, to be put all on one screen
-const RandomWeighted = require('random-weighted-choice');
+const Random = require("random-js")(); // uses the nativeMath engine
 
 const generate = (dungeonTemplate) => {
     const mapWidth = (dungeonTemplate.sectionWidth * 2) + 3
@@ -7,15 +7,18 @@ const generate = (dungeonTemplate) => {
 
     dungeonTemplate.mapWidth = mapWidth;
     dungeonTemplate.mapHeight = mapHeight;
+
+    dungeonTemplate.crossSectionX = Math.floor(dungeonTemplate.mapWidth / 2);
+    dungeonTemplate.crossSectionY = Math.floor(dungeonTemplate.mapHeight / 2);
     
     const map = generateMap(mapWidth, mapHeight);
     
     console.log('map', map);
 
-    fillInnerWalls(dungeonTemplate, map);
+    fillCrossSectionWalls(dungeonTemplate, map);
     fillBoundaryWalls(dungeonTemplate, map);
-    patchWalls(dungeonTemplate, map);
     carveDoors(dungeonTemplate, map)
+    patchWalls(mapWidth, mapHeight, map);
 
     return {
         map,
@@ -25,7 +28,7 @@ const generate = (dungeonTemplate) => {
 
 const fillBoundaryWalls = (dungeonTemplate, map) => {
     for (let x = 0; x < dungeonTemplate.mapWidth; x ++) { // top row
-        map[x][0] = 2;
+        map[x][0] = 1;
     }
     for (let x = 0; x < dungeonTemplate.mapWidth; x ++) { // bottom row
         map[x][dungeonTemplate.mapWidth - 1] = 1;
@@ -38,41 +41,78 @@ const fillBoundaryWalls = (dungeonTemplate, map) => {
     }
 }
 
-const fillInnerWalls = (dungeonTemplate, map) => {
+const fillCrossSectionWalls = (dungeonTemplate, map) => {
     for (let x = 0; x < dungeonTemplate.mapWidth; x ++) {
-        map[x][Math.floor(dungeonTemplate.mapHeight / 2)] = 2; // horizontal wall
+        map[x][dungeonTemplate.crossSectionY] = 1; // horizontal wall
     }
     for (let y = 0; y < dungeonTemplate.mapHeight; y ++) { // starts from 1 so that the very top remains a 1
-        map[Math.floor(dungeonTemplate.mapWidth / 2)][y] = 1; // vertical wall
+        map[dungeonTemplate.crossSectionX][y] = 1; // vertical wall
     }
 }
 
-const patchWalls = (dungeonTemplate, map) => {
-    map[Math.floor(dungeonTemplate.mapWidth / 2)][0] = 1;
+const patchWalls = (mapWidth, mapHeight, map) => {
+    for(let y = 0; y < mapWidth; y++) {
+        for(let x = 0; x < mapHeight; x++) {
+            if (map[x][y] === 1 && map[x][y + 1] === 0) {
+                map[x][y] = 2;
+            }
+        }
+    }
+
 }
 
 const carveDoors = (dungeonTemplate, map) => {
-    // top door
-    map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4) - 2] = 2; // the one above the gap should become a top wall
-    map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4) - 1] = 0;
-    map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4)] = 0;
-    map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.ceil(dungeonTemplate.mapHeight / 4)] = 0;
 
-    // bottom door
-    map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4 * 3)] = 0;
-    map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4 * 3) - 2] = 2;
-    map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4 * 3) - 1] = 0;
-    map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.ceil(dungeonTemplate.mapHeight / 4 * 3)] = 0;
+    switch (dungeonTemplate.doorPlacement) {
+        case 'random':
+        return carveDoorsRandom(dungeonTemplate, map);
+    }
+    // // top door
+    // map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4) - 1] = 0;
+    // map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4)] = 0;
+    // map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.ceil(dungeonTemplate.mapHeight / 4)] = 0;
+
+    // // bottom door
+    // map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4 * 3)] = 0;
+    // map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.floor(dungeonTemplate.mapHeight / 4 * 3) - 1] = 0;
+    // map[Math.floor(dungeonTemplate.mapWidth / 2)][Math.ceil(dungeonTemplate.mapHeight / 4 * 3)] = 0;
+
+    // // left door
+    // map[Math.floor(dungeonTemplate.mapWidth / 4)][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
+    // map[Math.floor(dungeonTemplate.mapWidth / 4) - 1][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
+    // map[Math.ceil(dungeonTemplate.mapWidth / 4)][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
+
+    // // right
+    // map[Math.floor(dungeonTemplate.mapWidth / 4 * 3)][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
+    // map[Math.floor(dungeonTemplate.mapWidth / 4 * 3) - 1][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
+    // map[Math.ceil(dungeonTemplate.mapWidth / 4 * 3)][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
+}
+
+const carveDoorsRandom = (dungeonTemplate, map) => {
+    
+    //top door
+    if (dungeonTemplate.doors.north) {
+        const startTile = Random.integer(2, dungeonTemplate.sectionHeight - 1);
+        const alt = Random.bool();
+        map[dungeonTemplate.crossSectionX][startTile] = 0
+        if (alt) {
+            map[dungeonTemplate.crossSectionX][startTile - 1] = 0
+        } else {
+            map[dungeonTemplate.crossSectionX][startTile + 1] = 0
+        }
+    }
 
     // left door
-    map[Math.floor(dungeonTemplate.mapWidth / 4)][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
-    map[Math.floor(dungeonTemplate.mapWidth / 4) - 1][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
-    map[Math.ceil(dungeonTemplate.mapWidth / 4)][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
-
-    // right
-    map[Math.floor(dungeonTemplate.mapWidth / 4 * 3)][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
-    map[Math.floor(dungeonTemplate.mapWidth / 4 * 3) - 1][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
-    map[Math.ceil(dungeonTemplate.mapWidth / 4 * 3)][Math.floor(dungeonTemplate.mapHeight / 2)] = 0;
+    if (dungeonTemplate.doors.west) {
+        const startTile = Random.integer(2, dungeonTemplate.sectionWidth - 1);
+        const alt = Random.bool();
+        map[startTile][dungeonTemplate.crossSectionY] = 0
+        if (alt) {
+            map[startTile - 1][dungeonTemplate.crossSectionY] = 0
+        } else {
+            map[startTile + 1][dungeonTemplate.crossSectionY] = 0
+        }
+    }
 }
 
 const generateMap = (width, height) => {
