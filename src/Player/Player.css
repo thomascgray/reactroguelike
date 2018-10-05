@@ -1,14 +1,16 @@
 @keyframes bounce { 
     0%   {transform: translateY(0px)}
-    25%   {transform: translateY(-5px)}
-    50%   {transform: translateY(-10px)}
-    75%   {transform: translateY(-5px)}
+    25%   {transform: translateY(-7px)}
+    50%   {transform: translateY(-15px)}
+    75%   {transform: translateY(-7px)}
     100%   {transform: translateY(0px)}
 }
+#player {
+    transition: top 0.2s, left 0.2s;
+}
 
-.player {
-    /* animation: bounce 2s infinite */
+#player.bounce {
     animation-name: bounce;
-    animation-duration: 0.3s;
-    /* animation-iteration-count: infinite; */
+    animation-duration: 0.2s;
+    animation-timing-function: ease-out;
 }

@@ -6,7 +6,7 @@ class HasDirection {
 
         this.functions = {
             setDirection: value => {
-                this.direction += value;
+                this.direction = value;
                 return this.direction;
             },
             getDirection: () => {

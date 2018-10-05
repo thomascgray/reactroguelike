@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './Tile.css'
 import settings from '../settings.json'
+import Uuid from 'uuid/v4'
 
 class TileRenderer extends Component {
     render() {
@@ -17,18 +18,20 @@ class TileRenderer extends Component {
         }
 
         const className = this.props.className ? `tile ${this.props.className}` : 'tile'
+        const id = this.props.id ? this.props.id : Uuid()
 
         if (this.props.image) {
-            return <img className={className} src={`${this.props.image}`} style={style} />
+            return <img id={id} className={className} src={`${this.props.image}`} style={style} />
         }
 
-        return <div className={className} style={style} />;
+        return <div id={id} className={className} style={style} />;
     }
 }
 
 TileRenderer.proptypes = {
     image: PropTypes.any,
     theme: PropTypes.string,
+    id: PropTypes.string,
     className: PropTypes.string,
     x: PropTypes.number,
     y: PropTypes.number,

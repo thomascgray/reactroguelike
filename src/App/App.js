@@ -4,23 +4,13 @@ import keyMap from '../keyMap'
 import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import PlayerRenderer from '../Player/PlayerRenderer'
 import Player from '../Player/Player'
-import EnemyRenderer from '../Enemy/EnemyRenderer'
-import Enemy from '../Enemy/Enemy'
-import CameraRenderer from '../Camera/CameraRenderer'
-import Camera from '../Camera/Camera'
 
-import LootRenderer from '../Loot/LootRenderer'
-import Loot from '../Loot/Loot'
 
 import PF from 'pathfinding';
 import HasPosition from '../Behaviours/HasPosition'
-// import { generate } from '../DungeonGenerator/DungeonGenerator'
 import { generate } from '../DungeonGenerator/Gerty'
 import _ from 'lodash';
-import PlayerEnemyCollision from '../Resolvers/PlayerEnemyCollision';
-import PlayerLootCollision from '../Resolvers/PlayerLootCollision';
-// import PlayerNonZeroTileCollision from '../Resolvers/PlayerNonZeroTileCollision';
-import Uuid from 'uuid/v4'
+
 import Inventory from '../UI/Inventory'
 
 import Log from '../Log/Log'
@@ -47,12 +37,9 @@ class App extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            // camera: window.camera.toState(),
+            isKeyPress: false,
             player: window.player.toState(),
-            // enemies: window.enemies.map(e => e.toState()),
-            // loots: window.loots.map(l => l.toState()),
             logMessages: [],
-
             ui: {
                 inventory: false
             }
@@ -74,6 +61,9 @@ class App extends Component {
     }
 
     handleKeyDown(e) {
+        if (this.state.isKeyPress) {
+            return false;
+        }
         e = e || window.event;
         console.log('e.keyCode', e.keyCode);
         const pos = new HasPosition(window.player.HasPosition.getPosition())
@@ -104,6 +94,16 @@ class App extends Component {
             default:
                 break;
         }
+
+        this.setState({
+            isKeyPress: true
+        }, () => {
+            setTimeout(() => {
+                this.setState({
+                    isKeyPress: false
+                })
+            }, 300)
+        });
 
         // TODO
         /**
@@ -138,11 +138,21 @@ class App extends Component {
         } else {
             window.player.HasPosition.setPosition(pos.position);
             window.player.HasDirection.setDirection(newDirection);
+
+            const el = document.getElementById('player');
+            el.classList.remove('bounce');
+            el.classList.add('bounce');
+            setTimeout(() => {
+                el.classList.remove('bounce');
+            }, 300)
+
         }
 
         this.setState({
             player: window.player.toState()
-        })
+        });
+
+        console.log('this.state', this.state);
     }
 
     render() {
@@ -155,13 +165,6 @@ class App extends Component {
                 
                 <DungeonRenderer dungeon={dungeon} />
                 <PlayerRenderer player={this.state.player} />
-                {/* {this.state.enemies.map(e => {
-                    return <EnemyRenderer key={e.id} {...e.HasPosition} />
-                })}
-                {this.state.loots.map(l => {
-                    return <LootRenderer key={l.id} {...l.HasPosition} />
-                })} */}
-                
             </div>
         </div>
     }
