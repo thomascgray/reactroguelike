@@ -26,9 +26,7 @@ class DungeonRenderer extends Component {
 
     render () {
         let theme = require(`../DungeonThemes/${this.props.dungeon.theme}`);
-        // console.log('this.props.dungeon.theme', this.props.dungeon.theme);
 
-        console.log('theme.default.floors', theme.default.floors);
         return <div className='dungeon'>
             {this.props.dungeon.map.map((row, rowIndex) => {
                 return row.map((value, columnIndex) => {

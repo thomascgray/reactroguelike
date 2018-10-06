@@ -1,4 +1,7 @@
 // generates the 4 by 4 style grid, also know as isaac clone, to be put all on one screen
+import _ from 'lodash';
+import Enemy from '../Enemy/Enemy'
+
 const Random = require("random-js")(); // uses the nativeMath engine
 
 const generate = (dungeonTemplate) => {
@@ -16,11 +19,15 @@ const generate = (dungeonTemplate) => {
     fillCrossSectionWalls(dungeonTemplate, map);
     fillBoundaryWalls(dungeonTemplate, map);
     carveDoors(dungeonTemplate, map)
-    patchWalls(mapWidth, mapHeight, map);
+    patchWalls(dungeonTemplate, map);
+
+    const { rooms, stageObjects } = generateRooms(dungeonTemplate);
 
     return {
         map,
-        theme: dungeonTemplate.theme
+        theme: dungeonTemplate.theme,
+        rooms,
+        stageObjects
     }
 }
 
@@ -48,9 +55,9 @@ const fillCrossSectionWalls = (dungeonTemplate, map) => {
     }
 }
 
-const patchWalls = (mapWidth, mapHeight, map) => {
-    for(let y = 0; y < mapWidth; y++) {
-        for(let x = 0; x < mapHeight; x++) {
+const patchWalls = (dungeonTemplate, map) => {
+    for(let y = 0; y < dungeonTemplate.mapWidth; y++) {
+        for(let x = 0; x < dungeonTemplate.mapHeight; x++) {
             if (map[x][y] === 1 && map[x][y + 1] === 0) {
                 map[x][y] = 2;
             }
@@ -106,6 +113,27 @@ const carveDoorsRandom = (dungeonTemplate, map) => {
     //         map[startTile + 1][dungeonTemplate.crossSectionY] = 0
     //     }
     // }
+}
+
+// for each room, choose a template, and then run its generation things
+// apply offset to positions based on the rooms offset
+const generateRooms = (dungeonTemplate) => {
+
+    // get a room template for the left room
+    const template = _.cloneDeep(require('../SectionTemplates/a.json'))
+    const enemies = template.enemies.map(enemy => {
+        enemy.position.y += Number(dungeonTemplate.crossSectionY);
+        return new Enemy({
+            position: enemy.position,
+            hp: 5, 
+            archetype: enemy.archetype
+        });
+    });
+
+    return {
+        rooms: [],
+        stageObjects: enemies,
+    }
 }
 
 const generateMap = (width, height) => {

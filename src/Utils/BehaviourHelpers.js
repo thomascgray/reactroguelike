@@ -7,8 +7,11 @@ const attachFunctions = (object, behaviours) => {
       });
 }
 
-const toState = behaviours => {
-    const state = {}
+const toState = (behaviours, className) => {
+    console.log('this.constructor.name', this.constructor.name);
+    const state = {
+        className
+    }
 
     behaviours.forEach(behaviour => {
       state[behaviour.constructor.name] = behaviour.toState();

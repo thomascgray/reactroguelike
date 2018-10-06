@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-
 import './Player.css'
-
 import Tile from '../Tile/TileRenderer'
 
 class Player extends Component {
-    
     render() {
-        console.log('this.props.player', this.props.player);
         return (
             <Tile id='player' x={this.props.player.HasPosition.position.x} y={this.props.player.HasPosition.position.y} image={this.getPlayerImage()} />
         );

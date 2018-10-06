@@ -4,6 +4,7 @@ import keyMap from '../keyMap'
 import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import PlayerRenderer from '../Player/PlayerRenderer'
 import Player from '../Player/Player'
+import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
 
 
 import PF from 'pathfinding';
@@ -31,7 +32,7 @@ window.player = new Player({
     y: 5
 })
 
-window.worldObjects = []
+window.stageObjects = dungeon.stageObjects;
 
 class App extends Component {
     constructor (props) {
@@ -39,6 +40,7 @@ class App extends Component {
         this.state = {
             isKeyPress: false,
             player: window.player.toState(),
+            stageObjects: window.stageObjects.map(o => o.toState()),
             logMessages: [],
             ui: {
                 inventory: false
@@ -60,16 +62,16 @@ class App extends Component {
         });
     }
 
-    handleKeyDown(e) {
+    handleKeyDown(keyEvent) {
         if (this.state.isKeyPress) {
             return false;
         }
-        e = e || window.event;
-        console.log('e.keyCode', e.keyCode);
+        keyEvent = keyEvent || window.event;
+        
         const pos = new HasPosition(window.player.HasPosition.getPosition())
         let newDirection;
 
-        switch (e.keyCode) {
+        switch (keyEvent.keyCode) {
             case keyMap.LEFT:
                 pos.functions.moveLeft();
                 newDirection = 'left';
@@ -136,6 +138,14 @@ class App extends Component {
             // TODO IMRPOVE THIS
             // anything non 0 is a thing to hit
         } else {
+
+            var collidedStageObject = window.stageObjects.find(obj => {
+                return _.isEqual(obj.HasPosition.position, window.player.HasPosition.position) && obj.IsCollidable.isCollidable;
+            });
+
+            console.log('collidedStageObject', collidedStageObject);
+
+
             window.player.HasPosition.setPosition(pos.position);
             window.player.HasDirection.setDirection(newDirection);
 
@@ -151,8 +161,6 @@ class App extends Component {
         this.setState({
             player: window.player.toState()
         });
-
-        console.log('this.state', this.state);
     }
 
     render() {
@@ -165,6 +173,7 @@ class App extends Component {
                 
                 <DungeonRenderer dungeon={dungeon} />
                 <PlayerRenderer player={this.state.player} />
+                <StageObjectsRenderer stageObjects={this.state.stageObjects} />
             </div>
         </div>
     }

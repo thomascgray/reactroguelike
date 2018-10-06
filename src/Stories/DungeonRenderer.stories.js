@@ -5,63 +5,41 @@ import { generate as gertyGenerate } from '../DungeonGenerator/Gerty'
 import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import { withKnobs, text, boolean, number, select } from '@storybook/addon-knobs';
 import { RefreshButton } from './StoryUtils'
+import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
 
 const stories = storiesOf('Dungeon Renderer', module);
 
 stories.addDecorator(withKnobs);
 
 stories
-    .add('type rooms: with no rooms', () => {
-        const dungeonTemplate = {
-            width: number('width', 20),
-            height: number('height', 20),
-            type: 'rooms',
-            rooms: [],
-        }
-        const dungeon = generate(dungeonTemplate);
-        return <DungeonRenderer dungeon={dungeon} />
-    })
-    .add('type: rooms, with small room(s)', () => {
-        const dungeonTemplate = {
-            width: 20,
-            height: 20,
-            type: 'rooms',
-            rooms: [
-                {
-                    count: number('room count', 1),
-                    size: 'sm',
-                }
-            ],
-        }
-        const dungeon = generate(dungeonTemplate);
-        return <DungeonRenderer dungeon={dungeon} />
-    })
-    .add('type: rogue', () => {
-        const dungeonTemplate = {
-            width: number('width', 20),
-            height: number('height', 20),
-            type: 'rogue',
-            rogue: {
-                rows: number('rows', 2),
-                columns: number('columns', 2),
-            }
-        }
-        const dungeon = generate(dungeonTemplate);
-        return <DungeonRenderer dungeon={dungeon} />
-    })
-    .add('type: isaacdungeon', () => {
-        const dungeonTemplate = {
-            width: number('width', 50),
-            height: number('height', 50),
-            type: 'isaacdungeon',
-            isaacdungeon: {
-                roomCount: 2
-            },
-        }
-        const dungeon = generate(dungeonTemplate);
-        return <DungeonRenderer dungeon={dungeon} />
-    })
     .add('gerty', () => {
+        const dungeonTemplate = {
+            sectionWidth: number('section width', 7),
+            sectionHeight: number('section height', 7),
+            theme: select('theme', ['crypt', 'dungeon'], 'crypt'),
+            doors: {
+                north: true,
+                east: true,
+                south: true,
+                west: true,
+            },
+            doorPlacement: select('door placement', [
+                'center',
+                'random',
+            ], 'random')
+        }
+        
+        const dungeon = gertyGenerate(dungeonTemplate);
+
+
+
+
+        return <div>
+            <DungeonRenderer dungeon={dungeon} />
+            <RefreshButton />
+        </div>
+    })
+    .add('gerty and stage objects', () => {
         const dungeonTemplate = {
             sectionWidth: number('section width', 7),
             sectionHeight: number('section height', 7),
@@ -82,6 +60,7 @@ stories
 
         return <div>
             <DungeonRenderer dungeon={dungeon} />
+            <StageObjectsRenderer stageObjects={dungeon.stageObjects.map(obj => obj.toState())} />
             <RefreshButton />
         </div>
     })
