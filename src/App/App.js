@@ -5,8 +5,9 @@ import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import PlayerRenderer from '../Player/PlayerRenderer'
 import Player from '../Player/Player'
 import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
+import { LogMessage } from '../Log/LogActions'
 
-
+import PlayerStageObjectCollision from '../Resolvers/PlayerStageObjectCollision'
 import PF from 'pathfinding';
 import HasPosition from '../Behaviours/HasPosition'
 import { generate } from '../DungeonGenerator/Gerty'
@@ -142,6 +143,11 @@ class App extends Component {
             var collidedStageObject = window.stageObjects.find(obj => {
                 return _.isEqual(obj.HasPosition.getPosition(), pos.position) && obj.IsCollidable.getIsCollidable();
             });
+
+
+            if (collidedStageObject) {
+                PlayerStageObjectCollision()
+            }
 
             if (!collidedStageObject) {
                 window.player.HasPosition.setPosition(pos.position);
