@@ -140,22 +140,20 @@ class App extends Component {
         } else {
 
             var collidedStageObject = window.stageObjects.find(obj => {
-                return _.isEqual(obj.HasPosition.position, window.player.HasPosition.position) && obj.IsCollidable.isCollidable;
+                return _.isEqual(obj.HasPosition.getPosition(), pos.position) && obj.IsCollidable.getIsCollidable();
             });
 
-            console.log('collidedStageObject', collidedStageObject);
+            if (!collidedStageObject) {
+                window.player.HasPosition.setPosition(pos.position);
+                window.player.HasDirection.setDirection(newDirection);
 
-
-            window.player.HasPosition.setPosition(pos.position);
-            window.player.HasDirection.setDirection(newDirection);
-
-            const el = document.getElementById('player');
-            el.classList.remove('bounce');
-            el.classList.add('bounce');
-            setTimeout(() => {
+                const el = document.getElementById('player');
                 el.classList.remove('bounce');
-            }, 300)
-
+                el.classList.add('bounce');
+                setTimeout(() => {
+                    el.classList.remove('bounce');
+                }, 300)
+            }
         }
 
         this.setState({

@@ -1,13 +1,6 @@
 {
     "enemies": [
         {
-            "archetype": "skeleton",
-            "position": {
-                "x": 3,
-                "y": 3
-            }
-        },
-        {
             "archetype": "goblin",
             "position": {
                 "x": 7,

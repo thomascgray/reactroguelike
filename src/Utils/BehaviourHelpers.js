@@ -8,7 +8,6 @@ const attachFunctions = (object, behaviours) => {
 }
 
 const toState = (behaviours, className) => {
-    console.log('this.constructor.name', this.constructor.name);
     const state = {
         className
     }

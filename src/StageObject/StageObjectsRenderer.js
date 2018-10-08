@@ -6,7 +6,6 @@ class StageObjectsRenderer extends Component {
     render() {
         return <div>
             {this.props.stageObjects.map(obj => {
-                console.log('obj', obj);
                 return <StageObjectRenderer key={obj.HasId.id} stageObject={obj}/>
             })}
         </div>
