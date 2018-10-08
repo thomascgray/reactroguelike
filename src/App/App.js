@@ -98,67 +98,36 @@ class App extends Component {
                 break;
         }
 
-        this.setState({
-            isKeyPress: true
-        }, () => {
-            setTimeout(() => {
-                this.setState({
-                    isKeyPress: false
-                })
-            }, 300)
-        });
+        //todo was doing this to make animations work. it feels shit.
+        // this.setState({
+        //     isKeyPress: true
+        // }, () => {
+        //     setTimeout(() => {
+        //         this.setState({
+        //             isKeyPress: false
+        //         })
+        //     }, 300)
+        // });
 
-        // TODO
-        /**
-         * should be a list of "world objects"
-         * each has or hasnt a "collidable" behaviour
-         * 
-         * new behaviours should be like "is enemy", can work with like "is inventory"?
-         * 
-         * // get world object(s) you hit - can you collide with more than 1 thing at once?
-         * can world objects be stacked?
-         * 
-         * hitThings = worldObjects.find(wo => (wo.HasPosition && wo.HasPosition.position === player.pos)) // some wo might not have a position? i mean they absolutely should though, they're in the fucking world
-         * 
-         * ...THEN
-         * hitThings.forEach(wo => {
-         *  wo.IsEnemy && wo.isEnemy.isStillAlive
-         *    hit the enemy
-         *  wo.isLoot
-         *    loot the objects
-         *  wo.isItem
-         *    loot the object
-         * })
-         * 
-         * fit collidable in ^ here somewhere? you should be able to "interact" with wo without them being collidable e.g walking over an item
-         * 
-         * 
-         */
-
-        if (dungeon.map[pos.position.x][pos.position.y] > 0) {
+        if (dungeon.map[pos.position.x][pos.position.y] === 1 || dungeon.map[pos.position.x][pos.position.y] === 2) { // todo better way of knowing whats a wall
             // TODO IMRPOVE THIS
             // anything non 0 is a thing to hit
         } else {
-
-            var collidedStageObject = window.stageObjects.find(obj => {
-                return _.isEqual(obj.HasPosition.getPosition(), pos.position) && obj.IsCollidable.getIsCollidable();
-            });
-
+            const collidedStageObject = window.stageObjects.find(obj => _.isEqual(obj.HasPosition.getPosition(), pos.position) && obj.IsCollidable.getIsCollidable());
 
             if (collidedStageObject) {
                 PlayerStageObjectCollision()
-            }
-
-            if (!collidedStageObject) {
+            } else if (!collidedStageObject) {
                 window.player.HasPosition.setPosition(pos.position);
                 window.player.HasDirection.setDirection(newDirection);
 
-                const el = document.getElementById('player');
-                el.classList.remove('bounce');
-                el.classList.add('bounce');
-                setTimeout(() => {
-                    el.classList.remove('bounce');
-                }, 300)
+                // todo this animation isnt good enough, means we need to regulate key inputs. think of something better
+                // const el = document.getElementById('player');
+                // el.classList.remove('bounce');
+                // el.classList.add('bounce');
+                // setTimeout(() => {
+                //     el.classList.remove('bounce');
+                // }, 300)
             }
         }
 

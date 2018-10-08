@@ -14,14 +14,14 @@ const generate = (dungeonTemplate) => {
     dungeonTemplate.crossSectionX = Math.floor(dungeonTemplate.mapWidth / 2);
     dungeonTemplate.crossSectionY = Math.floor(dungeonTemplate.mapHeight / 2);
     
-    const map = generateMap(mapWidth, mapHeight);
+    const map = generateMap(dungeonTemplate);
     
     fillCrossSectionWalls(dungeonTemplate, map);
     fillBoundaryWalls(dungeonTemplate, map);
     carveDoors(dungeonTemplate, map)
     patchWalls(dungeonTemplate, map);
 
-    const { rooms, stageObjects } = generateRooms(dungeonTemplate);
+    const { rooms, stageObjects } = generateRooms(dungeonTemplate, map);
 
     return {
         map,
@@ -117,7 +117,7 @@ const carveDoorsRandom = (dungeonTemplate, map) => {
 
 // for each room, choose a template, and then run its generation things
 // apply offset to positions based on the rooms offset
-const generateRooms = (dungeonTemplate) => {
+const generateRooms = (dungeonTemplate, map) => {
 
     // get a room template for the left room
     const template = _.cloneDeep(require('../SectionTemplates/a.json'))
@@ -130,18 +130,29 @@ const generateRooms = (dungeonTemplate) => {
         });
     });
 
+    const xoffset = 1;
+    const yoffset = 9;
+
+    // change the real map to be affected by the template map
+    for(let y = 0; y < dungeonTemplate.crossSectionX - 1; y++) {
+        for(let x = 0; x < dungeonTemplate.crossSectionY - 1; x++) {
+            console.log(x, y);
+            map[x + 1][y + yoffset] = template.map[y][x]
+        }
+    }
+
     return {
         rooms: [],
         stageObjects: enemies,
     }
 }
 
-const generateMap = (width, height) => {
+const generateMap = (dungeonTemplate) => {
     let map = [];
 
-    for(let y = 0; y < width; y++) {
+    for(let y = 0; y < dungeonTemplate.mapWidth; y++) {
         let row = [];
-        for(let x = 0; x < height; x++) {
+        for(let x = 0; x < dungeonTemplate.mapHeight; x++) {
             row[x] = 0;
         }
         map.push(row);

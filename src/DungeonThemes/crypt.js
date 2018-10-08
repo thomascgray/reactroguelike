@@ -1,18 +1,18 @@
 export default {
     lookupTables: {
         floors: [
-            { id: 'a', weight: 80 },
-            { id: 'b', weight: 5 },
-            { id: 'c', weight: 5 },
-            { id: 'd', weight: 5 },
-            { id: 'e', weight: 5 },
+            { id: 'a', weight: 60 },
+            { id: 'b', weight: 10 },
+            { id: 'c', weight: 10 },
+            { id: 'd', weight: 10 },
+            { id: 'e', weight: 10 },
         ],
         walls: [
-            { id: 'a', weight: 80 },
-            { id: 'b', weight: 5 },
-            { id: 'c', weight: 5 },
-            { id: 'd', weight: 5 },
-            { id: 'cracked', weight: 5 },
+            { id: 'a', weight: 60 },
+            { id: 'b', weight: 10 },
+            { id: 'c', weight: 10 },
+            { id: 'd', weight: 10 },
+            { id: 'cracked', weight: 10 },
         ],
     },
     floors: {
