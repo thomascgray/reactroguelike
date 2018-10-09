@@ -136,7 +136,6 @@ const generateRooms = (dungeonTemplate, map) => {
     // change the real map to be affected by the template map
     for(let y = 0; y < dungeonTemplate.crossSectionX - 1; y++) {
         for(let x = 0; x < dungeonTemplate.crossSectionY - 1; x++) {
-            console.log(x, y);
             map[x + 1][y + yoffset] = template.map[y][x]
         }
     }

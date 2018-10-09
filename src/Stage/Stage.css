@@ -3,7 +3,7 @@
     width: 28vw; /*not 30 cus of scrollbar*/
     float: left;
 }
-.app {
+.stage {
     width: 70vw;
     height: 100vh; 
     overflow: hidden;

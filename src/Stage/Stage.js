@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css'
+import './Stage.css'
 import keyMap from '../keyMap'
 import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import PlayerRenderer from '../Player/PlayerRenderer'
@@ -35,7 +35,7 @@ window.player = new Player({
 
 window.stageObjects = dungeon.stageObjects;
 
-class App extends Component {
+class Stage extends Component {
     constructor (props) {
         super(props);
         this.state = {
@@ -70,24 +70,29 @@ class App extends Component {
         keyEvent = keyEvent || window.event;
         
         const pos = new HasPosition(window.player.HasPosition.getPosition())
+        let hasMoved = false;
         let newDirection;
 
         switch (keyEvent.keyCode) {
             case keyMap.LEFT:
                 pos.functions.moveLeft();
                 newDirection = 'left';
+                hasMoved = true;
                 break;
             case keyMap.RIGHT:
                 pos.functions.moveRight();
                 newDirection = 'right';
+                hasMoved = true;
                 break;
             case keyMap.UP:
                 pos.functions.moveUp();
                 newDirection = 'up';
+                hasMoved = true;
                 break;
             case keyMap.DOWN:
                 pos.functions.moveDown();
                 newDirection = 'down';
+                hasMoved = true;
                 break;
             case keyMap.INVENTORY:
                 const uiState = this.state.ui;
@@ -97,6 +102,8 @@ class App extends Component {
             default:
                 break;
         }
+
+        window.player.HasDirection.setDirection(newDirection);
 
         //todo was doing this to make animations work. it feels shit.
         // this.setState({
@@ -119,7 +126,6 @@ class App extends Component {
                 PlayerStageObjectCollision()
             } else if (!collidedStageObject) {
                 window.player.HasPosition.setPosition(pos.position);
-                window.player.HasDirection.setDirection(newDirection);
 
                 // todo this animation isnt good enough, means we need to regulate key inputs. think of something better
                 // const el = document.getElementById('player');
@@ -141,7 +147,7 @@ class App extends Component {
             <div className='log-wrapper'>
                 <Log messages={this.state.logMessages} />
             </div>
-            <div className='app'>
+            <div className='stage'>
                 {this.state.ui.inventory && <Inventory player={window.player} items={this.state.player.HasInventory}/>}
                 
                 <DungeonRenderer dungeon={dungeon} />
@@ -152,8 +158,8 @@ class App extends Component {
     }
 }
 
-App.proptypes = {
+Stage.proptypes = {
     
 }
 
-export default App;
+export default Stage;
