@@ -2,6 +2,36 @@
 
 its a roguelike made in react. incomprehensibly WIP
 
+# glossary
+
+
+### stage
+
+the main world that the game takes place in. tiles, a player, enemies, etc.
+
+### player
+
+the `stageObject` that moves when the user presses keys.
+
+### stageObject
+
+things that exist in the physical stage. they have positions, can be collidable, etc.
+
+### enemy
+
+something the player can attack. has AI. has HP, items, etc. is an effective subset of `stageObject`
+
+### stageProp
+
+physical things that exist in the world, but doesn't have any AI. is an effective subset of `stageObject`
+
+### loot
+
+chests, etc. things designed specifically for holding items.
+
+TODO can be removed, is actually just a `stageProp` under a different name
+
+
 
 # level design and consistency
 

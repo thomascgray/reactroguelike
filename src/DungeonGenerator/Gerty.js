@@ -1,8 +1,8 @@
 // generates the 4 by 4 style grid, also know as isaac clone, to be put all on one screen
 import _ from 'lodash';
 import Enemy from '../Enemy/Enemy'
-
-const Random = require("random-js")(); // uses the nativeMath engine
+import StageProp from '../StageProp/StageProp'
+const Random = require("random-js")();
 
 const generate = (dungeonTemplate) => {
     const mapWidth = (dungeonTemplate.sectionWidth * 2) + 3
@@ -26,7 +26,7 @@ const generate = (dungeonTemplate) => {
     return {
         map,
         theme: dungeonTemplate.theme,
-        rooms,
+        rooms, // TODO is this even a thing?
         stageObjects
     }
 }
@@ -115,14 +115,50 @@ const carveDoorsRandom = (dungeonTemplate, map) => {
     // }
 }
 
-// for each room, choose a template, and then run its generation things
-// apply offset to positions based on the rooms offset
 const generateRooms = (dungeonTemplate, map) => {
+    const roomsToBuild = ['topLeft', 'bottomLeft', 'topRight', 'bottomRight'];
+    let allStageObjects = [];
 
-    // get a room template for the left room
-    const template = _.cloneDeep(require('../SectionTemplates/a.json'))
+    roomsToBuild.forEach(roomToBuild => {
+        const { stageObjects } = generateRoomData(dungeonTemplate, map, roomToBuild);
+        allStageObjects = allStageObjects.concat(stageObjects);
+    });
+
+    console.log('allStageObjects', allStageObjects);
+    return {
+        rooms: [],
+        stageObjects: allStageObjects
+    }
+}
+
+const generateRoomData = (dungeonTemplate, map, roomDirection) => {
+    let xoffset;
+    let yoffset;
+    
+    switch (roomDirection) {
+        case 'topLeft':
+            xoffset = 1;
+            yoffset = 1;
+            break;
+        case 'topRight':
+            xoffset = 9;
+            yoffset = 1;
+            break;
+        case 'bottomLeft':
+            xoffset = 1;
+            yoffset = 9;
+            break;
+        case 'bottomRight':
+            xoffset = 9;
+            yoffset = 9;
+            break;
+    }
+
+    const roomTemplateId = Random.integer(1,2);
+    const template = _.cloneDeep(require(`../SectionTemplates/${roomTemplateId}.json`))
     const enemies = template.enemies.map(enemy => {
-        enemy.position.y += Number(dungeonTemplate.crossSectionY);
+        enemy.position.x += xoffset;
+        enemy.position.y += yoffset;
         return new Enemy({
             position: enemy.position,
             hp: 5, 
@@ -130,19 +166,25 @@ const generateRooms = (dungeonTemplate, map) => {
         });
     });
 
-    const xoffset = 1;
-    const yoffset = 9;
+    const stageProps = template.stageProps.map(stageProp => {
+        stageProp.position.x += xoffset;
+        stageProp.position.y += yoffset;
+        return new StageProp({
+            position: stageProp.position,
+            hp: 5, 
+            archetype: stageProp.archetype
+        });
+    });
 
     // change the real map to be affected by the template map
     for(let y = 0; y < dungeonTemplate.crossSectionX - 1; y++) {
         for(let x = 0; x < dungeonTemplate.crossSectionY - 1; x++) {
-            map[x + 1][y + yoffset] = template.map[y][x]
+            map[x + xoffset][y + yoffset] = template.map[y][x]
         }
     }
 
     return {
-        rooms: [],
-        stageObjects: enemies,
+        stageObjects: [...enemies, ...stageProps],
     }
 }
 
