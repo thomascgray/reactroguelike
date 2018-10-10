@@ -1,5 +1,12 @@
 {
     "stageProps": [
+        {
+            "archetype": "warriorStatue",
+            "position": {
+                "x": 2,
+                "y": 6
+            }
+        }
     ],
     "enemies": [
         {

@@ -1,0 +1,56 @@
+{
+    "stageProps": [
+        {
+            "archetype": "warriorStatue",
+            "position": {
+                "x": 0,
+                "y": 1
+            }
+        },
+        {
+            "archetype": "warriorStatue",
+            "position": {
+                "x": 0,
+                "y": 3
+            }
+        },
+        {
+            "archetype": "warriorStatue",
+            "position": {
+                "x": 0,
+                "y": 5
+            }
+        },
+        {
+            "archetype": "warriorStatue",
+            "position": {
+                "x": 6,
+                "y": 1
+            }
+        },
+        {
+            "archetype": "warriorStatue",
+            "position": {
+                "x": 6,
+                "y": 3
+            }
+        },
+        {
+            "archetype": "warriorStatue",
+            "position": {
+                "x": 6,
+                "y": 5
+            }
+        }
+    ],
+    "enemies": [],
+    "map": [
+        [0,0,0,0,0,0,0],
+        [3,0,0,0,0,0,3],
+        [0,0,0,0,0,0,0],
+        [3,0,0,0,0,0,3],
+        [0,0,0,0,0,0,0],
+        [3,0,0,0,0,0,3],
+        [0,0,0,0,0,0,0]
+    ]
+}

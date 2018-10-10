@@ -13,12 +13,11 @@ class StageProp extends Component {
         //todo maybe all images should be loaded from some mega class?
         const images = {
             woodChair: require('../Assets/td_world/td_world_chair.png'),
+            woodThrone: require('../Assets/td_world/td_world_throne_wood.png'),
+            warriorStatue: require('../Assets/td_world/td_world_statue_warrior.png'),
         }
 
-        switch (this.props.stageProp.HasArchetype.archetype) {
-            case 'woodChair':
-                return images.woodChair;
-        }
+        return images[this.props.stageProp.HasArchetype.archetype];
     }
 }
 

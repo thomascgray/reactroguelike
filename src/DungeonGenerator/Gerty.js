@@ -154,7 +154,7 @@ const generateRoomData = (dungeonTemplate, map, roomDirection) => {
             break;
     }
 
-    const roomTemplateId = Random.integer(1,2);
+    const roomTemplateId = Random.integer(1, 3);
     const template = _.cloneDeep(require(`../SectionTemplates/${roomTemplateId}.json`))
     const enemies = template.enemies.map(enemy => {
         enemy.position.x += xoffset;

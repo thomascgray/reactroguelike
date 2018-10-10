@@ -1,12 +1,13 @@
 import React from 'react';
 import CharacterSelect from './CharacterSelect'
+import Stage from '../Stage/Stage'
 
 class Main extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
             isInCharacterSelect: false,
-            
+            isInStage: false,
         }
     }
 
@@ -18,11 +19,15 @@ class Main extends React.Component {
 
     onSelectArchetype (archetype) {
         console.log('selected', archetype);
+        this.setState({
+            isInStage: true
+        })
     }
 
     render() {
         return (
             <div>
+                {this.state.isInStage && <Stage />}
                 <h1>The Real Treasure Was The Bullshit We Did Along The Way</h1>
 
                 <hr />
