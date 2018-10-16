@@ -5,8 +5,12 @@ import Stage from '../Stage/Stage'
 class Main extends React.Component {
     constructor (props) {
         super(props);
+        const urlParams = new URLSearchParams(window.location.search);
+        let isDebug = urlParams.get('debug');
+        
         this.state = {
-            isInCharacterSelect: false,
+            playerArchetype: '', 
+            isInCharacterSelect: isDebug ? true : false,
             isInStage: false,
         }
     }
@@ -20,14 +24,15 @@ class Main extends React.Component {
     onSelectArchetype (archetype) {
         console.log('selected', archetype);
         this.setState({
-            isInStage: true
+            isInStage: true,
+            playerArchetype: archetype,
         })
     }
 
     render() {
         return (
             <div>
-                {this.state.isInStage && <Stage />}
+                {this.state.isInStage && <Stage playerArchetype={this.state.playerArchetype} />}
                 <h1>The Real Treasure Was The Bullshit We Did Along The Way</h1>
 
                 <hr />

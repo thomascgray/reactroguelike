@@ -3,18 +3,20 @@ import HasHp from '../Behaviours/HasHp'
 import HasPosition from '../Behaviours/HasPosition'
 import HasId from '../Behaviours/HasId'
 import HasDirection from '../Behaviours/HasDirection'
+import HasArchetype from '../Behaviours/HasArchetype'
 
 import _ from 'lodash';
 import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
 
 class PlayerEntity {
-  constructor(position, hp = 10) {
+  constructor({ position, hp = 10, archetype }) {
     this.behaviours = [
       new HasInventory(),
       new HasHp(hp),
       new HasPosition(position),
       new HasId(),
-      new HasDirection()
+      new HasDirection(),
+      new HasArchetype(archetype),
     ]
 
     attachFunctions(this, this.behaviours)

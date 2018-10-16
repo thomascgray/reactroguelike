@@ -1,0 +1,12 @@
+.class-card {
+    border: 1px solid black;
+    margin: 1em;
+    padding: 1em;
+    width: 100px;
+    text-align: center;
+    float: left;
+}
+.class-card button {
+    margin-top: 1em;
+    width: 100%;
+}

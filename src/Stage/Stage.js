@@ -28,16 +28,21 @@ const dungeon = generate({
     doorPlacement: 'random',
 });
 
-window.player = new Player({
-    x: 4,
-    y: 5
-})
-
 window.stageObjects = dungeon.stageObjects;
 
 class Stage extends Component {
     constructor (props) {
         super(props);
+
+        
+        window.player = new Player({
+            position: {
+                x: 4,
+                y: 5
+            },
+            archetype: this.props.playerArchetype
+        });
+
         this.state = {
             isKeyPress: false,
             player: window.player.toState(),
