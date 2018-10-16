@@ -1,9 +1,13 @@
 import _ from 'lodash'
 import { LogMessage } from '../Log/LogActions'
-
-export default (enemies, player, enemy) => {
+import PlayerEnemyCollision from './PlayerEnemyCollision'
+export default (player, stageObject) => {
+    if (stageObject.constructor.name === 'EnemyEntity') {
+        return PlayerEnemyCollision(player, stageObject)
+    }
 
     LogMessage(`you hit something!`)
+
 
     // get active weapon from player, etc.
     // const activeMeleeWeapon = player.getActiveMeleeWeapon();

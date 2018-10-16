@@ -14,6 +14,7 @@ import { generate } from '../DungeonGenerator/Gerty'
 import _ from 'lodash';
 
 import Inventory from '../UI/Inventory'
+import CharacterSheet from '../UI/CharacterSheet'
 
 import Log from '../Log/Log'
 
@@ -48,7 +49,8 @@ class Stage extends Component {
             stageObjects: window.stageObjects.map(o => o.toState()),
             logMessages: [],
             ui: {
-                inventory: false
+                inventory: false,
+                characterSheet: false
             }
         }
 
@@ -76,6 +78,7 @@ class Stage extends Component {
         keyEvent = keyEvent || window.event;
         
         const pos = new HasPosition(window.player.HasPosition.getPosition())
+        const uiState = this.state.ui;
         let hasMoved = false;
         let newDirection;
 
@@ -101,8 +104,11 @@ class Stage extends Component {
                 hasMoved = true;
                 break;
             case keyMap.INVENTORY:
-                const uiState = this.state.ui;
                 uiState.inventory = !uiState.inventory;
+                this.setState({ ui: uiState })
+                break;
+            case keyMap.CHARACTER:
+                uiState.characterSheet = !uiState.characterSheet;
                 this.setState({ ui: uiState })
                 break;
             default:
@@ -120,7 +126,7 @@ class Stage extends Component {
             const hitStageObject = window.stageObjects.find(obj => _.isEqual(obj.HasPosition.getPosition(), pos.position));
         
             if (hitStageObject) {
-                PlayerStageObjectCollision()
+                PlayerStageObjectCollision(window.player, hitStageObject)
             }
 
             // if theres no stage object, OR
@@ -136,13 +142,20 @@ class Stage extends Component {
         });
     }
 
+    closeInventory () {
+        const uiState = this.state.ui;
+        uiState.inventory = false;
+        this.setState({ ui: uiState })
+    }
+
     render() {
         return <div>
             <div className='log-wrapper'>
                 <Log messages={this.state.logMessages} />
             </div>
-            <div className='stage'>
-                {this.state.ui.inventory && <Inventory player={window.player} items={this.state.player.HasInventory}/>}
+            <div className='stage' id='stage'>
+                {this.state.ui.characterSheet && <CharacterSheet player={window.player} items={this.state.player.HasInventory}/>}
+                {this.state.ui.inventory && <Inventory player={window.player} items={this.state.player.HasInventory} closeInventory = {() => this.closeInventory()}/>}
                 
                 <DungeonRenderer dungeon={dungeon} />
                 <PlayerRenderer player={this.state.player} />

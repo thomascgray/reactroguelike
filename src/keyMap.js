@@ -6,6 +6,7 @@ const map = {
     INTERACT: 69, // e
     SPACE: 32, // space bar
     INVENTORY: 73, // i
+    CHARACTER: 67, // c
 }
 
 export default map

@@ -4,6 +4,7 @@ import HasPosition from '../Behaviours/HasPosition'
 import HasId from '../Behaviours/HasId'
 import HasDirection from '../Behaviours/HasDirection'
 import HasArchetype from '../Behaviours/HasArchetype'
+import HasBodyParts from '../Behaviours/HasBodyParts'
 
 import _ from 'lodash';
 import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
@@ -17,6 +18,7 @@ class PlayerEntity {
       new HasId(),
       new HasDirection(),
       new HasArchetype(archetype),
+      new HasBodyParts('humanoid')
     ]
 
     attachFunctions(this, this.behaviours)
@@ -31,17 +33,20 @@ class PlayerEntity {
   }
 
   getActiveMeleeWeapon () {
-    let activeMeleeWeapon = _.find(this.HasInventory.getItems(), item => item.isActive)
+    // TODO based on what handed you are and whats equipped, hit them with whats in your hand
+    return this.HasBodyParts.getBodyParts()['right hand'].isHolding;
 
-    if (!activeMeleeWeapon) {
-      activeMeleeWeapon = _.find(this.HasInventory.getItems(), item => item.type === 'melee')
-    }
+    // let activeMeleeWeapon = _.find(this.HasInventory.getItems(), item => item.isActive)
 
-    if (!activeMeleeWeapon) {
-      activeMeleeWeapon = this.getUnarmedMeleeWeapon();
-    }
+    // if (!activeMeleeWeapon) {
+    //   activeMeleeWeapon = _.find(this.HasInventory.getItems(), item => item.type === 'melee')
+    // }
 
-    return activeMeleeWeapon;
+    // if (!activeMeleeWeapon) {
+    //   activeMeleeWeapon = this.getUnarmedMeleeWeapon();
+    // }
+
+    // return activeMeleeWeapon;
   }
 
   setActiveMeleeWeapon (itemId) {

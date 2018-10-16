@@ -1,17 +1,14 @@
-const BaseItem = (name, type) => {
+const BaseItem = ({ name, type, damage }) => {
     return {
         name,
-        type
+        type,
+        damage
     }
 }
 
-const Weapon = (name) => {
+const Weapon = ({ name, damage }) => {
     const type = 'weapon';
-
-    return {
-        name,
-        type
-    }
+    return BaseItem({ name, type, damage })
 }
 
 export {
