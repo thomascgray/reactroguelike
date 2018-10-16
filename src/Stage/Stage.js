@@ -105,35 +105,21 @@ class Stage extends Component {
 
         window.player.HasDirection.setDirection(newDirection);
 
-        //todo was doing this to make animations work. it feels shit.
-        // this.setState({
-        //     isKeyPress: true
-        // }, () => {
-        //     setTimeout(() => {
-        //         this.setState({
-        //             isKeyPress: false
-        //         })
-        //     }, 300)
-        // });
-
         if (dungeon.map[pos.position.x][pos.position.y] === 1 || dungeon.map[pos.position.x][pos.position.y] === 2) { // todo better way of knowing whats a wall
             // TODO IMRPOVE THIS
             // anything non 0 is a thing to hit
         } else {
-            const collidedStageObject = window.stageObjects.find(obj => _.isEqual(obj.HasPosition.getPosition(), pos.position) && obj.IsCollidable.getIsCollidable());
-
-            if (collidedStageObject) {
+            const hitStageObject = window.stageObjects.find(obj => _.isEqual(obj.HasPosition.getPosition(), pos.position));
+        
+            if (hitStageObject) {
                 PlayerStageObjectCollision()
-            } else if (!collidedStageObject) {
-                window.player.HasPosition.setPosition(pos.position);
+            }
 
-                // todo this animation isnt good enough, means we need to regulate key inputs. think of something better
-                // const el = document.getElementById('player');
-                // el.classList.remove('bounce');
-                // el.classList.add('bounce');
-                // setTimeout(() => {
-                //     el.classList.remove('bounce');
-                // }, 300)
+            // if theres no stage object, OR
+            // there is, but its collidable is false
+            // we can move there
+            if (!hitStageObject || (hitStageObject && hitStageObject.IsCollidable.getIsCollidable() === false)) {
+                window.player.HasPosition.setPosition(pos.position);
             }
         }
 
