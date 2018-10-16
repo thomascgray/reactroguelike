@@ -32,7 +32,11 @@ class DungeonRenderer extends Component {
     }
 
     render () {
-        let theme = require(`../DungeonThemes/${this.props.dungeon.theme}`);
+        let themeName = this.props.dungeon.theme;
+        if (!themeName) {
+            themeName = 'crypt';
+        }
+        let theme = require(`../DungeonThemes/${themeName}`);
 
         return <div className='dungeon'>
             {this.props.dungeon.map.map((row, rowIndex) => {
