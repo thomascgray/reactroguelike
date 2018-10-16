@@ -124,7 +124,6 @@ const generateRooms = (dungeonTemplate, map) => {
         allStageObjects = allStageObjects.concat(stageObjects);
     });
 
-    console.log('allStageObjects', allStageObjects);
     return {
         rooms: [],
         stageObjects: allStageObjects

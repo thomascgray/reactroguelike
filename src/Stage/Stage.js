@@ -6,7 +6,7 @@ import PlayerRenderer from '../Player/PlayerRenderer'
 import Player from '../Player/Player'
 import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
 import { LogMessage } from '../Log/LogActions'
-
+import InitialPlayerSetup from '../InitialPlayerSetup'
 import PlayerStageObjectCollision from '../Resolvers/PlayerStageObjectCollision'
 import PF from 'pathfinding';
 import HasPosition from '../Behaviours/HasPosition'
@@ -33,7 +33,6 @@ window.stageObjects = dungeon.stageObjects;
 class Stage extends Component {
     constructor (props) {
         super(props);
-
         
         window.player = new Player({
             position: {
@@ -52,6 +51,8 @@ class Stage extends Component {
                 inventory: false
             }
         }
+
+        InitialPlayerSetup(window.player);
     }
 
     componentDidMount () {
@@ -108,7 +109,9 @@ class Stage extends Component {
                 break;
         }
 
-        window.player.HasDirection.setDirection(newDirection);
+        if (hasMoved) {
+            window.player.HasDirection.setDirection(newDirection);
+        }
 
         if (dungeon.map[pos.position.x][pos.position.y] === 1 || dungeon.map[pos.position.x][pos.position.y] === 2) { // todo better way of knowing whats a wall
             // TODO IMRPOVE THIS

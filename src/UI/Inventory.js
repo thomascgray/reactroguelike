@@ -1,23 +1,20 @@
 import React, { Component } from 'react';
+import './Inventory.css'
 
 class Inventory extends Component {
-
     makeActive (i) {
         this.props.player.setActiveMeleeWeapon(i.id)
     }
 
     render() {
         return (
-            <div>
+            <div className='inventory'>
                 <h3>Inventory</h3>
-                <ul>
-                    {this.props.items.map(i => {
-                        return <li key={i.id}>
-                            {i.name}
-                            {!i.isActive && <button onClick={e => this.makeActive(i)}>Make active</button>}
-                        </li>
-                    })}
-                </ul>
+                {this.props.items.map(i => {
+                    return <div key={i.id}>
+                        <strong>{i.name}</strong> ({i.type})
+                    </div>
+                })}
             </div>
         );
     }

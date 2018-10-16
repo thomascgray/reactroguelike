@@ -1,0 +1,9 @@
+.inventory {
+    z-index:99999;
+    position: fixed;
+    background:white;
+    color: black;
+    border:5px solid black;
+    width: 500px;
+    text-align:center;
+}
