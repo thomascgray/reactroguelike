@@ -5,12 +5,13 @@ import HasId from '../Behaviours/HasId'
 import HasDirection from '../Behaviours/HasDirection'
 import HasArchetype from '../Behaviours/HasArchetype'
 import HasBodyParts from '../Behaviours/HasBodyParts'
+import HasPowers from '../Behaviours/HasPowers'
 
 import _ from 'lodash';
 import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
 
 class PlayerEntity {
-  constructor({ position, hp = 10, archetype }) {
+  constructor({ position, hp = 10, archetype, powers = [] }) {
     this.behaviours = [
       new HasInventory(),
       new HasHp(hp),
@@ -18,10 +19,13 @@ class PlayerEntity {
       new HasId(),
       new HasDirection(),
       new HasArchetype(archetype),
-      new HasBodyParts('humanoid')
+      new HasBodyParts('humanoid'),
+      new HasPowers(powers),
     ]
 
     attachFunctions(this, this.behaviours)
+
+    this.dominantLimb = 'right';
   }
 
   getUnarmedMeleeWeapon () {

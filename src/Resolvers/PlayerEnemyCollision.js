@@ -3,15 +3,18 @@ import { LogMessage } from '../Log/LogActions'
 
 export default (player, enemy) => {
     // get active weapon from player, etc.
-    const activeMeleeWeapon = player.getActiveMeleeWeapon();
-    console.log('activeMeleeWeapon', activeMeleeWeapon);
-    let damageDone = activeMeleeWeapon ? activeMeleeWeapon.damage : 1;
+    let activeMeleeWeapon = player.getActiveMeleeWeapon();
+
+    if (!activeMeleeWeapon) {
+        activeMeleeWeapon = { // todo get this from somewhere
+            name: 'fists',
+            damage: 1
+        }
+    }
+
+    let damageDone = activeMeleeWeapon.damage // todo this will eventually be a dice expression parser
 
     enemy.HasHp.removeHp(damageDone);
-    LogMessage(`you hurt the enemy for ${damageDone} with ${activeMeleeWeapon.name}`)
+    LogMessage(`you hurt the enemy for ${damageDone} with your ${activeMeleeWeapon.name}`)
 
-    // if (enemy.HasHp.getHp() <= 0) {
-    //     _.remove(enemies, e => e.HasId.getId() === enemy.HasId.getId());
-    //     LogMessage(`you killed the enemy!`)
-    // }
 }
