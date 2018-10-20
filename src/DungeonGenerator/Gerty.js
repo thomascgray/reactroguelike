@@ -19,9 +19,10 @@ const generate = (dungeonTemplate) => {
     fillCrossSectionWalls(dungeonTemplate, map);
     fillBoundaryWalls(dungeonTemplate, map);
     carveDoors(dungeonTemplate, map)
-    patchWalls(dungeonTemplate, map);
-
+    
     const { rooms, stageObjects } = generateRooms(dungeonTemplate, map);
+
+    patchWalls(dungeonTemplate, map);
 
     return {
         map,
@@ -63,59 +64,52 @@ const patchWalls = (dungeonTemplate, map) => {
             }
         }
     }
-
 }
 
 const carveDoors = (dungeonTemplate, map) => {
-    switch (dungeonTemplate.doorPlacement) {
-        case 'center':
-            return carveDoorsRandom(dungeonTemplate, map);
-        case 'random':
-            return carveDoorsRandom(dungeonTemplate, map);
-    }
-}
-
-const carveDoorsRandom = (dungeonTemplate, map) => {
-    
-    //top door
-    if (dungeonTemplate.doors.north) {
-        const startTile = Random.integer(2, dungeonTemplate.sectionHeight - 1);
-        const alt = Random.bool();
-        map[dungeonTemplate.crossSectionX][startTile] = 0
-        if (alt) {
-            map[dungeonTemplate.crossSectionX][startTile - 1] = 0
-        } else {
-            map[dungeonTemplate.crossSectionX][startTile + 1] = 0
-        }
+    // top
+    let startTile = Random.integer(2, dungeonTemplate.sectionHeight - 1);
+    let alt = Random.bool();
+    map[dungeonTemplate.crossSectionX][startTile] = 0
+    if (alt) {
+        map[dungeonTemplate.crossSectionX][startTile - 1] = 0
+    } else {
+        map[dungeonTemplate.crossSectionX][startTile + 1] = 0
     }
 
-    // left door
-    if (dungeonTemplate.doors.west) {
-        const startTile = Random.integer(2, dungeonTemplate.sectionWidth - 1);
-        const alt = Random.bool();
-        map[startTile][dungeonTemplate.crossSectionY] = 0
-        if (alt) {
-            map[startTile - 1][dungeonTemplate.crossSectionY] = 0
-        } else {
-            map[startTile + 1][dungeonTemplate.crossSectionY] = 0
-        }
+    //bottom
+    startTile = Random.integer(11, dungeonTemplate.sectionHeight - 1);
+    alt = Random.bool();
+    map[dungeonTemplate.crossSectionX][startTile] = 0
+    if (alt) {
+        map[dungeonTemplate.crossSectionX][startTile - 1] = 0
+    } else {
+        map[dungeonTemplate.crossSectionX][startTile + 1] = 0
     }
 
-    // right door
-    //todo finish this
-    // if (dungeonTemplate.doors.west) {
-    //     const startTile = Random.integer(2, dungeonTemplate.sectionWidth - 1);
-    //     const alt = Random.bool();
-    //     map[startTile][dungeonTemplate.crossSectionY] = 0
-    //     if (alt) {
-    //         map[startTile - 1][dungeonTemplate.crossSectionY] = 0
-    //     } else {
-    //         map[startTile + 1][dungeonTemplate.crossSectionY] = 0
-    //     }
-    // }
+    //left
+    startTile = Random.integer(2, dungeonTemplate.sectionWidth - 1);
+    alt = Random.bool();
+    map[startTile][dungeonTemplate.crossSectionY] = 0
+    if (alt) {
+        map[startTile - 1][dungeonTemplate.crossSectionY] = 0
+    } else {
+        map[startTile + 1][dungeonTemplate.crossSectionY] = 0
+    }
+
+    //right
+    startTile = Random.integer(11, dungeonTemplate.sectionWidth - 1);
+    alt = Random.bool();
+    map[startTile][dungeonTemplate.crossSectionY] = 0
+    if (alt) {
+        map[startTile - 1][dungeonTemplate.crossSectionY] = 0
+    } else {
+        map[startTile + 1][dungeonTemplate.crossSectionY] = 0
+    }
 }
 
 const generateRooms = (dungeonTemplate, map) => {
+    
     const roomsToBuild = ['topLeft', 'bottomLeft', 'topRight', 'bottomRight'];
     let allStageObjects = [];
 
@@ -153,8 +147,16 @@ const generateRoomData = (dungeonTemplate, map, roomDirection) => {
             break;
     }
 
-    const roomTemplateId = Random.integer(1, 3);
+    const roomTemplateId = Random.integer(1, 4);
     const template = _.cloneDeep(require(`../SectionTemplates/${roomTemplateId}.json`))
+
+    if (!template.enemies) {
+        template.enemies = []
+    }
+    if (!template.stageProps) {
+        template.stageProps = []
+    }
+
     const enemies = template.enemies.map(enemy => {
         enemy.position.x += xoffset;
         enemy.position.y += yoffset;
@@ -176,6 +178,7 @@ const generateRoomData = (dungeonTemplate, map, roomDirection) => {
     });
 
     // change the real map to be affected by the template map
+    // but find anything that isnt a number and match it to the stage props or enemies
     for(let y = 0; y < dungeonTemplate.crossSectionX - 1; y++) {
         for(let x = 0; x < dungeonTemplate.crossSectionY - 1; x++) {
             map[x + xoffset][y + yoffset] = template.map[y][x]

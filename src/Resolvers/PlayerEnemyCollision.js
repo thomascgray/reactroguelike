@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { LogMessage } from '../Log/LogActions'
+import EnemyDeath from './EnemyDeath'
 
 export default (player, enemy) => {
     // get active weapon from player, etc.
@@ -17,4 +18,10 @@ export default (player, enemy) => {
     enemy.HasHp.removeHp(damageDone);
     LogMessage(`you hurt the enemy for ${damageDone} with your ${activeMeleeWeapon.name}`)
 
+    console.log('enemy.HasHp.getHp()', enemy.HasHp.getHp());
+
+    if (enemy.HasHp.getHp() <= 0) {
+        // enemy has died
+        EnemyDeath(enemy);
+    }
 }

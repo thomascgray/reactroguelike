@@ -20,13 +20,8 @@ import Log from '../Log/Log'
 
 const dungeon = generate({
     sectionWidth: 7,
-    sectionHeight: 7,
+    sectionHeight:7,
     theme: 'crypt',
-    doors: {
-        north: true,
-        west: true,
-    },
-    doorPlacement: 'random',
 });
 
 window.stageObjects = dungeon.stageObjects;
@@ -138,7 +133,8 @@ class Stage extends Component {
         }
 
         this.setState({
-            player: window.player.toState()
+            player: window.player.toState(),
+            stageObjects: window.stageObjects.map(o => o.toState()),
         });
     }
 

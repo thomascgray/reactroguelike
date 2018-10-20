@@ -15,6 +15,7 @@ class StageProp extends Component {
             woodChair: require('../Assets/td_world/td_world_chair.png'),
             woodThrone: require('../Assets/td_world/td_world_throne_wood.png'),
             warriorStatue: require('../Assets/td_world/td_world_statue_warrior.png'),
+            graveBroken: require('../Assets/td_world/td_world_tombstone_broken.png')
         }
 
         return images[this.props.stageProp.HasArchetype.archetype];
