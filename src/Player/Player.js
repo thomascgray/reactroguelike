@@ -10,7 +10,18 @@ import HasPowers from '../Behaviours/HasPowers'
 import _ from 'lodash';
 import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
 
-class PlayerEntity {
+/**
+ * @class Player
+ * @property HasInventory
+ * @property HasHp
+ * @property HasPosition
+ * @property HasId
+ * @property HasDirection
+ * @property HasArchetype
+ * @property HasBodyParts
+ * @property HasPowers
+ */
+class Player {
   constructor({ position, hp = 10, archetype, powers = [] }) {
     this.behaviours = [
       new HasInventory(),
@@ -39,18 +50,6 @@ class PlayerEntity {
   getActiveMeleeWeapon () {
     // TODO based on what handed you are and whats equipped, hit them with whats in your hand
     return this.HasBodyParts.getBodyParts()['right hand'].isHolding;
-
-    // let activeMeleeWeapon = _.find(this.HasInventory.getItems(), item => item.isActive)
-
-    // if (!activeMeleeWeapon) {
-    //   activeMeleeWeapon = _.find(this.HasInventory.getItems(), item => item.type === 'melee')
-    // }
-
-    // if (!activeMeleeWeapon) {
-    //   activeMeleeWeapon = this.getUnarmedMeleeWeapon();
-    // }
-
-    // return activeMeleeWeapon;
   }
 
   setActiveMeleeWeapon (itemId) {
@@ -70,4 +69,4 @@ class PlayerEntity {
   }
 }
 
-export default PlayerEntity;
+export default Player;

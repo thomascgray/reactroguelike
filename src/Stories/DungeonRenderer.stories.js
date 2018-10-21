@@ -60,28 +60,4 @@ stories
             <RefreshButton />
         </div>
     })
-    .add('gerty and mouse animations', () => {
-        const dungeonTemplate = {
-            sectionWidth: number('section width', 7),
-            sectionHeight: number('section height', 7),
-            theme: select('theme', ['crypt', 'dungeon'], 'crypt'),
-            doors: {
-                north: true,
-                east: true,
-                south: true,
-                west: true,
-            },
-            doorPlacement: select('door placement', [
-                'center',
-                'random',
-            ], 'random')
-        }
-        
-        const dungeon = gertyGenerate(dungeonTemplate);
-
-        return <div>
-            <DungeonRenderer dungeon={dungeon} />
-            <RefreshButton />
-        </div>
-    })
 

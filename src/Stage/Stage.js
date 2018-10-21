@@ -39,14 +39,14 @@ class Stage extends Component {
         });
 
         this.state = {
-            isKeyPress: false,
             player: window.player.toState(),
             stageObjects: window.stageObjects.map(o => o.toState()),
             logMessages: [],
             ui: {
                 inventory: false,
                 characterSheet: false
-            }
+            },
+            isPlayerPreppingPower: false,
         }
 
         InitialPlayerSetup(window.player);
@@ -67,15 +67,27 @@ class Stage extends Component {
     }
 
     handleKeyDown(keyEvent) {
-        if (this.state.isKeyPress) {
-            return false;
-        }
         keyEvent = keyEvent || window.event;
         
+
+        if (this.state.isPlayerPreppingPower) {
+
+            if (keyEvent.keyCode === keyMap.ESCAPE) {
+                this.setState({
+                    isPlayerPreppingPower: false,
+                });
+            }
+            return;
+        }
+
+
+
         const pos = new HasPosition(window.player.HasPosition.getPosition())
         const uiState = this.state.ui;
         let hasMoved = false;
         let newDirection;
+
+        console.log('keyEvent.keyCode', keyEvent.keyCode);
 
         switch (keyEvent.keyCode) {
             case keyMap.LEFT:
@@ -102,9 +114,10 @@ class Stage extends Component {
                 uiState.inventory = !uiState.inventory;
                 this.setState({ ui: uiState })
                 break;
-            case keyMap.CHARACTER:
-                uiState.characterSheet = !uiState.characterSheet;
-                this.setState({ ui: uiState })
+            case keyMap.NUMBER_ONE:
+                this.setState({
+                    isPlayerPreppingPower: true,
+                })
                 break;
             default:
                 break;
@@ -146,11 +159,17 @@ class Stage extends Component {
 
     render() {
         return <div>
-            <div className='log-wrapper'>
-                <Log messages={this.state.logMessages} />
+            <div className='ui-panel'>
+                <div className='character-sheet'>
+                    <p>{window.player.HasArchetype.getArchetype()}</p>
+                    <CharacterSheet player={window.player} items={this.state.player.HasInventory}/>
+                </div>
+                <div className='log-wrapper'>
+                    <Log messages={this.state.logMessages} />
+                </div>
             </div>
+            
             <div className='stage' id='stage'>
-                {this.state.ui.characterSheet && <CharacterSheet player={window.player} items={this.state.player.HasInventory}/>}
                 {this.state.ui.inventory && <Inventory player={window.player} items={this.state.player.HasInventory} closeInventory = {() => this.closeInventory()}/>}
                 
                 <DungeonRenderer dungeon={dungeon} />

@@ -11,8 +11,7 @@ class CharacterSheet extends Component {
         const bodyParts = this.props.player.HasBodyParts.getBodyParts();
 
         return (
-            <div className='ui-widget'>
-                <h3>Character</h3>
+            <div>
                 {Object.keys(bodyParts).map(bodyPartName => {
                     return <div>
                         <strong>{bodyPartName}</strong>

@@ -21,7 +21,7 @@ class HasId {
     }
 
     toState() {
-        return this.id;
+        return { id: this.id };
     }
 }
 

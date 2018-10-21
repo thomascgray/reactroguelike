@@ -20,14 +20,13 @@ const generate = (dungeonTemplate) => {
     fillBoundaryWalls(dungeonTemplate, map);
     carveDoors(dungeonTemplate, map)
     
-    const { rooms, stageObjects } = generateRooms(dungeonTemplate, map);
+    const { stageObjects } = generateRooms(dungeonTemplate, map);
 
     patchWalls(dungeonTemplate, map);
 
     return {
         map,
         theme: dungeonTemplate.theme,
-        rooms, // TODO is this even a thing?
         stageObjects
     }
 }
