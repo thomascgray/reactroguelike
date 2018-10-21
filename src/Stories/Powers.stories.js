@@ -5,6 +5,9 @@ import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import { withKnobs, text, boolean, number, select } from '@storybook/addon-knobs';
 import { RefreshButton } from './StoryUtils'
 import PowersPrepAreaOfEffectRenderer from '../Powers/PowersPrepAreaOfEffectRenderer'
+import Player from '../Player/Player'
+
+import { preparePower } from '../Utils/Powers'
 
 const stories = storiesOf('Powers', module);
 
@@ -26,18 +29,21 @@ stories
             type: 'areaOfEffect',
             range: number('range', 2),
             shape: select('shape', ['square', 'circle'], 'square'),
-            realSource: {
-                x: number('real source x', 3),
-                y: number('real source y', 3),
-                ignoreCentre: boolean('ignore centre', true),
-            }
+            source: 'player',
         }
+
+        window.player = new Player({
+            position: {
+                x: number('player position x', 2),
+                y: number('player position y', 2)
+            },
+        });
         
         return <div>
             <DungeonRenderer dungeon={{
                 map
             }} />
-            <PowersPrepAreaOfEffectRenderer power={power} />
+            <PowersPrepAreaOfEffectRenderer power={preparePower(power)} />
             <RefreshButton />
         </div>
     })

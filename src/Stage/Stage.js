@@ -7,7 +7,6 @@ import Player from '../Player/Player'
 import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
 import { LogMessage } from '../Log/LogActions'
 import InitialPlayerSetup from '../InitialPlayerSetup'
-import PlayerStageObjectCollision from '../Resolvers/PlayerStageObjectCollision'
 import PF from 'pathfinding';
 import HasPosition from '../Behaviours/HasPosition'
 import { generate } from '../DungeonGenerator/Gerty'
@@ -15,8 +14,13 @@ import _ from 'lodash';
 
 import Inventory from '../UI/Inventory'
 import CharacterSheet from '../UI/CharacterSheet'
-
+import { preparePower } from '../Utils/Powers'
 import Log from '../Log/Log'
+
+import PowersPrepAreaOfEffectRenderer from '../Powers/PowersPrepRenderer'
+
+import PlayerStageObjectCollision from '../Resolvers/PlayerStageObjectCollision'
+import CastPower from '../Resolvers/CastPower'
 
 const dungeon = generate({
     sectionWidth: 7,
@@ -69,27 +73,23 @@ class Stage extends Component {
     handleKeyDown(keyEvent) {
         keyEvent = keyEvent || window.event;
         
-
-        if (this.state.isPlayerPreppingPower) {
-
-            if (keyEvent.keyCode === keyMap.ESCAPE) {
-                this.setState({
-                    isPlayerPreppingPower: false,
-                });
-            }
-            return;
-        }
-
-
-
         const pos = new HasPosition(window.player.HasPosition.getPosition())
         const uiState = this.state.ui;
         let hasMoved = false;
         let newDirection;
 
-        console.log('keyEvent.keyCode', keyEvent.keyCode);
-
         switch (keyEvent.keyCode) {
+            case keyMap.INTERACT:
+            if (this.state.isPlayerPreppingPower) {
+                // cast the spell thats prepped
+                CastPower(this.state.preppedPower);
+                this.setState({
+                    isPlayerPreppingPower: false,
+                    preppedPower: null,
+                })
+            }
+            keyEvent.stopPropagation();
+            break;
             case keyMap.LEFT:
                 pos.functions.moveLeft();
                 newDirection = 'left';
@@ -114,9 +114,15 @@ class Stage extends Component {
                 uiState.inventory = !uiState.inventory;
                 this.setState({ ui: uiState })
                 break;
+            case keyMap.ESCAPE:
+                this.setState({
+                    isPlayerPreppingPower: false,
+                });
+                break;
             case keyMap.NUMBER_ONE:
                 this.setState({
                     isPlayerPreppingPower: true,
+                    preppedPower: preparePower(window.player.HasPowers.getPowers()[0])
                 })
                 break;
             default:
@@ -173,7 +179,12 @@ class Stage extends Component {
                 {this.state.ui.inventory && <Inventory player={window.player} items={this.state.player.HasInventory} closeInventory = {() => this.closeInventory()}/>}
                 
                 <DungeonRenderer dungeon={dungeon} />
+
+                {this.state.isPlayerPreppingPower && <PowersPrepAreaOfEffectRenderer power={this.state.preppedPower} />}
+
                 <PlayerRenderer player={this.state.player} />
+
+
                 <StageObjectsRenderer stageObjects={this.state.stageObjects} />
             </div>
         </div>

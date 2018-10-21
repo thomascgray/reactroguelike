@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './UI.css'
 import './CharacterSheet.css'
+import Uuid from 'uuid/v4'
 
 class CharacterSheet extends Component {
     makeActive (i) {
@@ -13,7 +14,7 @@ class CharacterSheet extends Component {
         return (
             <div>
                 {Object.keys(bodyParts).map(bodyPartName => {
-                    return <div>
+                    return <div key={Uuid()}>
                         <strong>{bodyPartName}</strong>
                         {bodyParts[bodyPartName].canHold && bodyParts[bodyPartName].isHolding == null ? <span> (empty)</span> : null }
                         {bodyParts[bodyPartName].canHold && bodyParts[bodyPartName].isHolding != null ? <span> is holding your <strong>{bodyParts[bodyPartName].isHolding.name}</strong></span> : null }

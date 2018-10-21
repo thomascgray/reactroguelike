@@ -12,10 +12,11 @@ export default function (player) {
     }))
 
     const power = {
-        name: 'Stomp',
+        name: 'Mind Blast',
         type: 'areaOfEffect',
-        shape: 'circle',
+        shape: 'square',
         range: 2,
+        damage: '1d20',
         source: 'player',
     }
 
