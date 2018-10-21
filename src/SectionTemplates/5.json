@@ -1,26 +1,17 @@
 {
-    "stageProps": [
-        {
-            "archetype": "woodChair",
-            "position": {
-                "x": 2,
-                "y": 2
-            }
-        }
-    ],
     "enemies": [
         {
             "archetype": "goblin",
             "position": {
-                "x": 1,
-                "y": 3
+                "x": 0,
+                "y": 0
             }
         },
         {
             "archetype": "goblin",
             "position": {
-                "x": 2,
-                "y": 4
+                "x": 6,
+                "y": 0
             }
         }
     ],

@@ -109,7 +109,6 @@ const carveDoors = (dungeonTemplate, map) => {
 }
 
 const generateRooms = (dungeonTemplate, map) => {
-    
     const roomsToBuild = ['topLeft', 'bottomLeft', 'topRight', 'bottomRight'];
     let allStageObjects = [];
 

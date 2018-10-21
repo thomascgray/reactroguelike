@@ -14,7 +14,6 @@ const archetypes = [
     }
 ]
 
-
 class CharacterSelect extends React.Component {
     render() {
         return (
