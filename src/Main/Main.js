@@ -33,13 +33,19 @@ class Main extends React.Component {
         return (
             <div>
                 {this.state.isInStage && <Stage playerArchetype={this.state.playerArchetype} />}
-                <h1>The Real Treasure Was The Bullshit We Did Along The Way</h1>
 
-                <hr />
+                {!this.state.isInStage && 
+                    <div>
+                        <h1>The Real Treasure Was The Bullshit We Did Along The Way</h1>
+        
+                        <hr />
+        
+                        <button onClick={() => this.startNewGame()}>New Game</button>
+        
+                        {this.state.isInCharacterSelect && <CharacterSelect onSelectArchetype={archetype => this.onSelectArchetype(archetype)}/>}
 
-                <button onClick={() => this.startNewGame()}>New Game</button>
-
-                {this.state.isInCharacterSelect && <CharacterSelect onSelectArchetype={archetype => this.onSelectArchetype(archetype)}/>}
+                    </div>
+                }
             </div>
         )
     }

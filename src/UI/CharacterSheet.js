@@ -20,7 +20,14 @@ class CharacterSheet extends Component {
                         {bodyParts[bodyPartName].canHold && bodyParts[bodyPartName].isHolding != null ? <span> is holding your <strong>{bodyParts[bodyPartName].isHolding.name}</strong></span> : null }
                     </div>
                 })}
-            </div>
+
+                <p><strong>powers</strong></p>
+                {this.props.player.HasPowers.getPowers().map(power => {
+                    return <div>
+                        <strong>{power.name}</strong>
+                    </div>
+                })}
+            </div>  
         );
     }
 }

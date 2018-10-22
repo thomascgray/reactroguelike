@@ -4,7 +4,7 @@ import keyMap from '../keyMap'
 import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import PlayerRenderer from '../Player/PlayerRenderer'
 import Player from '../Player/Player'
-import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
+import StageObjectsRenderer from '../StageObject/StchageObjectsRenderer'
 import { LogMessage } from '../Log/LogActions'
 import InitialPlayerSetup from '../InitialPlayerSetup'
 import PF from 'pathfinding';
@@ -17,10 +17,12 @@ import CharacterSheet from '../UI/CharacterSheet'
 import { preparePower } from '../Utils/Powers'
 import Log from '../Log/Log'
 
-import PowersPrepAreaOfEffectRenderer from '../Powers/PowersPrepRenderer'
+import PowersPrepRenderer from '../Powers/PowersPrepRenderer'
 
 import PlayerStageObjectCollision from '../Resolvers/PlayerStageObjectCollision'
 import CastPower from '../Resolvers/CastPower'
+
+import PlayerStageDefault from '../InputHandling/PlayerStageDefault'
 
 const dungeon = generate({
     sectionWidth: 7,
@@ -43,6 +45,7 @@ class Stage extends Component {
         });
 
         this.state = {
+            inputMode: 'playerStageDefault',
             player: window.player.toState(),
             stageObjects: window.stageObjects.map(o => o.toState()),
             logMessages: [],
@@ -73,88 +76,9 @@ class Stage extends Component {
     handleKeyDown(keyEvent) {
         keyEvent = keyEvent || window.event;
         
-        const pos = new HasPosition(window.player.HasPosition.getPosition())
-        const uiState = this.state.ui;
-        let hasMoved = false;
-        let newDirection;
-
-        switch (keyEvent.keyCode) {
-            case keyMap.INTERACT:
-            if (this.state.isPlayerPreppingPower) {
-                // cast the spell thats prepped
-                CastPower(this.state.preppedPower);
-                this.setState({
-                    isPlayerPreppingPower: false,
-                    preppedPower: null,
-                })
-            }
-            keyEvent.stopPropagation();
-            break;
-            case keyMap.LEFT:
-                pos.functions.moveLeft();
-                newDirection = 'left';
-                hasMoved = true;
-                break;
-            case keyMap.RIGHT:
-                pos.functions.moveRight();
-                newDirection = 'right';
-                hasMoved = true;
-                break;
-            case keyMap.UP:
-                pos.functions.moveUp();
-                newDirection = 'up';
-                hasMoved = true;
-                break;
-            case keyMap.DOWN:
-                pos.functions.moveDown();
-                newDirection = 'down';
-                hasMoved = true;
-                break;
-            case keyMap.INVENTORY:
-                uiState.inventory = !uiState.inventory;
-                this.setState({ ui: uiState })
-                break;
-            case keyMap.ESCAPE:
-                this.setState({
-                    isPlayerPreppingPower: false,
-                });
-                break;
-            case keyMap.NUMBER_ONE:
-                this.setState({
-                    isPlayerPreppingPower: true,
-                    preppedPower: preparePower(window.player.HasPowers.getPowers()[0])
-                })
-                break;
-            default:
-                break;
+        if (this.state.inputMode === 'playerStageDefault') {
+            PlayerStageDefault(keyEvent, this);
         }
-
-        if (hasMoved) {
-            window.player.HasDirection.setDirection(newDirection);
-        }
-
-        if (dungeon.map[pos.position.x][pos.position.y] === 1 || dungeon.map[pos.position.x][pos.position.y] === 2) { // todo better way of knowing whats a wall
-            // TODO IMRPOVE THIS
-            // anything non 0 is a thing to hit
-        } else {
-            const hitStageObject = window.stageObjects.find(obj => _.isEqual(obj.HasPosition.getPosition(), pos.position));
-        
-            if (hitStageObject) {
-                PlayerStageObjectCollision(window.player, hitStageObject)
-            }
-
-            // if theres no stage object, OR
-            // there is, but its collidable is false
-            // we can move there
-            if (!hitStageObject || (hitStageObject && hitStageObject.IsCollidable.getIsCollidable() === false)) {
-                window.player.HasPosition.setPosition(pos.position);
-            }
-        }
-
-        this.setState({
-            player: window.player.toState(),
-            stageObjects: window.stageObjects.map(o => o.toState()),
-        });
     }
 
     closeInventory () {
@@ -180,7 +104,7 @@ class Stage extends Component {
                 
                 <DungeonRenderer dungeon={dungeon} />
 
-                {this.state.isPlayerPreppingPower && <PowersPrepAreaOfEffectRenderer power={this.state.preppedPower} />}
+                {this.state.isPlayerPreppingPower && <PowersPrepRenderer power={this.state.preppedPower} />}
 
                 <PlayerRenderer player={this.state.player} />
 
