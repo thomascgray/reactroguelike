@@ -1,6 +1,5 @@
 import HasPosition from '../Behaviours/HasPosition'
 import keyMap from '../keyMap'
-import CastPower from '../Resolvers/CastPower'
 import _ from 'lodash'
 import PlayerStageObjectCollision from '../Resolvers/PlayerStageObjectCollision'
 import { preparePower } from '../Utils/Powers'
@@ -12,16 +11,6 @@ export default function (keyEvent, stageContext, dungeon) {
     let newDirection;
 
     switch (keyEvent.keyCode) {
-        case keyMap.INTERACT:
-            if (stageContext.state.isPlayerPreppingPower) {
-                // cast the spell thats prepped
-                CastPower(stageContext.state.preppedPower);
-                stageContext.setState({
-                    isPlayerPreppingPower: false,
-                    preppedPower: null,
-                })
-            }
-            break;
         case keyMap.LEFT:
             pos.functions.moveLeft();
             newDirection = 'left';
@@ -46,14 +35,11 @@ export default function (keyEvent, stageContext, dungeon) {
             uiState.inventory = !uiState.inventory;
             stageContext.setState({ ui: uiState })
             break;
-        case keyMap.ESCAPE:
-            stageContext.setState({
-                isPlayerPreppingPower: false,
-            });
-            break;
         case keyMap.NUMBER_ONE:
             stageContext.setState({
+                inputMode: 'playerStagePreppingPower',
                 isPlayerPreppingPower: true,
+                spellSlotPrepped: 1,
                 preppedPower: preparePower(window.player.HasPowers.getPowers()[0])
             })
             break;

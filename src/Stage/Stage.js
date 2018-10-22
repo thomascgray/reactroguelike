@@ -1,28 +1,20 @@
 import React, { Component } from 'react';
 import './Stage.css'
-import keyMap from '../keyMap'
 import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import PlayerRenderer from '../Player/PlayerRenderer'
 import Player from '../Player/Player'
 import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
-import { LogMessage } from '../Log/LogActions'
 import InitialPlayerSetup from '../InitialPlayerSetup'
-import PF from 'pathfinding';
-import HasPosition from '../Behaviours/HasPosition'
 import { generate } from '../DungeonGenerator/Gerty'
 import _ from 'lodash';
 
 import Inventory from '../UI/Inventory'
 import CharacterSheet from '../UI/CharacterSheet'
-import { preparePower } from '../Utils/Powers'
 import Log from '../Log/Log'
 
 import PowersPrepRenderer from '../Powers/PowersPrepRenderer'
-
-import PlayerStageObjectCollision from '../Resolvers/PlayerStageObjectCollision'
-import CastPower from '../Resolvers/CastPower'
-
 import PlayerStageDefault from '../InputHandling/PlayerStageDefault'
+import PlayerStagePreppingPower from '../InputHandling/PlayerStagePreppingPower'
 
 const dungeon = generate({
     sectionWidth: 7,
@@ -78,6 +70,8 @@ class Stage extends Component {
         
         if (this.state.inputMode === 'playerStageDefault') {
             PlayerStageDefault(keyEvent, this, dungeon);
+        } else if (this.state.inputMode === 'playerStagePreppingPower') {
+            PlayerStagePreppingPower(keyEvent, this, dungeon);
         }
     }
 

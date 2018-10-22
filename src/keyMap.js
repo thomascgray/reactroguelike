@@ -1,13 +1,4 @@
 const map = {
-
-    W: 87,
-    D: 68,
-    X: 88,
-    A: 65,
-    E: 69,
-    C: 67,
-    Z: 90,
-    Q: 81,
     LEFT: 65, // a
     UP: 87, // w 
     RIGHT: 68, // d
@@ -21,5 +12,7 @@ const map = {
     NUMBER_THREE: 51, // 3
     ESCAPE: 27, // escape
 }
+
+map.movementKeys = [map.UP, map.DOWN, map.LEFT, map.RIGHT]
 
 export default map
