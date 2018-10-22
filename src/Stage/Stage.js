@@ -4,7 +4,7 @@ import keyMap from '../keyMap'
 import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import PlayerRenderer from '../Player/PlayerRenderer'
 import Player from '../Player/Player'
-import StageObjectsRenderer from '../StageObject/StchageObjectsRenderer'
+import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
 import { LogMessage } from '../Log/LogActions'
 import InitialPlayerSetup from '../InitialPlayerSetup'
 import PF from 'pathfinding';
@@ -77,7 +77,7 @@ class Stage extends Component {
         keyEvent = keyEvent || window.event;
         
         if (this.state.inputMode === 'playerStageDefault') {
-            PlayerStageDefault(keyEvent, this);
+            PlayerStageDefault(keyEvent, this, dungeon);
         }
     }
 

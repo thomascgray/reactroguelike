@@ -1,4 +1,11 @@
-export default function (keyEvent, stageContext) {
+import HasPosition from '../Behaviours/HasPosition'
+import keyMap from '../keyMap'
+import CastPower from '../Resolvers/CastPower'
+import _ from 'lodash'
+import PlayerStageObjectCollision from '../Resolvers/PlayerStageObjectCollision'
+import { preparePower } from '../Utils/Powers'
+
+export default function (keyEvent, stageContext, dungeon) {
     const pos = new HasPosition(window.player.HasPosition.getPosition())
     const uiState = stageContext.state.ui;
     let hasMoved = false;

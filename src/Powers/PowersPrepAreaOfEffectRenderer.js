@@ -3,7 +3,7 @@ import Tile from '../Tile/TileRenderer'
 import Uuid from 'uuid/v4'
 
 const images = {
-    centre: require(`../Assets/td_ui/blue.png`),
+    centre: require(`../Assets/td_interface/tiny_dungeon_interface_select_f1.png`),
     x: require(`../Assets/td_interface/tiny_dungeon_interface_select_f1.png`),
 }
 
