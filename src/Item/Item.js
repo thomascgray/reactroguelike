@@ -1,20 +1,28 @@
 import Uuid from 'uuid/v4'
 
-const BaseItem = ({ name, type, damage }) => {
-    return {
+const BaseItem = (props) => {
+    const baseItem = {
         id: Uuid(),
-        name,
-        type,
-        damage
+        isHoldableBy: ['hand'],
+    }
+    return {
+        ...baseItem,
+        ...props
     }
 }
 
-const Weapon = ({ name, damage }) => {
+const Weapon = ({ name, damage, damageType }) => {
     const type = 'weapon';
-    return BaseItem({ name, type, damage })
+    return BaseItem({ name, type, damage, damageType })
+}
+
+const Armour = ({ name, ac, armourType }) => {
+    const type = 'armour';
+    return BaseItem({ name, type, ac, armourType })
 }
 
 export {
     BaseItem,
-    Weapon
+    Weapon,
+    Armour
 }

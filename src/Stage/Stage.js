@@ -85,7 +85,6 @@ class Stage extends Component {
         return <div>
             <div className='ui-panel'>
                 <div className='character-sheet'>
-                    <p>{window.player.HasArchetype.getArchetype()}</p>
                     <CharacterSheet player={window.player} items={this.state.player.HasInventory}/>
                 </div>
                 <div className='log-wrapper'>

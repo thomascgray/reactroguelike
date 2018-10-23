@@ -1,6 +1,7 @@
 import CastPower from '../Resolvers/CastPower'
 import keyMap from '../keyMap'
 import _ from 'lodash'
+import PlayerStageDefault from './PlayerStageDefault'
 
 export default function (keyEvent, stageContext, dungeon) {
     switch (keyEvent.keyCode) {
@@ -18,11 +19,10 @@ export default function (keyEvent, stageContext, dungeon) {
     }
 
     if (_.includes(keyMap.MOVEMENTKEYS, keyEvent.keyCode)) {
-        stageContext.setState({
-            inputMode: 'playerStageDefault',
-            isPlayerPreppingPower: false,
-            preppedPower: null,
-        })
+        unPrepPower(stageContext);
+
+        // do a regular movement
+        PlayerStageDefault(keyEvent, stageContext, dungeon);
     }
 }
 

@@ -4,7 +4,7 @@ import HasPosition from '../Behaviours/HasPosition'
 import HasId from '../Behaviours/HasId'
 import HasDirection from '../Behaviours/HasDirection'
 import HasArchetype from '../Behaviours/HasArchetype'
-import HasBodyParts from '../Behaviours/HasBodyParts'
+import HasBody from '../Behaviours/HasBody'
 import HasPowers from '../Behaviours/HasPowers'
 
 import _ from 'lodash';
@@ -19,7 +19,7 @@ class Player {
       new HasId(),
       new HasDirection(),
       new HasArchetype(archetype),
-      new HasBodyParts('humanoid'),
+      new HasBody('humanoid', 'medium'),
       new HasPowers(powers),
     ]
 
@@ -38,7 +38,7 @@ class Player {
 
   getActiveMeleeWeapon () {
     // TODO based on what handed you are and whats equipped, hit them with whats in your hand
-    return this.HasBodyParts.getBodyParts()['right hand'].isHolding;
+    return this.HasBody.getBodyParts()['right hand'].isHolding;
   }
 
   setActiveMeleeWeapon (itemId) {
