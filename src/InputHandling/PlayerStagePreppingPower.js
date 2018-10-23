@@ -6,21 +6,12 @@ export default function (keyEvent, stageContext, dungeon) {
     switch (keyEvent.keyCode) {
         case keyMap.NUMBER_ONE:
             if (stageContext.state.spellSlotPrepped === 1) {
-                stageContext.setState({
-                    inputMode: 'playerStageDefault',
-                    isPlayerPreppingPower: false,
-                    spellSlotPrepped: null,
-                    preppedPower: null
-                })
+                unPrepPower(stageContext);
             }
             break;
         case keyMap.SPACE:
             CastPower(stageContext.state.preppedPower);
-            stageContext.setState({
-                inputMode: 'playerStageDefault',
-                isPlayerPreppingPower: false,
-                preppedPower: null,
-            })
+            unPrepPower(stageContext);
             break;
         default:
             break;
@@ -33,4 +24,13 @@ export default function (keyEvent, stageContext, dungeon) {
             preppedPower: null,
         })
     }
+}
+
+const unPrepPower = (stageContext) => {
+    stageContext.setState({
+        inputMode: 'playerStageDefault',
+        isPlayerPreppingPower: false,
+        spellSlotPrepped: null,
+        preppedPower: null
+    })
 }

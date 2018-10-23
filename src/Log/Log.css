@@ -3,7 +3,8 @@
     padding: 1em;
 }
 
-.log p {
-    margin-top: 0;
-    margin-bottom:0;
+.log span {
+    display: block;
+    margin-bottom: 0.5em;
+    
 }

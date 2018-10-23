@@ -1,13 +1,13 @@
 .ui-panel {
     height: 100vh;
-    width: 28vw; /*not 30 cus of scrollbar*/
+    width: 35vw; /*not 30 cus of scrollbar*/
     float: left;
 }
 .character-sheet {
     padding: 1em;
 }
 .stage {
-    width: 70vw;
+    width: 64vw;
     height: 100vh; 
     overflow: hidden;
     float: left;
