@@ -1,5 +1,8 @@
+import Uuid from 'uuid/v4'
+
 const BaseItem = ({ name, type, damage }) => {
     return {
+        id: Uuid(),
         name,
         type,
         damage

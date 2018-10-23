@@ -13,6 +13,6 @@ const map = {
     ESCAPE: 27, // escape
 }
 
-map.movementKeys = [map.UP, map.DOWN, map.LEFT, map.RIGHT]
+map.MOVEMENTKEYS = [map.UP, map.DOWN, map.LEFT, map.RIGHT]
 
 export default map

@@ -14,6 +14,23 @@ class HasBodyParts {
                 this.bodyParts[bodyPartName].isHolding = _.clone(item)
                 return this.bodyParts;
             },
+            equipItem: (item, bodyPartName) => {
+                // if the item is already equipped on the character somewhere, unequip it
+                if (this.isHoldingItem(item)) {
+                    // unequip the item before we re-equip it
+                    this.unequipItem(item);
+                }
+                this.equipItemIntoBodypart(item, bodyPartName);
+                LogMessage(`you grab your ${item.name} with your ${bodyPartName}`)
+            },
+            unequipItem: item => {
+
+            },
+            isHoldingItem: item => {
+                return Object.keys(this.bodyParts).some(bodyPart => {
+                    return this.bodyParts[bodyPart].canHold && this.bodyParts[bodyPart].isHolding && this.bodyParts[bodyPart].isHolding.id === item.id
+                });
+            }
         }
 
         if (bodyParts.length > 0) {
@@ -22,17 +39,9 @@ class HasBodyParts {
         }
 
         switch (bodyType) {
-            case 'humanoid': 
-                this.bodyParts = {
-                    "left hand" : {
-                        canHold: true,
-                        isHolding: null,
-                    },
-                    "right hand" : {
-                        canHold: true,
-                        isHolding: null,
-                    },
-                }
+            case 'humanoid':
+                this.bodyParts = require('./BodyPartKits/humanoid').default;
+                break;
         }
 
         return;

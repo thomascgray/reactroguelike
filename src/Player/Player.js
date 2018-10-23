@@ -10,17 +10,6 @@ import HasPowers from '../Behaviours/HasPowers'
 import _ from 'lodash';
 import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
 
-/**
- * @class Player
- * @property HasInventory
- * @property HasHp
- * @property HasPosition
- * @property HasId
- * @property HasDirection
- * @property HasArchetype
- * @property HasBodyParts
- * @property HasPowers
- */
 class Player {
   constructor({ position, hp = 10, archetype, powers = [] }) {
     this.behaviours = [

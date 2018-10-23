@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './UI.css'
 import './Inventory.css'
-import { LogMessage } from '../Log/LogActions'
 class Inventory extends Component {
     makeActive (i) {
         this.props.player.setActiveMeleeWeapon(i.id)
@@ -11,13 +10,11 @@ class Inventory extends Component {
         const bodyParts = Object.keys(this.props.player.HasBodyParts.getBodyParts()).filter(bodyPartName => {
             return this.props.player.HasBodyParts.getBodyParts()[bodyPartName].canHold;
         });
-
         return bodyParts;
     }
 
     equipItem(item, bodyPartName) {
-        this.props.player.HasBodyParts.equipItemIntoBodypart(item, bodyPartName);
-        LogMessage(`you grab your ${item.name} with your ${bodyPartName}`)
+        this.props.player.HasBodyParts.equipItem(item, bodyPartName);
         this.props.closeInventory();
     }
 

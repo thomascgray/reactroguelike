@@ -1,9 +1,5 @@
 import { BaseItem, Weapon } from '../../Item/Item'
 
-/**
- * 
- * @param {Player} player 
- */
 export default function (player) {
     player.HasInventory.addItem(Weapon({
         name: 'broomstick',
