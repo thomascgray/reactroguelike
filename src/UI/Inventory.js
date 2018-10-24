@@ -30,18 +30,17 @@ class Inventory extends Component {
         return <div>
             <strong>{item.name}</strong> ({item.type})
             {this.props.player.HasBody.getBodyPartsOfType('hand').map(bodyPartName => {
-                return <button>Equp in {bodyPartName}</button>
+                return <button onClick={() => this.equipItem(item, bodyPartName)}>Equp in {bodyPartName}</button>
             })}
         </div>
     }
 
     renderArmour(item) {
         //TODO replace HasBody.getBodyPartsOfType('hand') with item.isHoldableBy
-        console.log('item', item);
         return <div>
             <strong>{item.name}</strong> ({item.type})
-            {item.isHoldableBy.includes('fullBody') && <button>Equip</button>}
-            
+            {item.isHoldableBy.includes('body') && <button onClick={() => this.equipItem(item, 'body')}>Equip</button>}
+            {item.isHoldableBy.includes('head') && <button onClick={() => this.equipItem(item, 'head')}>Equip</button>}
         </div>
     }
 

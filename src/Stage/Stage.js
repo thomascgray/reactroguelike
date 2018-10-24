@@ -73,6 +73,10 @@ class Stage extends Component {
         } else if (this.state.inputMode === 'playerStagePreppingPower') {
             PlayerStagePreppingPower(keyEvent, this, dungeon);
         }
+
+        this.setState({
+            stageObjects: window.stageObjects.map(o => o.toState()),
+        })
     }
 
     closeInventory () {

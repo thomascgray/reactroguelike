@@ -18,6 +18,9 @@
  * 
  * head
  *  heads can wear head armour (hats)
+ * 
+ * body
+ *  bodies can wear cloaks/capes
  */
 
 export default {
@@ -44,5 +47,11 @@ export default {
     },
     "right leg" : {
         types: ['leg'],
+    },
+    "head" : {
+        types: ['head'],
+    },
+    "body" : {
+        types: ['body'],
     },
 }

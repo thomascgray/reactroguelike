@@ -16,7 +16,7 @@ export default function (player) {
     player.HasInventory.addItem(Armour({
         name: 'witch\'s cloak',
         ac: '0',
-        isHoldableBy: ['fullBody'],
+        isHoldableBy: ['body'],
     }))
 
     const power = {

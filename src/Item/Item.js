@@ -11,14 +11,16 @@ const BaseItem = (props) => {
     }
 }
 
-const Weapon = ({ name, damage, damageType }) => {
+const Weapon = (props) => {
     const type = 'weapon';
-    return BaseItem({ name, type, damage, damageType })
+    props.type = type;
+    return BaseItem(props)
 }
 
-const Armour = ({ name, ac, armourType }) => {
+const Armour = (props) => {
     const type = 'armour';
-    return BaseItem({ name, type, ac, armourType })
+    props.type = 'armour'
+    return BaseItem(props)
 }
 
 export {

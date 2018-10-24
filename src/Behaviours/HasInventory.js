@@ -13,6 +13,7 @@ class HasInventory {
         },
         appendItemDataById: (itemId, newData) => {
             //TODO make use of this for a player setting their active weapon
+            //wait maybe thats not a thing anymore
             this.items = this.items.map(i => {
                 if (i.id === itemId) {
                     i = {...i, ...newData}

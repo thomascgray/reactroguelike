@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import './UI.css'
 import './CharacterSheet.css'
 import Uuid from 'uuid/v4'
-import {title} from '../Utils/String'
+import StringUtils from '../Utils/String'
+
+import Grammar from '../Utils/Grammar'
+
 class CharacterSheet extends Component {
     makeActive (i) {
         this.props.player.setActiveMeleeWeapon(i.id)
@@ -13,11 +16,11 @@ class CharacterSheet extends Component {
 
         return (
             <div>
-                <p>{title(window.player.HasArchetype.getArchetype())}</p>
+                <p>{StringUtils.title(window.player.HasArchetype.getArchetype())}</p>
 
                 <div className='box'>
                     {Object.keys(bodyParts).map(bodyPartName => {
-                        return renderBodyPart(bodyParts[bodyPartName], bodyPartName)
+                        return renderBodyPartInformation(bodyParts[bodyPartName], bodyPartName)
                     })}
                 </div>
 
@@ -32,10 +35,34 @@ class CharacterSheet extends Component {
     }
 }
 
-const renderBodyPart = (bodyPart, bodyPartName) => {
+const renderBodyPartInformation = (bodyPart, bodyPartName) => {
     if (bodyPart.isHolding == null && bodyPart.types.includes('primary')) {
         return <p>your <strong>{bodyPartName}</strong> is empty</p>
     }
+
+    if (bodyPart.isHolding) {
+        return <React.Fragment>
+            <p>{Grammar.isHoldingPreposition(bodyPartName)} your <strong>{bodyPartName}</strong> {Grammar.isHoldingStyle(bodyPartName)} <strong>{bodyPart.isHolding.name}</strong></p>
+            {renderItemInformation(bodyPart.isHolding)}
+        </React.Fragment>
+    }
+}
+
+const renderItemInformation = item => {
+    switch (item.type) {
+        case 'weapon':
+            return renderWeaponInformation(item);
+        case 'armour':
+            return renderArmourInformation(item);
+    }
+}
+
+const renderWeaponInformation = item => {
+    return <p>{item.damage}</p>
+}
+
+const renderArmourInformation = item => {
+    return <p>{item.damage}</p>
 }
 
 export default CharacterSheet;

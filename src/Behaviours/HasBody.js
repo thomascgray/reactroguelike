@@ -24,15 +24,6 @@ class HasBody {
                 this.body.bodyParts[bodyPartName].isHolding = _.clone(item)
                 return this.body.bodyParts;
             },
-            equipItem: (item, bodyPartName) => {
-                // if the item is already equipped on the character somewhere, unequip it
-                // if (this.isHoldingItem(item)) {
-                //     // unequip the item before we re-equip it
-                //     this.unequipItem(item);
-                // }
-                this.equipItemIntoBodypart(item, bodyPartName);
-                LogMessage(`you grab your ${item.name} with your ${bodyPartName}`)
-            },
             unequipItem: item => {
                 console.log(`unequipping ${item.name}`);
             },
@@ -42,6 +33,16 @@ class HasBody {
                 });
             }
         }
+
+        this.functions.equipItem = (item, bodyPartName) => {
+            // if the item is already equipped on the character somewhere, unequip it
+            // if (this.isHoldingItem(item)) {
+            //     // unequip the item before we re-equip it
+            //     this.unequipItem(item);
+            // }
+            this.functions.equipItemIntoBodypart(item, bodyPartName);
+            LogMessage(`you grab your ${item.name} with your ${bodyPartName}`)
+        };
 
         return;
     }
