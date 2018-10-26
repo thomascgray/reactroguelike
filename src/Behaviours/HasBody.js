@@ -21,7 +21,7 @@ class HasBody {
                 }))
             },
             equipItemIntoBodypart: (item, bodyPartName) => {
-                this.body.bodyParts[bodyPartName].isHolding = _.clone(item)
+                this.body.bodyParts[bodyPartName].isHolding.push(_.clone(item))
                 return this.body.bodyParts;
             },
             unequipItem: item => {

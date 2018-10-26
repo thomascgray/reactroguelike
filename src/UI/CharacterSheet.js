@@ -40,12 +40,20 @@ const renderBodyPartInformation = (bodyPart, bodyPartName) => {
         return <p>your <strong>{bodyPartName}</strong> is empty</p>
     }
 
-    if (bodyPart.isHolding) {
-        return <React.Fragment>
-            <p>{Grammar.isHoldingPreposition(bodyPartName)} your <strong>{bodyPartName}</strong> {Grammar.isHoldingStyle(bodyPartName)} <strong>{bodyPart.isHolding.name}</strong></p>
-            {renderItemInformation(bodyPart.isHolding)}
-        </React.Fragment>
-    }
+    // need to do something different, to handle body parts that are both holding and wearing
+    // "in your left hand, you are holding your broadsword, and wearing a leather glove"
+    
+    return <React.Fragment>
+        <p>
+            {Grammar.isHoldingPreposition(bodyPartName)}
+            your
+            <strong>{bodyPartName}</strong>
+            {Grammar.isHoldingStyle(bodyPartName)}
+            {Grammar.listItems(bodyPart.isHolding)
+            <strong>{bodyPart.isHolding.name}</strong>
+        </p>
+        {/* {renderItemInformation(bodyPart.isHolding)} */}
+    </React.Fragment>
 }
 
 const renderItemInformation = item => {
