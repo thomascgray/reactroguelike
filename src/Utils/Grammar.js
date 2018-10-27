@@ -16,7 +16,7 @@ export default {
                 ]);
         }
     },
-    isHoldingPreposition: (bodyPartName, item) => {
+    isHoldingPreposition: (bodyPartName) => {
         switch (bodyPartName) {
             case 'body':
             case 'head':
@@ -34,10 +34,14 @@ export default {
                 return 'you are holding your';
         }
     },
-    listItems: items => {
+    listItems: (items = []) => {
+        if (items.length <= 0) {
+            return '';
+        }
+        console.log('items', items);
         switch (items.length) {
             case 1:
-                return items.name
+                return items[0].name
             case 2:
                 return items.map(i => i.name).join(' and ')
             default:

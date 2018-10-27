@@ -36,24 +36,20 @@ class CharacterSheet extends Component {
 }
 
 const renderBodyPartInformation = (bodyPart, bodyPartName) => {
-    if (bodyPart.isHolding == null && bodyPart.types.includes('primary')) {
+    // if you can hold, but you're not holding anything but we should ALWAYS say something, say you're empty
+    if (bodyPart.isHolding && bodyPart.isHolding.length <= 0 && bodyPart.types.includes('gripPrimary')) {
         return <p>your <strong>{bodyPartName}</strong> is empty</p>
     }
 
-    // need to do something different, to handle body parts that are both holding and wearing
-    // "in your left hand, you are holding your broadsword, and wearing a leather glove"
-    
-    return <React.Fragment>
-        <p>
-            {Grammar.isHoldingPreposition(bodyPartName)}
-            your
-            <strong>{bodyPartName}</strong>
-            {Grammar.isHoldingStyle(bodyPartName)}
-            {Grammar.listItems(bodyPart.isHolding)
-            <strong>{bodyPart.isHolding.name}</strong>
-        </p>
-        {/* {renderItemInformation(bodyPart.isHolding)} */}
-    </React.Fragment>
+    // if you can wear, but you're not wearing anything but we should ALWAYS say something, say you're bare
+    if (bodyPart.isWearing && bodyPart.isWearing.length <= 0 && bodyPart.types.includes('wearPrimary')) {
+        return <p>your <strong>{bodyPartName}</strong> is bare</p>
+    }
+
+    // if the body part is holding something, or wearing something, write it out
+    if ((bodyPart.isHolding && bodyPart.isHolding.length >= 1) || (bodyPart.isWearing && bodyPart.isWearing.length >= 1)) {
+        return <p>your <strong>{bodyPartName}</strong> is holding your {Grammar.listItems(bodyPart.isHolding)}</p>
+    }
 }
 
 const renderItemInformation = item => {
