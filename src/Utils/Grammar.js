@@ -1,8 +1,7 @@
-const Random = require("random-js")(); // uses the nativeMath engine
+const Random = require("random-js")();
 
 export default {
     getRandomVerbForDamageType: damageType => {
-        console.log('damageType', damageType);
         switch (damageType) {
             case 'bludgeoning':
             case 'unarmed':
@@ -16,29 +15,10 @@ export default {
                 ]);
         }
     },
-    isHoldingPreposition: (bodyPartName) => {
-        switch (bodyPartName) {
-            case 'body':
-            case 'head':
-                return 'on';
-            default:
-                return 'in';
-        }
-    },
-    isHoldingStyle: (bodyPartName, item) => {
-        switch (bodyPartName) {
-            case 'body':
-            case 'head':
-                return 'you are wearing your';
-            default:
-                return 'you are holding your';
-        }
-    },
     listItems: (items = []) => {
         if (items.length <= 0) {
             return '';
         }
-        console.log('items', items);
         switch (items.length) {
             case 1:
                 return items[0].name
