@@ -27,21 +27,29 @@ class HasBody {
             unequipItem: item => {
                 console.log(`unequipping ${item.name}`);
             },
-            isHoldingItem: item => {
-                return Object.keys(this.body.bodyParts).some(bodyPart => {
-                    return this.body.bodyParts[bodyPart].canHold && this.body.bodyParts[bodyPart].isHolding && this.body.bodyParts[bodyPart].isHolding.id === item.id
+            getBodyPartHoldingItem: item => {
+                const bodyPartNameHoldingItem = Object.keys(this.body.bodyParts).find(bodyPartName => { // find the first bodypartname...
+                    return _.get(this.body.bodyParts, `[${bodyPartName}].isHolding`, []).some(itemBeingHeld => {
+                    // return this.body.bodyParts[bodyPartName].isHolding && this.body.bodyParts[bodyPartName].isHolding.some(itemBeingHeld => {
+
+                        itemBeingHeld.id === item.id;
+                    });
                 });
-            }
+
+                console.log('bodyPartNameHoldingItem', bodyPartNameHoldingItem);
+            },
         }
 
         this.functions.equipItem = (item, bodyPartName) => {
+            const bodyPartHoldingItem = this.functions.getBodyPartHoldingItem(item);
+            console.log('bodyPartHoldingItem', bodyPartHoldingItem);
             // if the item is already equipped on the character somewhere, unequip it
-            // if (this.isHoldingItem(item)) {
+            // if (this.function.getBodyPartHoldingItem(item)) {
             //     // unequip the item before we re-equip it
             //     this.unequipItem(item);
             // }
             this.functions.equipItemIntoBodypart(item, bodyPartName);
-            LogMessage(`you grab your ${item.name} with your ${bodyPartName}`)
+            // LogMessage(`you grab your ${item.name} with your ${bodyPartName}`)
         };
 
         return;

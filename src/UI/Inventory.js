@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './UI.css'
 import './Inventory.css'
+import Uuid from 'uuid/v4'
 class Inventory extends Component {
     makeActive (i) {
         this.props.player.setActiveMeleeWeapon(i.id)
@@ -30,7 +31,7 @@ class Inventory extends Component {
         return <div>
             <strong>{item.name}</strong> ({item.type})
             {this.props.player.HasBody.getBodyPartsOfType('hand').map(bodyPartName => {
-                return <button onClick={() => this.equipItem(item, bodyPartName)}>Equp in {bodyPartName}</button>
+                return <button key={Uuid()} onClick={() => this.equipItem(item, bodyPartName)}>Equp in {bodyPartName}</button>
             })}
         </div>
     }
@@ -48,7 +49,7 @@ class Inventory extends Component {
         return (
             <div className='ui-widget'>
                 <h3>Inventory</h3>
-                {this.props.items.map(i => this.renderItem(i))}
+                {this.props.items.map(i => <div key={i.id}>{this.renderItem(i)}</div>)}
             </div>
         );
     }

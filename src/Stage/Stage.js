@@ -75,6 +75,7 @@ class Stage extends Component {
         }
 
         this.setState({
+            player: window.player.toState(),
             stageObjects: window.stageObjects.map(o => o.toState()),
         })
     }

@@ -1,4 +1,3 @@
-const assert = require('assert');
 import Grammar from './Grammar';
 const { Weapon } = require('../Item/Item')
 
@@ -60,7 +59,7 @@ describe('Grammar - listItems', () => {
   });
 });
 
-describe('Grammar - formIsHoldingSentence', () => {
+describe('Grammar - formSecondPersonIsHoldingSentence', () => {
   test('1 item', () => {
     const items = []
     items.push(Weapon({
@@ -81,12 +80,10 @@ describe('Grammar - formIsHoldingSentence', () => {
   });
 });
 
-describe('Grammar - formIsWearingSentence', () => {
+describe('Grammar - formSecondPersonIsWearingSentence', () => {
   test('1 item', () => {
     const items = []
-    items.push(Weapon({
-        name: 'bow',
-    }))
+    items.push(Weapon({ name: 'bow' }))
   
     expect(Grammar.formSecondPersonIsWearingSentence(items)).toBe('is wearing your bow');
   });
@@ -99,5 +96,85 @@ describe('Grammar - formIsWearingSentence', () => {
     items.push(Weapon({ name: 'axe' }))
   
     expect(Grammar.formSecondPersonIsWearingSentence(items)).toBe('is wearing your arrow, glove, bowtie and axe');
+  });
+});
+
+describe('Grammar - formSecondPersonFullItemsSentence', () => {
+  test('holding 1, wearing 0', () => {
+    const isHoldingItems = []
+    isHoldingItems.push(Weapon({ name: 'axe' }))
+
+    const isWearingItems = []
+
+    expect(Grammar.formSecondPersonFullItemsSentence(isHoldingItems, isWearingItems)).toBe('is holding your axe');
+  });
+
+  test('holding 0, wearing 1', () => {
+    const isHoldingItems = []
+    
+    const isWearingItems = []
+    isWearingItems.push(Weapon({ name: 'dress' }))
+  
+    expect(Grammar.formSecondPersonFullItemsSentence(isHoldingItems, isWearingItems)).toBe('is wearing your dress');
+  });
+
+  test('holding 1, wearing 1', () => {
+    const isHoldingItems = []
+    isHoldingItems.push(Weapon({ name: 'bow' }))
+
+    const isWearingItems = []
+    isWearingItems.push(Weapon({ name: 'glove' }))
+  
+    expect(Grammar.formSecondPersonFullItemsSentence(isHoldingItems, isWearingItems)).toBe('is holding your bow and wearing your glove');
+  });
+
+  test('holding 2, wearing 1', () => {
+    const isHoldingItems = []
+    isHoldingItems.push(Weapon({ name: 'bow' }))
+    isHoldingItems.push(Weapon({ name: 'torch' }))
+
+    const isWearingItems = []
+    isWearingItems.push(Weapon({ name: 'glove' }))
+  
+    expect(Grammar.formSecondPersonFullItemsSentence(isHoldingItems, isWearingItems)).toBe('is holding your bow and torch and wearing your glove');
+  });
+
+  test('holding 2, wearing 2', () => {
+    const isHoldingItems = []
+    isHoldingItems.push(Weapon({ name: 'bow' }))
+    isHoldingItems.push(Weapon({ name: 'torch' }))
+
+    const isWearingItems = []
+    isWearingItems.push(Weapon({ name: 'glove' }))
+    isWearingItems.push(Weapon({ name: 'hat' }))
+  
+    expect(Grammar.formSecondPersonFullItemsSentence(isHoldingItems, isWearingItems)).toBe('is holding your bow and torch and wearing your glove and hat');
+  });
+
+  test('holding 3, wearing 2', () => {
+    const isHoldingItems = []
+    isHoldingItems.push(Weapon({ name: 'bow' }))
+    isHoldingItems.push(Weapon({ name: 'torch' }))
+    isHoldingItems.push(Weapon({ name: 'stick' }))
+
+    const isWearingItems = []
+    isWearingItems.push(Weapon({ name: 'glove' }))
+    isWearingItems.push(Weapon({ name: 'hat' }))
+  
+    expect(Grammar.formSecondPersonFullItemsSentence(isHoldingItems, isWearingItems)).toBe('is holding your bow, torch and stick and wearing your glove and hat');
+  });
+
+  test('holding 3, wearing 3', () => {
+    const isHoldingItems = []
+    isHoldingItems.push(Weapon({ name: 'bow' }))
+    isHoldingItems.push(Weapon({ name: 'torch' }))
+    isHoldingItems.push(Weapon({ name: 'stick' }))
+
+    const isWearingItems = []
+    isWearingItems.push(Weapon({ name: 'glove' }))
+    isWearingItems.push(Weapon({ name: 'hat' }))
+    isWearingItems.push(Weapon({ name: 'scarf' }))
+  
+    expect(Grammar.formSecondPersonFullItemsSentence(isHoldingItems, isWearingItems)).toBe('is holding your bow, torch and stick and wearing your glove, hat and scarf');
   });
 });

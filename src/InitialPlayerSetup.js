@@ -5,6 +5,5 @@ export default function (player) {
     const playerArchetype = player.HasArchetype.getArchetype();
     const initialiserScript = require(`./Scripts/InitialArchetypeSetups/${playerArchetype}`).default
 
-    console.log(initialiserScript)
     initialiserScript(player);
 }

@@ -20,13 +20,15 @@ class CharacterSheet extends Component {
 
                 <div className='box'>
                     {Object.keys(bodyParts).map(bodyPartName => {
-                        return renderBodyPartInformation(bodyParts[bodyPartName], bodyPartName)
+                        return <div key={Uuid()}>
+                            {renderBodyPartInformation(bodyParts[bodyPartName], bodyPartName)}
+                        </div>
                     })}
                 </div>
 
                 <p><strong>powers</strong></p>
                 {this.props.player.HasPowers.getPowers().map(power => {
-                    return <div>
+                    return <div key={Uuid()}>
                         <strong>{power.name}</strong>
                     </div>
                 })}
@@ -48,7 +50,7 @@ const renderBodyPartInformation = (bodyPart, bodyPartName) => {
 
     // if the body part is holding something, or wearing something, write it out
     if ((bodyPart.isHolding && bodyPart.isHolding.length >= 1) || (bodyPart.isWearing && bodyPart.isWearing.length >= 1)) {
-        return <p>your <strong>{bodyPartName}</strong> is holding your {Grammar.listItems(bodyPart.isHolding)}</p>
+        return <p>your <strong>{bodyPartName}</strong> is {Grammar.formSecondPersonFullItemsSentence(bodyPart.isHolding, bodyPart.isWearing)}</p>
     }
 }
 

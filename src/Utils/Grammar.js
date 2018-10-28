@@ -26,7 +26,6 @@ const listItems = (items = []) => {
             return items.map(i => i.name).join(' and ')
         default:
             const lastItem = items.pop();
-            // three or more should list them all except the last one, then "and" the last one
             return `${items.map(i => i.name).join(', ')} and ${lastItem.name}`;
     }
 }
@@ -35,14 +34,26 @@ const formSecondPersonIsHoldingSentence = items => {
     return `is holding your ${listItems(items)}`
 }
 
-const formSecondPersonIsWearingSentence = items => {
-    return `is wearing your ${listItems(items)}`
+const formSecondPersonIsWearingSentence = (items, isSecondaryClause = false) => {
+    return `${!isSecondaryClause ? 'is ' : ''}wearing your ${listItems(items)}`
 }
 
+const formSecondPersonFullItemsSentence = (isHoldingItems = [], isWearingItems = []) => {
+    if (isHoldingItems.length >= 1 && isWearingItems.length <= 0) {
+        return formSecondPersonIsHoldingSentence(isHoldingItems);
+    }
+    if (isWearingItems.length >= 1 && isHoldingItems.length <= 0) {
+        return formSecondPersonIsWearingSentence(isWearingItems);
+    }
+    if (isHoldingItems.length >= 1 && isWearingItems.length >= 1) {
+        return `${formSecondPersonIsHoldingSentence(isHoldingItems)} and ${formSecondPersonIsWearingSentence(isWearingItems, true)}`;
+    }
+}
 
 export default {
     getRandomVerbForDamageType,
     listItems,
     formSecondPersonIsHoldingSentence,
-    formSecondPersonIsWearingSentence
+    formSecondPersonIsWearingSentence,
+    formSecondPersonFullItemsSentence
 }
