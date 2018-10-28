@@ -18,7 +18,7 @@ class HasBody {
             getBodyPartsOfType: type => {
                 return Object.keys(_.pickBy(this.body.bodyParts, bodyPart => {
                     return bodyPart.types.includes(type);
-                }))
+                }));
             },
             equipItemIntoBodypart: (item, bodyPartName) => {
                 this.body.bodyParts[bodyPartName].isHolding.push(_.clone(item))
@@ -27,16 +27,29 @@ class HasBody {
             unequipItem: item => {
                 console.log(`unequipping ${item.name}`);
             },
-            getBodyPartHoldingItem: item => {
-                const bodyPartNameHoldingItem = Object.keys(this.body.bodyParts).find(bodyPartName => { // find the first bodypartname...
-                    return _.get(this.body.bodyParts, `[${bodyPartName}].isHolding`, []).some(itemBeingHeld => {
-                    // return this.body.bodyParts[bodyPartName].isHolding && this.body.bodyParts[bodyPartName].isHolding.some(itemBeingHeld => {
-
-                        itemBeingHeld.id === item.id;
+            getBodyPartHoldingItem: itemId => {
+                let bodyPartHoldingItem = null;
+                let bodyPartNameMatch = null
+                Object.keys(this.body.bodyParts).forEach(bodyPartName => {
+                    const isHoldingItems = _.defaultTo(this.body.bodyParts[bodyPartName].isHolding, []);
+                    const isBodyPartHoldingItem = isHoldingItems.some(item => {
+                        return item.id === itemId;
                     });
+
+                    if (isBodyPartHoldingItem) {
+                        bodyPartNameMatch = bodyPartName
+                        bodyPartHoldingItem = this.body.bodyParts[bodyPartName];
+                    }
                 });
 
-                console.log('bodyPartNameHoldingItem', bodyPartNameHoldingItem);
+                if (bodyPartNameMatch === null && bodyPartHoldingItem === null) {
+                    return null;
+                }
+
+                return {
+                    bodyPartName: bodyPartNameMatch,
+                    bodyPart: bodyPartHoldingItem
+                };
             },
         }
 
