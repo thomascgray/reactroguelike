@@ -4,7 +4,7 @@ class HasBody {
     constructor(bodyType, size, bodyParts = []) {
         this.body = {
             size,
-            bodyParts: require(`./BodyPartKits/${bodyType}`).default
+            bodyParts: _.cloneDeep(require(`./BodyPartKits/${bodyType}`).default)
         }
 
         this.functions = {
@@ -29,7 +29,8 @@ class HasBody {
             },
             getBodyPartHoldingItem: itemId => {
                 let bodyPartHoldingItem = null;
-                let bodyPartNameMatch = null
+                let bodyPartNameMatch = null;
+
                 Object.keys(this.body.bodyParts).forEach(bodyPartName => {
                     const isHoldingItems = _.defaultTo(this.body.bodyParts[bodyPartName].isHolding, []);
                     const isBodyPartHoldingItem = isHoldingItems.some(item => {
@@ -54,15 +55,14 @@ class HasBody {
         }
 
         this.functions.equipItem = (item, bodyPartName) => {
-            const bodyPartHoldingItem = this.functions.getBodyPartHoldingItem(item);
-            console.log('bodyPartHoldingItem', bodyPartHoldingItem);
-            // if the item is already equipped on the character somewhere, unequip it
-            // if (this.function.getBodyPartHoldingItem(item)) {
-            //     // unequip the item before we re-equip it
-            //     this.unequipItem(item);
-            // }
+            const bodyPartHoldingItem = this.functions.getBodyPartHoldingItem(item.id);
+            
+            if (bodyPartHoldingItem) {
+                LogMessage(`you are already holding ${item.name}`)
+                return;
+            }
             this.functions.equipItemIntoBodypart(item, bodyPartName);
-            // LogMessage(`you grab your ${item.name} with your ${bodyPartName}`)
+            LogMessage(`you grab your ${item.name} with your ${bodyPartName}`)
         };
 
         return;

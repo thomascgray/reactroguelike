@@ -38,7 +38,7 @@ class Player {
 
   getActiveMeleeWeapon () {
     // TODO based on what handed you are and whats equipped, hit them with whats in your hand
-    return this.HasBody.getBodyParts()['right hand'].isHolding;
+    return this.HasBody.getBodyParts()['right hand'].isHolding[0];
   }
 
   setActiveMeleeWeapon (itemId) {

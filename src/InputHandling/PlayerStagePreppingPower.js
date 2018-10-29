@@ -18,10 +18,8 @@ export default function (keyEvent, stageContext, dungeon) {
             break;
     }
 
-    if (_.includes(keyMap.MOVEMENTKEYS, keyEvent.keyCode)) {
+    if (_.includes(keyMap.MOVEMENT_KEYS, keyEvent.keyCode)) {
         unPrepPower(stageContext);
-
-        // do a regular movement
         PlayerStageDefault(keyEvent, stageContext, dungeon);
     }
 }
