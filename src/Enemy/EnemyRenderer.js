@@ -11,7 +11,7 @@ class Enemy extends Component {
 
     getImage () {
         const images = {
-            skeleton: require('../Assets/td_monsters/td_monsters_skeleton_lich_u1.png'),
+            skeleton: require('../Assets/td_monsters/td_monsters_skeleton_warrior_u1.png'),
             goblin: require('../Assets/td_monsters/td_monsters_goblin_captain_r1.png'),
         }
 

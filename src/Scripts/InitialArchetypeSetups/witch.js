@@ -1,4 +1,4 @@
-import { Weapon, Armour } from '../../Item/Item'
+import { Weapon, Armour } from '../../Item/ItemFactories'
 
 export default function (player) {
     player.HasInventory.addItem(Weapon({

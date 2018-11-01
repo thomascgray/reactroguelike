@@ -58,9 +58,10 @@ class HasBody {
             const bodyPartHoldingItem = this.functions.getBodyPartHoldingItem(item.id);
             
             if (bodyPartHoldingItem) {
-                LogMessage(`you are already holding ${item.name}`)
+                LogMessage(`you are already holding your *${item.name}*`)
                 return;
             }
+
             this.functions.equipItemIntoBodypart(item, bodyPartName);
             LogMessage(`you grab your ${item.name} with your ${bodyPartName}`)
         };
