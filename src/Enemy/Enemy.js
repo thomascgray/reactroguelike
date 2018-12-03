@@ -7,7 +7,7 @@ import IsCollidable from '../Behaviours/IsCollidable'
 
 import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
 
-class EnemyEntity {
+class Enemy {
   constructor({ position, hp = 3, archetype, isCollidable = true }) {
     this.behaviours = [
       new HasInventory(),
@@ -26,4 +26,4 @@ class EnemyEntity {
   }
 }
 
-export default EnemyEntity;
+export default Enemy;

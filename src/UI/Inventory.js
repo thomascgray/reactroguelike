@@ -7,12 +7,14 @@ class Inventory extends Component {
         this.props.player.setActiveMeleeWeapon(i.id)
     }
 
-    getBodyPartsThatCanHold () {
-        const bodyParts = Object.keys(this.props.player.HasBody.getBodyParts()).filter(bodyPartName => {
-            return this.props.player.HasBody.getBodyParts()[bodyPartName].canHold;
-        });
-        return bodyParts;
-    }
+    // getBodyPartsThatCanHold () {
+    //     const bodyParts = Object.keys(this.props.player.HasBody.getBodyParts()).filter(bodyPartName => {
+    //         return this.props.player.HasBody.getBodyParts()[bodyPartName].canHold;
+    //     });
+    //     return bodyParts;
+    // }
+
+    // getBodyParts
 
     equipItem(item, bodyPartName) {
         this.props.player.HasBody.equipItem(item, bodyPartName);

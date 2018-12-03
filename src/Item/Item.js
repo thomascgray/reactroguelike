@@ -1,30 +1,26 @@
 import Uuid from 'uuid/v4'
 
-const BaseItem = (props) => {
-    const baseItem = {
-        id: Uuid(),
-        isHoldableBy: ['hand'],
+/**
+ * 
+ */
+class Item {
+    id
+    name
+    type
+    isHoldableBy = [];
+    damage
+    damageType
+    ac
+
+    constructor () {
+        this.id = Uuid();
+        this.name = 'item'
+        this.type = 'weapon';
+        this.isHoldableBy.push('hand');
+        this.damage = '1d2';
+        this.damageType = 'bludgeoning'
+        this.ac = 0;
     }
-    return {
-        ...baseItem,
-        ...props
-    }
 }
 
-const Weapon = (props) => {
-    const type = 'weapon';
-    props.type = type;
-    return BaseItem(props)
-}
-
-const Armour = (props) => {
-    const type = 'armour';
-    props.type = 'armour'
-    return BaseItem(props)
-}
-
-export {
-    BaseItem,
-    Weapon,
-    Armour
-}
+export default Item;

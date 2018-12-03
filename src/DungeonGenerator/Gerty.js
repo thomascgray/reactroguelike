@@ -58,7 +58,7 @@ const fillCrossSectionWalls = (dungeonTemplate, map) => {
 const patchWalls = (dungeonTemplate, map) => {
     for(let y = 0; y < dungeonTemplate.mapWidth; y++) {
         for(let x = 0; x < dungeonTemplate.mapHeight; x++) {
-            if (map[x][y] === 1 && map[x][y + 1] === 0) {
+            if (map[x][y] === 1 && map[x][y + 1] != 1) {
                 map[x][y] = 2;
             }
         }
@@ -145,7 +145,8 @@ const generateRoomData = (dungeonTemplate, map, roomDirection) => {
             break;
     }
 
-    const roomTemplateId = Random.integer(1, 4);
+    // const roomTemplateId = Random.integer(1, 4);
+    const roomTemplateId = 6 // Random.integer(1, 4);
     const template = _.cloneDeep(require(`../SectionTemplates/${roomTemplateId}.json`))
 
     if (!template.enemies) {
@@ -155,6 +156,31 @@ const generateRoomData = (dungeonTemplate, map, roomDirection) => {
         template.stageProps = []
     }
 
+    // change the real map to be affected by the template map
+    // but find anything that isnt a number and match it to the stage props or enemies
+    for(let x = 0; x < 7; x++) {
+        for(let y = 0; y < 7; y++) {
+            if (typeof template.map[y][x] === "string") {
+                // its a sub
+                // floor under subs is always a normal floor
+
+                const thing = template.placeholders[template.map[y][x]]
+                if (thing.placeholder_type === "enemy") {
+                    thing.position = {
+                        x,
+                        y
+                    }
+                    template.enemies.push(thing)
+                }
+
+                map[x + xoffset][y + yoffset] = 0
+            } else {
+                map[x + xoffset][y + yoffset] = template.map[y][x]
+            }
+        }
+    }
+
+    // get the enemies, and transform their positions
     const enemies = template.enemies.map(enemy => {
         enemy.position.x += xoffset;
         enemy.position.y += yoffset;
@@ -165,6 +191,7 @@ const generateRoomData = (dungeonTemplate, map, roomDirection) => {
         });
     });
 
+    // get the stage props, and transform their positions
     const stageProps = template.stageProps.map(stageProp => {
         stageProp.position.x += xoffset;
         stageProp.position.y += yoffset;
@@ -174,14 +201,6 @@ const generateRoomData = (dungeonTemplate, map, roomDirection) => {
             archetype: stageProp.archetype
         });
     });
-
-    // change the real map to be affected by the template map
-    // but find anything that isnt a number and match it to the stage props or enemies
-    for(let y = 0; y < dungeonTemplate.crossSectionX - 1; y++) {
-        for(let x = 0; x < dungeonTemplate.crossSectionY - 1; x++) {
-            map[x + xoffset][y + yoffset] = template.map[y][x]
-        }
-    }
 
     return {
         stageObjects: [...enemies, ...stageProps],
