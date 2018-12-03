@@ -9,6 +9,7 @@ export default function (keyEvent, stageContext, dungeon) {
     const uiState = stageContext.state.ui;
     let hasMoved = false;
     let newDirection;
+    let power
 
     switch (keyEvent.keyCode) {
         case keyMap.LEFT:
@@ -36,12 +37,26 @@ export default function (keyEvent, stageContext, dungeon) {
             stageContext.setState({ ui: uiState })
             break;
         case keyMap.NUMBER_ONE:
-            stageContext.setState({
-                inputMode: 'playerStagePreppingPower',
-                isPlayerPreppingPower: true,
-                spellSlotPrepped: 1,
-                preppedPower: preparePower(window.player.HasPowers.getPowers()[0])
-            })
+            power = window.player.HasPowers.getPowers()[0];
+            if (power) {
+                stageContext.setState({
+                    inputMode: `power-${power.type}`,
+                    isPlayerPreppingPower: true,
+                    spellSlotPrepped: 1,
+                    preppedPower: preparePower(power)
+                })
+            }
+            break;
+        case keyMap.NUMBER_TWO:
+            power = window.player.HasPowers.getPowers()[1];
+            if (power) {
+                stageContext.setState({
+                    inputMode: `power-${power.type}`,
+                    isPlayerPreppingPower: true,
+                    spellSlotPrepped: 1,
+                    preppedPower: preparePower(power)
+                })
+            }
             break;
         default:
             break;

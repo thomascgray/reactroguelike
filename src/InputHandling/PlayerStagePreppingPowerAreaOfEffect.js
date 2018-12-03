@@ -18,6 +18,7 @@ export default function (keyEvent, stageContext, dungeon) {
             break;
     }
 
+    // break out of 
     if (_.includes(keyMap.MOVEMENT_KEYS, keyEvent.keyCode)) {
         unPrepPower(stageContext);
         PlayerStageDefault(keyEvent, stageContext, dungeon);

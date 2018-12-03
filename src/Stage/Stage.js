@@ -14,7 +14,7 @@ import Log from '../Log/Log'
 
 import PowersPrepRenderer from '../Powers/PowersPrepRenderer'
 import PlayerStageDefault from '../InputHandling/PlayerStageDefault'
-import PlayerStagePreppingPower from '../InputHandling/PlayerStagePreppingPower'
+import PlayerStagePreppingPowerAreaOfEffect from '../InputHandling/PlayerStagePreppingPowerAreaOfEffect'
 
 const dungeon = generate({
     sectionWidth: 7,
@@ -67,11 +67,12 @@ class Stage extends Component {
 
     handleKeyDown(keyEvent) {
         keyEvent = keyEvent || window.event;
-        
+        const preppedPower = this.state.preppedPower;
+
         if (this.state.inputMode === 'playerStageDefault') {
             PlayerStageDefault(keyEvent, this, dungeon);
-        } else if (this.state.inputMode === 'playerStagePreppingPower') {
-            PlayerStagePreppingPower(keyEvent, this, dungeon);
+        } else if (preppedPower && this.state.inputMode === `power-${preppedPower.type}`) {
+            PlayerStagePreppingPowerAreaOfEffect(keyEvent, this, dungeon);
         }
 
         this.setState({

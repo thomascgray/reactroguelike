@@ -19,14 +19,19 @@ export default function (player) {
         isHoldableBy: ['body'],
     }))
 
-    const power = {
+    player.HasPowers.addPower({
         name: 'Mind Blast',
         type: 'areaOfEffect',
         shape: 'square',
         range: 2,
         damage: '1d20',
         source: 'player',
-    }
+    });
 
-    player.HasPowers.addPower(power);
+    player.HasPowers.addPower({
+        name: 'Line of Blast',
+        type: 'lineFromPlayer',
+        maxRange: 5,
+        damage: '1d20',
+    });
 }
