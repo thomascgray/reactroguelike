@@ -13,8 +13,8 @@ import CharacterSheet from '../UI/CharacterSheet'
 import Log from '../Log/Log'
 
 import PowersPrepRenderer from '../Powers/PowersPrepRenderer'
-import PlayerStageDefault from '../InputHandling/PlayerStageDefault'
-import PlayerStagePreppingPowerAreaOfEffect from '../InputHandling/PlayerStagePreppingPowerAreaOfEffect'
+
+import KeydownHandler from './KeydownHandler'
 
 const dungeon = generate({
     sectionWidth: 7,
@@ -67,13 +67,8 @@ class Stage extends Component {
 
     handleKeyDown(keyEvent) {
         keyEvent = keyEvent || window.event;
-        const preppedPower = this.state.preppedPower;
-
-        if (this.state.inputMode === 'playerStageDefault') {
-            PlayerStageDefault(keyEvent, this, dungeon);
-        } else if (preppedPower && this.state.inputMode === `power-${preppedPower.type}`) {
-            PlayerStagePreppingPowerAreaOfEffect(keyEvent, this, dungeon);
-        }
+        
+        KeydownHandler(this, keyEvent, dungeon);
 
         this.setState({
             player: window.player.toState(),
@@ -106,7 +101,6 @@ class Stage extends Component {
                 {this.state.isPlayerPreppingPower && <PowersPrepRenderer power={this.state.preppedPower} />}
 
                 <PlayerRenderer player={this.state.player} />
-
 
                 <StageObjectsRenderer stageObjects={this.state.stageObjects} />
             </div>

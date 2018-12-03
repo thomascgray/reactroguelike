@@ -2,7 +2,10 @@ import _ from 'lodash'
 import { LogMessage } from '../Log/LogActions'
 import PlayerEnemyCollision from './PlayerEnemyCollision'
 export default (player, stageObject) => {
-    if (stageObject.constructor.name === 'EnemyEntity') {
+
+    console.log('stageObject.constructor.name', stageObject.constructor.name);
+
+    if (stageObject.constructor.name === 'Enemy') {
         return PlayerEnemyCollision(player, stageObject)
     }
 

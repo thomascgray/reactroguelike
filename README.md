@@ -2,6 +2,22 @@
 
 its a roguelike made in react. incomprehensibly WIP
 
+
+# start
+
+`npm i`
+
+`npm start`
+
+# storybook
+
+theres a storybook setup for showing off different components
+
+you can run it with
+
+`npm run storybook`
+
+
 # glossary
 
 
