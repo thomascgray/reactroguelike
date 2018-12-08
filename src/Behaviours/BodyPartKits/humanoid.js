@@ -46,11 +46,13 @@ export default {
         types: ['gripPrimary', 'canGrip', 'canWear', 'hand'],
         isHolding: [],
         isWearing: [],
+        holdCapacity: 1,
     },
     "right hand" : {
         types: ['gripPrimary', 'canGrip', 'canWear', 'hand'],
         isHolding: [],
         isWearing: [],
+        holdCapacity: 1,
     },
     "left arm" : {
         types: ['canWear', 'arm'],

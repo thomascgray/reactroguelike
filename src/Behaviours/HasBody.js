@@ -15,6 +15,9 @@ class HasBody {
             getBodyParts: () => {
                 return this.body.bodyParts;
             },
+            getBodyPart: bodyPartName => {
+                return this.body.bodyParts[bodyPartName];
+            },
             getBodyPartsOfType: type => {
                 return Object.keys(_.pickBy(this.body.bodyParts, bodyPart => {
                     return bodyPart.types.includes(type);
@@ -56,6 +59,12 @@ class HasBody {
 
         this.functions.equipItem = (item, bodyPartName) => {
             const bodyPartHoldingItem = this.functions.getBodyPartHoldingItem(item.id);
+            const bodyPart = this.functions.getBodyPart(bodyPartName);
+
+            if (bodyPart.isHolding.length + 1 > bodyPart.holdCapacity) {
+                LogMessage(`you cannot hold any more items in your ${bodyPartName}`)
+                return;
+            }
             
             if (bodyPartHoldingItem) {
                 LogMessage(`you are already holding your *${item.name}*`)

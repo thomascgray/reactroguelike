@@ -7,6 +7,12 @@ export default function (player) {
         damageType: 'bludgeoning'
     }))
 
+    player.HasInventory.addItem(Weapon({
+        name: 'dagger',
+        damage: '1d4',
+        damageType: 'piercing'
+    }))
+
     player.HasInventory.addItem(Armour({
         name: 'witch\'s hat',
         ac: '0',
