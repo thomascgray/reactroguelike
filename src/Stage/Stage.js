@@ -94,7 +94,7 @@ class Stage extends Component {
             </div>
             
             <div className='stage' id='stage'>
-                {this.state.ui.inventory && <Inventory player={window.player} items={this.state.player.HasInventory} closeInventory = {() => this.closeInventory()}/>}
+                {this.state.ui.inventory && <Inventory player={window.player} closeInventory={() => this.closeInventory()}/>}
                 
                 <DungeonRenderer dungeon={dungeon} />
 

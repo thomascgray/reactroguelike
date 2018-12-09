@@ -25,6 +25,7 @@ class HasBody {
             },
             equipItemIntoBodypart: (item, bodyPartName) => {
                 this.body.bodyParts[bodyPartName].isHolding.push(_.clone(item))
+                console.log('this.body.bodyParts', this.body.bodyParts);
                 return this.body.bodyParts;
             },
             unequipItem: item => {
@@ -74,8 +75,18 @@ class HasBody {
             this.functions.equipItemIntoBodypart(item, bodyPartName);
             LogMessage(`you grab your ${item.name} with your ${bodyPartName}`)
         };
-
-        return;
+      
+        this.functions.getWornItems = () => {
+            return _.flatten(_.map(this.functions.getBodyParts(), bodyPart => {
+                return bodyPart.isWearing ? bodyPart.isWearing : []
+            }));
+        }
+      
+        this.functions.getHeldItems = () => {
+            return _.flatten(_.map(this.functions.getBodyParts(), bodyPart => {
+                return bodyPart.isHolding ? bodyPart.isHolding : []
+            }));
+        }
     }
 
     toState() {

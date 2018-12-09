@@ -25,7 +25,9 @@ class HasInventory {
   }
 
   toState () {
-      return this.items;
+      return {
+          items: this.items
+      }
   }
 }
 

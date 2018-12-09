@@ -41,6 +41,14 @@ class Player {
     return this.HasBody.getBodyParts()['right hand'].isHolding[0];
   }
 
+  getUnequippedItems () {
+    const heldItems = this.HasBody.getHeldItems();
+    const wornItems = this.HasBody.getWornItems();
+
+    console.log('heldItems', heldItems);
+    console.log('wornItems', wornItems);
+  }
+
   setActiveMeleeWeapon (itemId) {
     this.HasInventory.getItems().forEach(i => {
       this.appendItemDataById(i.id, {

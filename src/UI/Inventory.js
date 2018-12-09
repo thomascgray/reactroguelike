@@ -2,19 +2,12 @@ import React, { Component } from 'react';
 import './UI.css'
 import './Inventory.css'
 import Uuid from 'uuid/v4'
+import PropTypes from 'prop-types';
+
 class Inventory extends Component {
     makeActive (i) {
         this.props.player.setActiveMeleeWeapon(i.id)
     }
-
-    // getBodyPartsThatCanHold () {
-    //     const bodyParts = Object.keys(this.props.player.HasBody.getBodyParts()).filter(bodyPartName => {
-    //         return this.props.player.HasBody.getBodyParts()[bodyPartName].canHold;
-    //     });
-    //     return bodyParts;
-    // }
-
-    // getBodyParts
 
     equipItem(item, bodyPartName) {
         this.props.player.HasBody.equipItem(item, bodyPartName);
@@ -47,14 +40,32 @@ class Inventory extends Component {
         </div>
     }
 
+    renderHeldItem(item) {
+        console.log('item', item);
+        return <div>
+            
+        </div>
+    }
+
     render() {
+        const unequippedItems = this.props.player.getUnequippedItems();
+        const heldItems = this.props.player.HasBody.getHeldItems();
+        const wornItems = this.props.player.HasBody.getWornItems();
+
         return (
             <div className='ui-widget'>
                 <h3>Inventory</h3>
-                {this.props.items.map(i => <div key={i.id}>{this.renderItem(i)}</div>)}
+                {heldItems.map(i => <div key={i.id}>{this.renderHeldItem(i)}</div>)}
+
+
+                {this.props.player.HasInventory.getItems().map(i => <div key={i.id}>{this.renderItem(i)}</div>)}
             </div>
         );
     }
 }
+
+Inventory.propTypes = {
+    player: PropTypes.object,
+};
 
 export default Inventory;
