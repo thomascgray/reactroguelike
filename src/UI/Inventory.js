@@ -14,6 +14,11 @@ class Inventory extends Component {
         this.props.closeInventory();
     }
 
+    unequipItem(item, bodyPartName) {
+        this.props.player.HasBody.unequipItem(item);
+        this.props.closeInventory();
+    }
+
     renderItem(item) {
         //TODO do different things depending on item type e.g not all items are equippable in player hands
         return <div key={item.id}>
@@ -40,11 +45,11 @@ class Inventory extends Component {
     }
 
     renderHeldItem(bodyPartName, items) {
-        console.log('bodyPartName', bodyPartName);
-        console.log('items', items);
-
         return <div>
             your {bodyPartName} {Grammar.formSecondPersonIsHoldingSentence(items)}
+            {items.map(item => {
+                return <button onClick={() => this.unequipItem(item)}>Unequip {item.name}</button>
+            })}
         </div>
     }
 
@@ -57,6 +62,7 @@ class Inventory extends Component {
             <div className='ui-widget'>
                 <h3>Inventory</h3>
                 {Object.keys(heldItems).map(bodyPartName => <div key={bodyPartName}>{this.renderHeldItem(bodyPartName, heldItems[bodyPartName])}</div>)}
+                
                 {Object.getOwnPropertyNames(heldItems).length >= 1 && <hr />}
 
                 {unequippedItems.map(i => <div key={i.id}>{this.renderItem(i)}</div>)}

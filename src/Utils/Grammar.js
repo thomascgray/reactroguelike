@@ -2,6 +2,12 @@ const Random = require("random-js")();
 
 const getRandomVerbForDamageType = damageType => {
     switch (damageType) {
+        case 'piercing':
+            return Random.pick([
+                'cut',
+                'stab',
+                'pierce',
+            ]);
         case 'bludgeoning':
         case 'unarmed':
             return Random.pick([

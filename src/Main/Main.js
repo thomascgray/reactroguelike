@@ -36,7 +36,7 @@ class Main extends React.Component {
 
                 {!this.state.isInStage && 
                     <div>
-                        <h1>The Real Treasure Was The Bullshit We Did Along The Way</h1>
+                        <h1>reactroguelike thing</h1>
         
                         <hr />
         

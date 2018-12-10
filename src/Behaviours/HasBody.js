@@ -27,9 +27,6 @@ class HasBody {
                 this.body.bodyParts[bodyPartName].isHolding.push(_.clone(item))
                 return this.body.bodyParts;
             },
-            unequipItem: item => {
-                console.log(`unequipping ${item.name}`);
-            },
             getBodyPartHoldingItem: itemId => {
                 let bodyPartHoldingItem = null;
                 let bodyPartNameMatch = null;
@@ -116,6 +113,20 @@ class HasBody {
                 items = items.concat(bodyPart.isWearing ? bodyPart.isWearing : [])
                 return items;
             }));
+        }
+
+        this.functions.unequipItem = item => {
+            const bodyPartHoldingItem = this.functions.getBodyPartHoldingItem(item.id);
+
+            bodyPartHoldingItem.bodyPart.isHolding = bodyPartHoldingItem.bodyPart.isHolding.filter(i => {
+                i.id != item.id
+            });
+
+            bodyPartHoldingItem.bodyPart.isWearing = bodyPartHoldingItem.bodyPart.isWearing.filter(i => {
+                i.id != item.id
+            });
+
+            LogMessage(`you put your ${item.name} away`)
         }
     }
 

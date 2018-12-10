@@ -43,4 +43,24 @@ describe('Player - getUnequippedItems', () => {
         expect(unequippedItemIds.includes(itemB.id)).toBeTruthy()
         expect(unequippedItemIds.includes(itemC.id)).toBeTruthy()
     })
+
+    it('should be empty array when 2 items and both equipped', () => {
+        const p = new Player({
+            position: {x: 0, y: 0}
+        });
+
+        const itemA = Weapon({ name: 'axe' })
+        const itemB = Weapon({ name: 'sword' })
+
+        p.HasInventory.addItem(itemA);
+        p.HasInventory.addItem(itemB);
+
+        p.HasBody.equipItemIntoBodypart(itemA, 'left hand');
+        p.HasBody.equipItemIntoBodypart(itemB, 'right hand');
+
+        const unequippedItems = p.getUnequippedItems();
+
+        expect(Array.isArray(unequippedItems)).toBeTruthy();
+        expect(unequippedItems.length).toEqual(0);
+    })
 })
