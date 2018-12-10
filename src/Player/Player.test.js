@@ -1,7 +1,7 @@
 import Player from './Player'
 import { Weapon } from '../Item/ItemFactories'
 
-describe.only('Player - getUnequippedItems', () => {
+describe('Player - getUnequippedItems', () => {
     it('should be 2 when inventory has 2 items and none equipped', () => {
         const p = new Player({
             position: {x: 0, y: 0}
