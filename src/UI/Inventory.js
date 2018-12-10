@@ -3,7 +3,7 @@ import './UI.css'
 import './Inventory.css'
 import Uuid from 'uuid/v4'
 import PropTypes from 'prop-types';
-
+import Grammar from '../Utils/Grammar';
 class Inventory extends Component {
     makeActive (i) {
         this.props.player.setActiveMeleeWeapon(i.id)
@@ -40,25 +40,27 @@ class Inventory extends Component {
         </div>
     }
 
-    renderHeldItem(item) {
-        console.log('item', item);
+    renderHeldItem(bodyPartName, items) {
+        console.log('bodyPartName', bodyPartName);
+        console.log('items', items);
+
         return <div>
-            
+            your {bodyPartName} {Grammar.formSecondPersonIsHoldingSentence(items)}
         </div>
     }
 
     render() {
         const unequippedItems = this.props.player.getUnequippedItems();
-        const heldItems = this.props.player.HasBody.getHeldItems();
-        const wornItems = this.props.player.HasBody.getWornItems();
+        const heldItems = this.props.player.HasBody.getHeldItemsByBodyPartName();
+        // const wornItems = this.props.player.HasBody.getWornItems();
 
         return (
             <div className='ui-widget'>
                 <h3>Inventory</h3>
-                {heldItems.map(i => <div key={i.id}>{this.renderHeldItem(i)}</div>)}
+                {Object.keys(heldItems).map(bodyPartName => <div key={bodyPartName}>{this.renderHeldItem(bodyPartName, heldItems[bodyPartName])}</div>)}
 
 
-                {this.props.player.HasInventory.getItems().map(i => <div key={i.id}>{this.renderItem(i)}</div>)}
+                {unequippedItems.map(i => <div key={i.id}>{this.renderItem(i)}</div>)}
             </div>
         );
     }
