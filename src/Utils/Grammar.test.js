@@ -1,5 +1,5 @@
 import Grammar from './Grammar';
-const { Weapon } = require('../Item/Item')
+const { Weapon } = require('../Item/ItemFactories')
 
 describe('Grammar - listItems', () => {
   test('1 item', () => {

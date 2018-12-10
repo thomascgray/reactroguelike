@@ -11,6 +11,13 @@ import _ from 'lodash';
 import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
 
 class Player {
+  /**
+   * 
+   * @param {Object} object
+   * @param {Object} object.position
+   * @param {number} object.position.x
+   * @param {number} object.position.y
+   */
   constructor({ position, hp = 10, archetype, powers = [] }) {
     this.behaviours = [
       new HasInventory(),
@@ -42,11 +49,14 @@ class Player {
   }
 
   getUnequippedItems () {
-    const heldItems = this.HasBody.getHeldItems();
-    const wornItems = this.HasBody.getWornItems();
+    const equippedItems = this.HasBody.getEquippedItems();
+    const equippedItemIds = equippedItems.map(i => i.id)
 
-    console.log('heldItems', heldItems);
-    console.log('wornItems', wornItems);
+    const allItems = this.HasInventory.getItems();
+
+    return allItems.filter(i => {
+      return !equippedItemIds.includes(i.id)
+    })
   }
 
   setActiveMeleeWeapon (itemId) {

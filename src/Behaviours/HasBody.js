@@ -25,7 +25,6 @@ class HasBody {
             },
             equipItemIntoBodypart: (item, bodyPartName) => {
                 this.body.bodyParts[bodyPartName].isHolding.push(_.clone(item))
-                console.log('this.body.bodyParts', this.body.bodyParts);
                 return this.body.bodyParts;
             },
             unequipItem: item => {
@@ -76,15 +75,46 @@ class HasBody {
             LogMessage(`you grab your ${item.name} with your ${bodyPartName}`)
         };
       
-        this.functions.getWornItems = () => {
-            return _.flatten(_.map(this.functions.getBodyParts(), bodyPart => {
-                return bodyPart.isWearing ? bodyPart.isWearing : []
-            }));
+        this.functions.getWornItemsByBodyPartName = () => {
+            const bodyParts = this.functions.getBodyParts();
+            const wornItems = {}
+
+            Object.keys(bodyParts).forEach(bodyPartName => {
+                const bodyPart = bodyParts[bodyPartName];
+                if (bodyPart.isWearing && bodyPart.isWearing.length >= 1) {
+                    if (wornItems[bodyPartName] == undefined) {
+                        wornItems[bodyPartName] = [];
+                    }
+                    wornItems[bodyPartName] = wornItems[bodyPartName].concat(bodyPart.isWearing)
+                }
+            })
+
+            return wornItems;
         }
       
-        this.functions.getHeldItems = () => {
+        this.functions.getHeldItemsByBodyPartName = () => {
+            const bodyParts = this.functions.getBodyParts();
+            const heldItems = {}
+
+            Object.keys(bodyParts).forEach(bodyPartName => {
+                const bodyPart = bodyParts[bodyPartName];
+                if (bodyPart.isHolding && bodyPart.isHolding.length >= 1) {
+                    if (heldItems[bodyPartName] == undefined) {
+                        heldItems[bodyPartName] = [];
+                    }
+                    heldItems[bodyPartName] = heldItems[bodyPartName].concat(bodyPart.isHolding)
+                }
+            })
+
+            return heldItems;
+        }
+
+        this.functions.getEquippedItems = () => {
             return _.flatten(_.map(this.functions.getBodyParts(), bodyPart => {
-                return bodyPart.isHolding ? bodyPart.isHolding : []
+                let items = []
+                items = items.concat(bodyPart.isHolding ? bodyPart.isHolding : [])
+                items = items.concat(bodyPart.isWearing ? bodyPart.isWearing : [])
+                return items;
             }));
         }
     }
