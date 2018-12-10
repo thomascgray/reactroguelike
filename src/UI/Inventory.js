@@ -32,7 +32,6 @@ class Inventory extends Component {
     }
 
     renderArmour(item) {
-        //TODO replace HasBody.getBodyPartsOfType('hand') with item.isHoldableBy
         return <div>
             <strong>{item.name}</strong> ({item.type})
             {item.isHoldableBy.includes('body') && <button onClick={() => this.equipItem(item, 'body')}>Equip</button>}
@@ -58,7 +57,7 @@ class Inventory extends Component {
             <div className='ui-widget'>
                 <h3>Inventory</h3>
                 {Object.keys(heldItems).map(bodyPartName => <div key={bodyPartName}>{this.renderHeldItem(bodyPartName, heldItems[bodyPartName])}</div>)}
-
+                {Object.getOwnPropertyNames(heldItems).length >= 1 && <hr />}
 
                 {unequippedItems.map(i => <div key={i.id}>{this.renderItem(i)}</div>)}
             </div>
