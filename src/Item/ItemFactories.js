@@ -16,6 +16,7 @@ const Armour = (props) => {
     const item = new Item();
 
     item.type = 'armour';
+    item.equipVerb = 'wear';
 
     Object.keys(props).forEach(itemAttributeName => {
         item[itemAttributeName] = props[itemAttributeName]

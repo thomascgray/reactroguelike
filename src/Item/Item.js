@@ -1,8 +1,5 @@
 import Uuid from 'uuid/v4'
 
-/**
- * 
- */
 class Item {
     id
     name
@@ -11,6 +8,7 @@ class Item {
     damage
     damageType
     ac
+    equipVerb
 
     constructor () {
         this.id = Uuid();
@@ -20,6 +18,7 @@ class Item {
         this.damage = '1d2';
         this.damageType = 'bludgeoning'
         this.ac = 0;
+        this.equipVerb = 'hold';
     }
 }
 

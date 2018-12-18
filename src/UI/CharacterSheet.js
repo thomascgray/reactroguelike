@@ -50,7 +50,7 @@ const renderBodyPartInformation = (bodyPart, bodyPartName) => {
 
     // if the body part is holding something, or wearing something, write it out
     if ((bodyPart.isHolding && bodyPart.isHolding.length >= 1) || (bodyPart.isWearing && bodyPart.isWearing.length >= 1)) {
-        return <p>your <strong>{bodyPartName}</strong> is {Grammar.formSecondPersonFullItemsSentence(bodyPart.isHolding, bodyPart.isWearing)}</p>
+        return <p>your <strong>{bodyPartName}</strong> {Grammar.formSecondPersonFullItemsSentence(bodyPart.isHolding, bodyPart.isWearing)}</p>
     }
 }
 

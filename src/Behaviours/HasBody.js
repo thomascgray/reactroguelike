@@ -27,6 +27,10 @@ class HasBody {
                 this.body.bodyParts[bodyPartName].isHolding.push(_.clone(item))
                 return this.body.bodyParts;
             },
+            equipItemOntoBodypart: (item, bodyPartName) => {
+                this.body.bodyParts[bodyPartName].isWearing.push(_.clone(item))
+                return this.body.bodyParts;
+            },
             getBodyPartHoldingItem: itemId => {
                 let bodyPartHoldingItem = null;
                 let bodyPartNameMatch = null;
@@ -52,24 +56,56 @@ class HasBody {
                     bodyPart: bodyPartHoldingItem
                 };
             },
+            getBodyPartWearingItem: itemId => {
+                let bodyPartWearingItem = null;
+                let bodyPartNameMatch = null;
+
+                Object.keys(this.body.bodyParts).forEach(bodyPartName => {
+                    const isWearingItems = _.defaultTo(this.body.bodyParts[bodyPartName].isWearing, []);
+                    const isBodyPartWearingItem = isWearingItems.some(item => {
+                        return item.id === itemId;
+                    });
+
+                    if (isBodyPartWearingItem) {
+                        bodyPartNameMatch = bodyPartName
+                        bodyPartWearingItem = this.body.bodyParts[bodyPartName];
+                    }
+                });
+
+                if (bodyPartNameMatch === null && bodyPartWearingItem === null) {
+                    return null;
+                }
+
+                return {
+                    bodyPartName: bodyPartNameMatch,
+                    bodyPart: bodyPartWearingItem
+                };
+            },
         }
 
         this.functions.equipItem = (item, bodyPartName) => {
-            const bodyPartHoldingItem = this.functions.getBodyPartHoldingItem(item.id);
             const bodyPart = this.functions.getBodyPart(bodyPartName);
-
-            if (bodyPart.isHolding.length + 1 > bodyPart.holdCapacity) {
-                LogMessage(`you cannot hold any more items in your ${bodyPartName}`)
-                return;
-            }
             
-            if (bodyPartHoldingItem) {
-                LogMessage(`you are already holding your *${item.name}*`)
-                return;
+            if (item.equipVerb === 'hold') {
+                const bodyPartHoldingItem = this.functions.getBodyPartHoldingItem(item.id);
+                if (bodyPart.isHolding.length + 1 > bodyPart.holdCapacity) {
+                    LogMessage(`you cannot hold any more items in your ${bodyPartName}`)
+                    return;
+                }
+                
+                if (bodyPartHoldingItem) {
+                    LogMessage(`you are already holding your *${item.name}*`)
+                    return;
+                }
+    
+                this.functions.equipItemIntoBodypart(item, bodyPartName);
+                LogMessage(`you grab your ${item.name} with your ${bodyPartName}`)
             }
 
-            this.functions.equipItemIntoBodypart(item, bodyPartName);
-            LogMessage(`you grab your ${item.name} with your ${bodyPartName}`)
+            if (item.equipVerb === 'wear') {
+                this.functions.equipItemOntoBodypart(item, bodyPartName);
+                LogMessage(`you put your ${item.name} onto your ${bodyPartName}`)
+            }
         };
       
         this.functions.getWornItemsByBodyPartName = () => {
@@ -116,17 +152,25 @@ class HasBody {
         }
 
         this.functions.unequipItem = item => {
-            const bodyPartHoldingItem = this.functions.getBodyPartHoldingItem(item.id);
+            if (item.equipVerb === 'hold') {
+                const bodyPartHoldingItem = this.functions.getBodyPartHoldingItem(item.id);
+    
+                bodyPartHoldingItem.bodyPart.isHolding = bodyPartHoldingItem.bodyPart.isHolding.filter(i => {
+                    i.id != item.id
+                });
+                
+                LogMessage(`you put your ${item.name} away`)
+            }
 
-            bodyPartHoldingItem.bodyPart.isHolding = bodyPartHoldingItem.bodyPart.isHolding.filter(i => {
-                i.id != item.id
-            });
-
-            bodyPartHoldingItem.bodyPart.isWearing = bodyPartHoldingItem.bodyPart.isWearing.filter(i => {
-                i.id != item.id
-            });
-
-            LogMessage(`you put your ${item.name} away`)
+            if (item.equipVerb === 'wear') {
+                const bodyPartWearingItem = this.functions.getBodyPartWearingItem(item.id);
+    
+                bodyPartWearingItem.bodyPart.isWearing = bodyPartWearingItem.bodyPart.isWearing.filter(i => {
+                    i.id != item.id
+                });
+                
+                LogMessage(`you take off your ${item.name}`)
+            }
         }
     }
 

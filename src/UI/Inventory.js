@@ -39,8 +39,8 @@ class Inventory extends Component {
     renderArmour(item) {
         return <div>
             <strong>{item.name}</strong> ({item.type})
-            {item.isHoldableBy.includes('body') && <button onClick={() => this.equipItem(item, 'body')}>Equip</button>}
-            {item.isHoldableBy.includes('head') && <button onClick={() => this.equipItem(item, 'head')}>Equip</button>}
+            {item.isHoldableBy.includes('body') && <button onClick={() => this.equipItem(item, 'body')}>Equip onto body</button>}
+            {item.isHoldableBy.includes('head') && <button onClick={() => this.equipItem(item, 'head')}>Equip onto head</button>}
         </div>
     }
 
@@ -53,17 +53,27 @@ class Inventory extends Component {
         </div>
     }
 
+    renderWornItem(bodyPartName, items) {
+        return <div>
+            your {bodyPartName} {Grammar.formSecondPersonIsWearingSentence(items)}
+            {items.map(item => {
+                return <button onClick={() => this.unequipItem(item)}>Unequip {item.name}</button>
+            })}
+        </div>
+    }
+
     render() {
         const unequippedItems = this.props.player.getUnequippedItems();
         const heldItems = this.props.player.HasBody.getHeldItemsByBodyPartName();
-        // const wornItems = this.props.player.HasBody.getWornItems();
+        const wornItems = this.props.player.HasBody.getWornItemsByBodyPartName();
 
         return (
             <div className='ui-widget'>
                 <h3>Inventory</h3>
                 {Object.keys(heldItems).map(bodyPartName => <div key={bodyPartName}>{this.renderHeldItem(bodyPartName, heldItems[bodyPartName])}</div>)}
+                {Object.keys(wornItems).map(bodyPartName => <div key={bodyPartName}>{this.renderWornItem(bodyPartName, wornItems[bodyPartName])}</div>)}
                 
-                {Object.getOwnPropertyNames(heldItems).length >= 1 && <hr />}
+                {Object.getOwnPropertyNames(heldItems).length >= 1 || Object.getOwnPropertyNames(wornItems).length >= 1 && <hr />}
 
                 {unequippedItems.map(i => <div key={i.id}>{this.renderItem(i)}</div>)}
             </div>
