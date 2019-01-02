@@ -17,8 +17,6 @@ import PowersPrepRenderer from '../Powers/PowersPrepRenderer'
 import KeydownHandler from './KeydownHandler'
 
 const dungeon = generate({
-    sectionWidth: 7,
-    sectionHeight:7,
     theme: 'crypt',
 });
 
