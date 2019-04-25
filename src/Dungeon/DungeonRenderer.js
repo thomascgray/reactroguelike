@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Tile from '../Tile/TileRenderer'
-import _ from 'lodash';
 import './Dungeon.css'
 import RandomWeightedChoice from 'random-weighted-choice';
 
@@ -9,11 +9,7 @@ const miscTiles = {
 }
 
 class DungeonRenderer extends Component {
-    shouldComponentUpdate (data) {
-        return !_.isEqual(data.dungeon.map, this.props.dungeon.map)
-    }
-
-    getTileImageForValue (theme, value) {
+    getTileImageForValue(theme, value) {
         let image;
         if (value === 0) { // floor
             image = theme.default.floors[RandomWeightedChoice(theme.default.lookupTables.floors)]
@@ -31,15 +27,15 @@ class DungeonRenderer extends Component {
         return image;
     }
 
-    render () {
-        let themeName = this.props.dungeon.theme;
+    render() {
+        let themeName = this.props.theme;
         if (!themeName) {
             themeName = 'crypt';
         }
         let theme = require(`../DungeonThemes/${themeName}`);
 
         return <div className='dungeon'>
-            {this.props.dungeon.map.map((row, rowIndex) => {
+            {this.props.map.map((row, rowIndex) => {
                 return row.map((value, columnIndex) => {
                     return <Tile
                         key={`${rowIndex}-${columnIndex}`}
@@ -52,5 +48,10 @@ class DungeonRenderer extends Component {
         </div>
     }
 }
+
+DungeonRenderer.propTypes = {
+    map: PropTypes.array,
+    theme: PropTypes.string,
+};
 
 export default DungeonRenderer;

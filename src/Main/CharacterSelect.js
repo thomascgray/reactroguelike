@@ -8,6 +8,11 @@ const archetypes = [
         archetype: 'witch',
     },
     {
+        name: 'Druid',
+        image: require('../Assets/archetypes/td_monsters_druid_d1.png'),
+        archetype: 'druid',
+    },
+    {
         name: 'Berserker',
         image: require('../Assets/archetypes/td_monsters_berserker_d1.png'),
         archetype: 'berserker',

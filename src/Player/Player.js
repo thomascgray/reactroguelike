@@ -39,7 +39,8 @@ class Player {
     return {
       name: 'fists',
       type: 'melee',
-      damage: 1
+      damageType: 'unarmed',
+      damage: '1d1'
     }
   }
 

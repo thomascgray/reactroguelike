@@ -39,6 +39,12 @@
   * 
   * isWearing
   *  array of things that this body part is wearing. only body parts that canWear should be wearing things
+  * 
+  * holdCapacity
+  *     the number of items this body part can hold
+  * 
+  * wearCapacity
+  *     the number of items this body part can wear
   */
 
 export default {

@@ -7,11 +7,7 @@ export default (player, enemy) => {
     let activeMeleeWeapon = player.getActiveMeleeWeapon();
 
     if (!activeMeleeWeapon) {
-        activeMeleeWeapon = { // todo get this from somewhere
-            name: 'fists',
-            damage: '1d2',
-            damageType: 'unarmed',
-        }
+        activeMeleeWeapon = player.getUnarmedMeleeWeapon()
     }
 
     PlayerAttackEnemyMelee(activeMeleeWeapon, enemy);

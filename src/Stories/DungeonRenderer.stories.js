@@ -12,51 +12,15 @@ const stories = storiesOf('Dungeon Renderer', module);
 stories.addDecorator(withKnobs);
 
 stories
-    .add('gerty', () => {
+    .add('Gerty', () => {
         const dungeonTemplate = {
-            sectionWidth: number('section width', 7),
-            sectionHeight: number('section height', 7),
             theme: select('theme', ['crypt', 'dungeon'], 'crypt'),
-            doors: {
-                north: true,
-                east: true,
-                south: true,
-                west: true,
-            },
-            doorPlacement: select('door placement', [
-                'center',
-                'random',
-            ], 'random')
         }
-        
-        const dungeon = gertyGenerate(dungeonTemplate);
-        return <div>
-            <DungeonRenderer dungeon={dungeon} />
-            <RefreshButton />
-        </div>
-    })
-    .add('gerty and stage objects', () => {
-        const dungeonTemplate = {
-            sectionWidth: number('section width', 7),
-            sectionHeight: number('section height', 7),
-            theme: select('theme', ['crypt', 'dungeon'], 'crypt'),
-            doors: {
-                north: true,
-                east: true,
-                south: true,
-                west: true,
-            },
-            doorPlacement: select('door placement', [
-                'center',
-                'random',
-            ], 'random')
-        }
-        
-        const dungeon = gertyGenerate(dungeonTemplate);
 
+        const dungeon = gertyGenerate(dungeonTemplate);
+        
         return <div>
-            <DungeonRenderer dungeon={dungeon} />
-            <StageObjectsRenderer stageObjects={dungeon.stageObjects.map(obj => obj.toState())} />
+            <DungeonRenderer map={dungeon.map} theme={dungeon.theme} />
             <RefreshButton />
         </div>
     })

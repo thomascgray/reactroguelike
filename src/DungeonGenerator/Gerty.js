@@ -4,37 +4,56 @@
 import _ from 'lodash';
 import Enemy from '../Enemy/Enemy';
 import StageProp from '../StageProp/StageProp';
-
+import RoomLayouts from './room_layouts'
+import RawMap from './raw_map'
 const Random = require('random-js')();
 
-const fillBoundaryWalls = (dungeonTemplate, map) => {
-  for (let x = 0; x < dungeonTemplate.mapWidth; x += 1) { // top row
-    map[x][0] = 1;
+const sectionWidth = 7;
+const mapWidth = 17;
+const crossSectionX = 8;
+const crossSectionY = 8;
+
+/**
+ * depending on which walls we need to build, fill in some cross sections
+ * @param {*} map
+ * @param {*} wallsToBeBuilt
+ */
+const fillCrossSectionWalls = (map, wallsToBeBuilt) => {
+  if (wallsToBeBuilt.includes('TBF')) {
+    for (let y = 0; y < mapWidth; y += 1) { // left column
+      map[8][y] = 1;
+    }
   }
-  for (let x = 0; x < dungeonTemplate.mapWidth; x += 1) { // bottom row
-    map[x][dungeonTemplate.mapWidth - 1] = 1;
+  if (wallsToBeBuilt.includes('LRF')) {
+    for (let x = 0; x < mapWidth; x += 1) { // left column
+      map[x][8] = 1;
+    }
   }
-  for (let y = 0; y < dungeonTemplate.mapHeight; y += 1) { // left column
-    map[0][y] = 1;
+  if (wallsToBeBuilt.includes('TH')) {
+    for (let y = 0; y < Math.floor(mapWidth / 2); y += 1) { // left column
+      map[8][y] = 1;
+    }
   }
-  for (let y = 0; y < dungeonTemplate.mapHeight; y += 1) { // right column
-    map[dungeonTemplate.mapHeight - 1][y] = 1;
+  if (wallsToBeBuilt.includes('HB')) {
+    for (let y = Math.floor(mapWidth / 2); y < mapWidth; y += 1) { // left column
+      map[8][y] = 1;
+    }
+  }
+  if (wallsToBeBuilt.includes('LH')) {
+    for (let x = 0; x < Math.floor(mapWidth / 2); x += 1) { // left column
+      map[x][8] = 1;
+    }
+  }
+  if (wallsToBeBuilt.includes('HR')) {
+    for (let x = Math.floor(mapWidth / 2); x < mapWidth; x += 1) { // left column
+      map[x][8] = 1;
+    }
   }
 };
 
-const fillCrossSectionWalls = (dungeonTemplate, map) => {
-  for (let x = 0; x < dungeonTemplate.mapWidth; x += 1) {
-    map[x][dungeonTemplate.crossSectionY] = 1; // horizontal wall
-  }
-
-  for (let y = 0; y < dungeonTemplate.mapHeight; y += 1) { // starts from 1 so that the very top remains a 1
-    map[dungeonTemplate.crossSectionX][y] = 1; // vertical wall
-  }
-};
-
-const patchWalls = (dungeonTemplate, map) => {
-  for (let y = 0; y < dungeonTemplate.mapWidth; y += 1) {
-    for (let x = 0; x < dungeonTemplate.mapHeight; x += 1) {
+const patchWalls = (map) => {
+  for (let y = 0; y < mapWidth; y += 1) {
+    for (let x = 0; x < mapWidth; x += 1) {
       if (map[x][y] === 1 && map[x][y + 1] !== 1) {
         map[x][y] = 2;
       }
@@ -47,49 +66,49 @@ const patchWalls = (dungeonTemplate, map) => {
  * @param {object} dungeonTemplate the dungeon template
  * @param {object} map the stage map
  */
-const carveDoors = (dungeonTemplate, map) => {
+const carveDoors = (map) => {
   // top
-  let startTile = Random.integer(2, dungeonTemplate.sectionHeight - 1);
+  let startTile = Random.integer(2, sectionWidth - 1);
   let alt = Random.bool();
-  map[dungeonTemplate.crossSectionX][startTile] = 0;
+  map[crossSectionX][startTile] = 0;
   if (alt) {
-    map[dungeonTemplate.crossSectionX][startTile - 1] = 0;
+    map[crossSectionX][startTile - 1] = 0;
   } else {
-    map[dungeonTemplate.crossSectionX][startTile + 1] = 0;
+    map[crossSectionX][startTile + 1] = 0;
   }
 
   // bottom
-  startTile = Random.integer(11, dungeonTemplate.sectionHeight - 1);
+  startTile = Random.integer(11, sectionWidth - 1);
   alt = Random.bool();
-  map[dungeonTemplate.crossSectionX][startTile] = 0;
+  map[crossSectionX][startTile] = 0;
   if (alt) {
-    map[dungeonTemplate.crossSectionX][startTile - 1] = 0;
+    map[crossSectionX][startTile - 1] = 0;
   } else {
-    map[dungeonTemplate.crossSectionX][startTile + 1] = 0;
+    map[crossSectionX][startTile + 1] = 0;
   }
 
   // left
-  startTile = Random.integer(2, dungeonTemplate.sectionWidth - 1);
+  startTile = Random.integer(2, sectionWidth - 1);
   alt = Random.bool();
-  map[startTile][dungeonTemplate.crossSectionY] = 0;
+  map[startTile][crossSectionY] = 0;
   if (alt) {
-    map[startTile - 1][dungeonTemplate.crossSectionY] = 0;
+    map[startTile - 1][crossSectionY] = 0;
   } else {
-    map[startTile + 1][dungeonTemplate.crossSectionY] = 0;
+    map[startTile + 1][crossSectionY] = 0;
   }
 
   // right
-  startTile = Random.integer(11, dungeonTemplate.sectionWidth - 1);
+  startTile = Random.integer(11, sectionWidth - 1);
   alt = Random.bool();
-  map[startTile][dungeonTemplate.crossSectionY] = 0;
+  map[startTile][crossSectionY] = 0;
   if (alt) {
-    map[startTile - 1][dungeonTemplate.crossSectionY] = 0;
+    map[startTile - 1][crossSectionY] = 0;
   } else {
-    map[startTile + 1][dungeonTemplate.crossSectionY] = 0;
+    map[startTile + 1][crossSectionY] = 0;
   }
 };
 
-const generateRoomData = (dungeonTemplate, map, roomDirection) => {
+const generateRoomData = (map, roomDirection) => {
   let xoffset;
   let yoffset;
 
@@ -181,65 +200,60 @@ const generateRoomData = (dungeonTemplate, map, roomDirection) => {
   };
 };
 
-const generateRooms = (dungeonTemplate, map) => {
-  const roomsToBuild = ['topLeft', 'bottomLeft', 'topRight', 'bottomRight'];
-  let allStageObjects = [];
+const getWallsToBeBuilt = roomCodes => {
+  let wallsToBeBuilt = [
+    'TBF', // top to bottom, full
+    'LRF' // left to right, full
+    // TH // top to half way
+    // HB // half way to bottom
+    // LH // left to half way
+    // HR // half way to right
+  ];
 
-  roomsToBuild.forEach((roomToBuild) => {
-    const { stageObjects } = generateRoomData(dungeonTemplate, map, roomToBuild);
-    allStageObjects = allStageObjects.concat(stageObjects);
-  });
-
-  return {
-    rooms: [],
-    stageObjects: allStageObjects,
-  };
-};
-
-const generateMap = (dungeonTemplate) => {
-  const map = [];
-
-  for (let y = 0; y < dungeonTemplate.mapWidth; y += 1) {
-    const row = [];
-    for (let x = 0; x < dungeonTemplate.mapHeight; x += 1) {
-      row[x] = 0;
-    }
-    map.push(row);
+  if (roomCodes.includes('T')) {
+    _.pull(wallsToBeBuilt, 'TBF');
+    wallsToBeBuilt.push('HB')
+  }
+  if (roomCodes.includes('B')) {
+    _.pull(wallsToBeBuilt, 'TBF');
+    wallsToBeBuilt.push('TH')
+  }
+  if (roomCodes.includes('L')) {
+    _.pull(wallsToBeBuilt, 'LRF');
+    wallsToBeBuilt.push('HR')
+  }
+  if (roomCodes.includes('R')) {
+    _.pull(wallsToBeBuilt, 'LRF');
+    wallsToBeBuilt.push('LH')
   }
 
-  return map;
-};
+  return wallsToBeBuilt;
+}
 
 /**
- *
+ * main generate function
+ * 
  * @param {object} dungeonTemplate
+ * @param {string} dungeonTemplate.theme
  */
 const generate = (dungeonTemplate) => {
-  dungeonTemplate.sectionWidth = 7;
-  dungeonTemplate.sectionHeight = 7;
-  const mapWidth = (dungeonTemplate.sectionWidth * 2) + 3;
-  const mapHeight = (dungeonTemplate.sectionHeight * 2) + 3;
+  let map = _.cloneDeep(RawMap);
+  const roomCodes = _.sample(RoomLayouts);
+  const wallsToBeBuilt = getWallsToBeBuilt(roomCodes);
 
-  dungeonTemplate.mapWidth = mapWidth;
-  dungeonTemplate.mapHeight = mapHeight;
+  console.log('roomCodes', roomCodes);
 
-  dungeonTemplate.crossSectionX = Math.floor(dungeonTemplate.mapWidth / 2);
-  dungeonTemplate.crossSectionY = Math.floor(dungeonTemplate.mapHeight / 2);
+  fillCrossSectionWalls(map, wallsToBeBuilt);
+  carveDoors(map);
 
-  const map = generateMap(dungeonTemplate);
+  // const { stageObjects } = generateRooms(map);
 
-  fillCrossSectionWalls(dungeonTemplate, map);
-  fillBoundaryWalls(dungeonTemplate, map);
-  carveDoors(dungeonTemplate, map);
-
-  const { stageObjects } = generateRooms(dungeonTemplate, map);
-
-  patchWalls(dungeonTemplate, map);
+  patchWalls(map);
 
   return {
     map,
     theme: dungeonTemplate.theme,
-    stageObjects,
+    // stageObjects,
   };
 };
 
