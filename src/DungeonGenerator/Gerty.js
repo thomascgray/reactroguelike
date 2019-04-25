@@ -1,6 +1,25 @@
 /* eslint-disable no-param-reassign */
 
-// generates the 4 by 4 style grid, also know as isaac clone, to be put all on one screen
+/**
+ * generates a 4 by 4 stage
+ * roomcodes:
+ * - TL - top left corner
+ * - BL - bottom left corner
+ * - TR - top right corner
+ * - BR - bottom right corner
+ * - T - top full horizontal
+ * - B - bottom full horizontal
+ * - L - left full vertical
+ * - R - right full vertical
+ * wallcodes:
+ * - TBF - top to bottom, full
+ * - LRF - left to right, full
+ * - TH  - top to half way
+ * - HB  - half way to bottom
+ * - LH  - left to half way
+ * - HR  - half way to right
+ */
+
 import _ from 'lodash';
 import Enemy from '../Enemy/Enemy';
 import StageProp from '../StageProp/StageProp';
@@ -62,7 +81,7 @@ const patchWalls = (map) => {
 };
 
 /**
- *
+ * carve doors into the cross section walls
  * @param {object} dungeonTemplate the dungeon template
  * @param {object} map the stage map
  */
@@ -108,7 +127,7 @@ const carveDoors = (map) => {
   }
 };
 
-const generateRoomData = (map, roomDirection) => {
+const _generateRoomData = (map, roomCodes) => {
   let xoffset;
   let yoffset;
 
@@ -200,15 +219,22 @@ const generateRoomData = (map, roomDirection) => {
   };
 };
 
+const generateRoom = () => {
+
+}
+
+const generateRooms = (map, roomCodes) => {
+  roomCodes.forEach(roomCode => {
+    
+  });
+}
+
+/**
+ * based on the supplied room codes, determine which walls need to be built
+ * @param {string[]} roomCodes 
+ */
 const getWallsToBeBuilt = roomCodes => {
-  let wallsToBeBuilt = [
-    'TBF', // top to bottom, full
-    'LRF' // left to right, full
-    // TH // top to half way
-    // HB // half way to bottom
-    // LH // left to half way
-    // HR // half way to right
-  ];
+  let wallsToBeBuilt = [ 'TBF', 'LRF' ];
 
   if (roomCodes.includes('T')) {
     _.pull(wallsToBeBuilt, 'TBF');
@@ -241,12 +267,11 @@ const generate = (dungeonTemplate) => {
   const roomCodes = _.sample(RoomLayouts);
   const wallsToBeBuilt = getWallsToBeBuilt(roomCodes);
 
-  console.log('roomCodes', roomCodes);
-
   fillCrossSectionWalls(map, wallsToBeBuilt);
   carveDoors(map);
+  generateRooms(map, roomCodes);
 
-  // const { stageObjects } = generateRooms(map);
+  // const { stageObjects } = generateRooms(map, roomCodes);
 
   patchWalls(map);
 
