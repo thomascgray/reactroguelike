@@ -9,18 +9,18 @@ import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
 
 const stories = storiesOf('Dungeon Renderer', module);
 
+const dungeonTemplate = {
+    theme: 'crypt'
+}
+const dungeon = gertyGenerate(dungeonTemplate);
+
 stories.addDecorator(withKnobs);
 
 stories
     .add('Gerty', () => {
-        const dungeonTemplate = {
-            theme: select('theme', ['crypt', 'dungeon'], 'crypt'),
-        }
 
-        const dungeon = gertyGenerate(dungeonTemplate);
-        
         return <div>
-            <DungeonRenderer map={dungeon.map} theme={dungeon.theme} />
+            <DungeonRenderer dungeon={dungeon} activeFloorIndex={parseInt(select('floor index', [0, 1, 2], 0))} />
             <RefreshButton />
         </div>
     })

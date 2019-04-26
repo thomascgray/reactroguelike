@@ -25,6 +25,11 @@ import Enemy from '../Enemy/Enemy';
 import StageProp from '../StageProp/StageProp';
 import RoomLayouts from './room_layouts'
 import RawMap from './raw_map'
+
+import DungeonFloorEntity from '../Dungeon/DungeonFloor'
+import DungeonEntity from '../Dungeon/Dungeon'
+
+
 const Random = require('random-js')();
 
 const sectionWidth = 7;
@@ -224,8 +229,9 @@ const generateRoom = () => {
 }
 
 const generateRooms = (map, roomCodes) => {
+  let stageObjects = [];
   roomCodes.forEach(roomCode => {
-    
+
   });
 }
 
@@ -234,7 +240,7 @@ const generateRooms = (map, roomCodes) => {
  * @param {string[]} roomCodes 
  */
 const getWallsToBeBuilt = roomCodes => {
-  let wallsToBeBuilt = [ 'TBF', 'LRF' ];
+  let wallsToBeBuilt = ['TBF', 'LRF'];
 
   if (roomCodes.includes('T')) {
     _.pull(wallsToBeBuilt, 'TBF');
@@ -263,23 +269,34 @@ const getWallsToBeBuilt = roomCodes => {
  * @param {string} dungeonTemplate.theme
  */
 const generate = (dungeonTemplate) => {
-  let map = _.cloneDeep(RawMap);
-  const roomCodes = _.sample(RoomLayouts);
-  const wallsToBeBuilt = getWallsToBeBuilt(roomCodes);
+  console.log('gerty generate');
+  const dungeon = new DungeonEntity({
+    theme: dungeonTemplate.theme
+  });
 
-  fillCrossSectionWalls(map, wallsToBeBuilt);
-  carveDoors(map);
-  generateRooms(map, roomCodes);
+  let floorCount = 3;
 
-  // const { stageObjects } = generateRooms(map, roomCodes);
+  for (let i = 0; i < floorCount; i++) {
+    let map = _.cloneDeep(RawMap);
+    const roomCodes = _.sample(RoomLayouts);
+    const wallsToBeBuilt = getWallsToBeBuilt(roomCodes);
 
-  patchWalls(map);
+    fillCrossSectionWalls(map, wallsToBeBuilt);
+    carveDoors(map);
+    generateRooms(map, roomCodes);
 
-  return {
-    map,
-    theme: dungeonTemplate.theme,
-    // stageObjects,
-  };
+    // const { stageObjects } = generateRooms(map, roomCodes);
+
+    patchWalls(map);
+
+    const floor = new DungeonFloorEntity({
+      map,
+    })
+
+    dungeon.addFloor(floor)
+  }
+
+  return dungeon
 };
 
 export {
