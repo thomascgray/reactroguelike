@@ -34,9 +34,11 @@ class DungeonRenderer extends Component {
         }
         let theme = require(`../DungeonThemes/${themeName}`);
 
+        const floor = this.props.dungeon.floors[this.props.activeFloorIndex]
+
         return <div className='dungeon'>
-            {this.props.dungeon.floors[this.props.activeFloorIndex].map.map((row, rowIndex) => {
-                return row.map((value, columnIndex) => {
+            {floor.map.map((row, columnIndex) => {
+                return row.map((value, rowIndex) => {
                     return <Tile
                         key={`${rowIndex}-${columnIndex}`}
                         x={rowIndex}

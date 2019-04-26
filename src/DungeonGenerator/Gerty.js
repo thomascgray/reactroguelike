@@ -45,32 +45,32 @@ const crossSectionY = 8;
 const fillCrossSectionWalls = (map, wallsToBeBuilt) => {
   if (wallsToBeBuilt.includes('TBF')) {
     for (let y = 0; y < mapWidth; y += 1) { // left column
-      map[8][y] = 1;
+      map[y][8] = 1;
     }
   }
   if (wallsToBeBuilt.includes('LRF')) {
     for (let x = 0; x < mapWidth; x += 1) { // left column
-      map[x][8] = 1;
+      map[8][x] = 1;
     }
   }
   if (wallsToBeBuilt.includes('TH')) {
     for (let y = 0; y < Math.floor(mapWidth / 2); y += 1) { // left column
-      map[8][y] = 1;
+      map[y][8] = 1;
     }
   }
   if (wallsToBeBuilt.includes('HB')) {
     for (let y = Math.floor(mapWidth / 2); y < mapWidth; y += 1) { // left column
-      map[8][y] = 1;
+      map[y][8] = 1;
     }
   }
   if (wallsToBeBuilt.includes('LH')) {
     for (let x = 0; x < Math.floor(mapWidth / 2); x += 1) { // left column
-      map[x][8] = 1;
+      map[8][x] = 1;
     }
   }
   if (wallsToBeBuilt.includes('HR')) {
     for (let x = Math.floor(mapWidth / 2); x < mapWidth; x += 1) { // left column
-      map[x][8] = 1;
+      map[8][x] = 1;
     }
   }
 };
@@ -224,14 +224,38 @@ const _generateRoomData = (map, roomCodes) => {
   };
 };
 
-const generateRoom = () => {
+const generateRoom = (map, template, offset) => {
+  const xStart = 0 + offset[0];
+  const xEnd = 0 + xStart + template.map[0].length;
+
+  const yStart = 0 + offset[1];
+  const yEnd = 0 + xStart + template.map.length;
+
+  console.log('xStart, xEnd', xStart, xEnd);
+  console.log('yStart, yEnd', yStart, yEnd);
+
+
+  for (let x = xStart; x < xEnd; x++) {
+    for (let y = yStart; y < yEnd; y++) {
+      map[x][y] = template.map[x][y]
+    }
+  }
+
+  console.log('map', map);
+
 
 }
 
 const generateRooms = (map, roomCodes) => {
   let stageObjects = [];
   roomCodes.forEach(roomCode => {
-
+    switch (roomCode) {
+      case 'L':
+        const template = _.cloneDeep(require('../SectionTemplates/vertical/1.json'))
+        const offset = [1, 1]
+        generateRoom(map, template, offset)
+        break;
+    }
   });
 }
 
@@ -269,26 +293,26 @@ const getWallsToBeBuilt = roomCodes => {
  * @param {string} dungeonTemplate.theme
  */
 const generate = (dungeonTemplate) => {
-  console.log('gerty generate');
   const dungeon = new DungeonEntity({
     theme: dungeonTemplate.theme
   });
 
-  let floorCount = 3;
+  let floorCount = dungeonTemplate.floorCount || 3;
 
   for (let i = 0; i < floorCount; i++) {
     let map = _.cloneDeep(RawMap);
-    const roomCodes = _.sample(RoomLayouts);
+    const roomCodes = (dungeonTemplate.floorRoomCodes && dungeonTemplate.floorRoomCodes[i]) ? dungeonTemplate.floorRoomCodes[i] : _.sample(RoomLayouts);
     const wallsToBeBuilt = getWallsToBeBuilt(roomCodes);
 
     fillCrossSectionWalls(map, wallsToBeBuilt);
-    carveDoors(map);
-    generateRooms(map, roomCodes);
+    // carveDoors(map);
+    // generateRooms(map, roomCodes);
 
     // const { stageObjects } = generateRooms(map, roomCodes);
 
-    patchWalls(map);
+    // patchWalls(map);
 
+    console.log('map', map);
     const floor = new DungeonFloorEntity({
       map,
     })

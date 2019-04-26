@@ -21,10 +21,10 @@ class TileRenderer extends Component {
         const id = this.props.id ? this.props.id : Uuid()
 
         if (this.props.image) {
-            return <img id={id} className={className} src={`${this.props.image}`} style={style} />
+            return <img id={id} data-x={_x} data-y={_y} className={className} src={`${this.props.image}`} style={style} />
         }
 
-        return <div id={id} className={className} style={style} />;
+        return <div id={id} data-x={_x} data-y={_y} className={className} style={style} />;
     }
 }
 

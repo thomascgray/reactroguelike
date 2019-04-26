@@ -2,6 +2,7 @@ class DungeonEntity {
   constructor(props) {
     this.activeFloorIndex = 0;
     this.theme = props.theme;
+    this.stageObjects = []
     this.floors = []
   }
 
