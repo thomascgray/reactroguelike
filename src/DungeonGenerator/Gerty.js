@@ -132,98 +132,6 @@ const carveDoors = (map) => {
   }
 };
 
-const _generateRoomData = (map, roomCodes) => {
-  let xoffset;
-  let yoffset;
-
-  switch (roomDirection) {
-    case 'topLeft':
-      xoffset = 1;
-      yoffset = 1;
-      break;
-    case 'topRight':
-      xoffset = 9;
-      yoffset = 1;
-      break;
-    case 'bottomLeft':
-      xoffset = 1;
-      yoffset = 9;
-      break;
-    case 'bottomRight':
-      xoffset = 9;
-      yoffset = 9;
-      break;
-    default:
-      break;
-  }
-
-  // const roomTemplateId = Random.integer(1, 6);
-  const roomTemplateId = 1;
-  const template = _.cloneDeep(require(`../SectionTemplates/${roomTemplateId}.json`)); // eslint-disable-line
-
-  if (!template.enemies) {
-    template.enemies = [];
-  }
-  if (!template.stageProps) {
-    template.stageProps = [];
-  }
-
-  // change the real map to be affected by the template map
-  // but find anything that isnt a number and match it to the stage props or enemies
-  for (let x = 0; x < 7; x += 1) {
-    for (let y = 0; y < 7; y += 1) {
-      if (typeof template.map[y][x] === 'string') {
-        // its a sub
-        // floor under subs is always a normal floor
-
-        const thing = template.placeholders[template.map[y][x]];
-        if (thing.placeholder_type === 'enemy') {
-          thing.position = {
-            x,
-            y,
-          };
-          template.enemies.push(thing);
-        }
-
-        map[x + xoffset][y + yoffset] = 0;
-      } else {
-        map[x + xoffset][y + yoffset] = template.map[y][x];
-      }
-    }
-  }
-
-  // get the enemies, and transform their positions
-  const enemies = template.enemies.map((enemy) => {
-    enemy.position.x += xoffset;
-    enemy.position.y += yoffset;
-    return new Enemy({
-      position: enemy.position,
-      hp: 5,
-      archetype: enemy.archetype,
-    });
-  });
-
-  // get the stage props, and transform their positions
-  const stageProps = template.stageProps.map((stageProp) => {
-    stageProp.position.x += xoffset;
-    stageProp.position.y += yoffset;
-    return new StageProp({
-      position: stageProp.position,
-      hp: 5,
-      archetype: stageProp.archetype,
-    });
-  });
-
-  // add stairs for certain scenarios
-  // if (roomDirection === 'bottomRight') {
-
-  // }
-
-  return {
-    stageObjects: [...enemies, ...stageProps],
-  };
-};
-
 /**
  * 
  * @param {object} map 
@@ -247,10 +155,11 @@ const generateRoom = (map, template, offset) => {
   if (template.stageObjects) {
     template.stageObjects.forEach(stageObject => {
       stageObject.position.x += offset[0]
-      stageObject.position.y += offset[0]
-      // const StageObjectClass = stageObject.type;
-      stageObjects.push(new StageProp({ stageObject }))
+      stageObject.position.y += offset[1]
+      stageObjects.push(new StageProp({ ...stageObject }))
     })
+
+    console.log('room stageObjects', stageObjects);
 
     return stageObjects
   }
