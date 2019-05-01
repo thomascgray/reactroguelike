@@ -76,10 +76,10 @@ const fillCrossSectionWalls = (map, wallsToBeBuilt) => {
 };
 
 const patchWalls = (map) => {
-  for (let y = 0; y < mapWidth; y += 1) {
-    for (let x = 0; x < mapWidth; x += 1) {
-      if (map[x][y] === 1 && map[x][y + 1] !== 1) {
-        map[x][y] = 2;
+  for (let col = 0; col < mapWidth; col += 1) {
+    for (let row = 0; row < mapWidth; row += 1) {
+      if (map[col][row] === 1 && map[col + 1] && map[col + 1][row] !== 1) {
+        map[col][row] = 2;
       }
     }
   }
@@ -224,39 +224,85 @@ const _generateRoomData = (map, roomCodes) => {
   };
 };
 
+/**
+ * 
+ * @param {object} map 
+ * @param {*} template 
+ * @param {number[]} offset 
+ * @param {number} offset[0] the row offset
+ * @param {number} offset[1] the column offset
+ */
 const generateRoom = (map, template, offset) => {
-  const xStart = 0 + offset[0];
-  const xEnd = 0 + xStart + template.map[0].length;
-
-  const yStart = 0 + offset[1];
-  const yEnd = 0 + xStart + template.map.length;
-
-  console.log('xStart, xEnd', xStart, xEnd);
-  console.log('yStart, yEnd', yStart, yEnd);
-
-
-  for (let x = xStart; x < xEnd; x++) {
-    for (let y = yStart; y < yEnd; y++) {
-      map[x][y] = template.map[x][y]
+  const stageObjects = []
+  // apply the map differences
+  for (let col = 0; col < mapWidth; col++) {
+    for (let row = 0; row < mapWidth; row++) {
+      if (template.map[col] && template.map[col][row]) {
+        map[col + offset[1]][row + offset[0]] = template.map[col][row]
+      }
     }
   }
 
-  console.log('map', map);
+  // offset the stage objects and parse into real entities
+  if (template.stageObjects) {
+    template.stageObjects.forEach(stageObject => {
+      stageObject.position.x += offset[0]
+      stageObject.position.y += offset[0]
+      // const StageObjectClass = stageObject.type;
+      stageObjects.push(new StageProp({ stageObject }))
+    })
 
+    return stageObjects
+  }
 
+  return []
 }
 
 const generateRooms = (map, roomCodes) => {
   let stageObjects = [];
+
   roomCodes.forEach(roomCode => {
+    let template = null;
+    let offset = null;
     switch (roomCode) {
       case 'L':
-        const template = _.cloneDeep(require('../SectionTemplates/vertical/1.json'))
-        const offset = [1, 1]
-        generateRoom(map, template, offset)
+        template = _.cloneDeep(require('../SectionTemplates/vertical/1.json'))
+        offset = [1, 1]
+        break;
+      case 'R':
+        template = _.cloneDeep(require('../SectionTemplates/vertical/1.json'))
+        offset = [9, 1]
+        break;
+      case 'T':
+        template = _.cloneDeep(require('../SectionTemplates/horizontal/1.json'))
+        offset = [1, 1]
+        break;
+      case 'B':
+        template = _.cloneDeep(require('../SectionTemplates/horizontal/1.json'))
+        offset = [1, 9]
+        break;
+      case 'TL':
+        template = _.cloneDeep(require('../SectionTemplates/corner/1.json'))
+        offset = [1, 1]
+        break;
+      case 'TR':
+        template = _.cloneDeep(require('../SectionTemplates/corner/1.json'))
+        offset = [9, 1]
+        break;
+      case 'BL':
+        template = _.cloneDeep(require('../SectionTemplates/corner/1.json'))
+        offset = [1, 9]
+        break;
+      case 'BR':
+        template = _.cloneDeep(require('../SectionTemplates/corner/1.json'))
+        offset = [9, 9]
         break;
     }
+
+    stageObjects = stageObjects.concat(generateRoom(map, template, offset));
   });
+  
+  return stageObjects;
 }
 
 /**
@@ -282,6 +328,18 @@ const getWallsToBeBuilt = roomCodes => {
     _.pull(wallsToBeBuilt, 'LRF');
     wallsToBeBuilt.push('LH')
   }
+  if (roomCodes.includes('L') && roomCodes.includes('R')) {
+    _.pull(wallsToBeBuilt, 'LRF');
+    _.pull(wallsToBeBuilt, 'LH');
+    _.pull(wallsToBeBuilt, 'HR');
+    wallsToBeBuilt.push('TBF')
+  }
+  if (roomCodes.includes('T') && roomCodes.includes('B')) {
+    _.pull(wallsToBeBuilt, 'TBF');
+    _.pull(wallsToBeBuilt, 'TH');
+    _.pull(wallsToBeBuilt, 'HB');
+    wallsToBeBuilt.push('LRF')
+  }
 
   return wallsToBeBuilt;
 }
@@ -305,16 +363,14 @@ const generate = (dungeonTemplate) => {
     const wallsToBeBuilt = getWallsToBeBuilt(roomCodes);
 
     fillCrossSectionWalls(map, wallsToBeBuilt);
-    // carveDoors(map);
-    // generateRooms(map, roomCodes);
 
-    // const { stageObjects } = generateRooms(map, roomCodes);
+    const stageObjects = generateRooms(map, roomCodes);
 
-    // patchWalls(map);
+    patchWalls(map);
 
-    console.log('map', map);
     const floor = new DungeonFloorEntity({
       map,
+      stageObjects
     })
 
     dungeon.addFloor(floor)

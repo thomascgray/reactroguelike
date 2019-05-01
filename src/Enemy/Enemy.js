@@ -11,17 +11,17 @@ class Enemy {
   constructor({ position, hp = 3, archetype, isCollidable = true }) {
     this.behaviours = [
       new HasInventory(),
-      new HasHp(hp),
+      new HasArchetype(archetype),
       new HasPosition(position),
       new HasId(),
-      new HasArchetype(archetype),
-      new IsCollidable(isCollidable)
+      new IsCollidable(isCollidable),
+      new HasHp(hp),
     ]
 
     attachFunctions(this, this.behaviours)
   }
 
-  toState () {
+  toState() {
     return toState(this.behaviours, 'Enemy')
   }
 }

@@ -1,6 +1,7 @@
 {
-    "stageProps": [
+    "stageObjects": [
         {
+            "stageObjectType": "StageProp",
             "archetype": "woodChair",
             "position": {
                 "x": 2,
@@ -8,28 +9,6 @@
             }
         }
     ],
-    "enemies": [
-        {
-            "archetype": "goblin",
-            "position": {
-                "x": 1,
-                "y": 3
-            }
-        },
-        {
-            "archetype": "goblin",
-            "position": {
-                "x": 2,
-                "y": 4
-            }
-        }
-    ],
-    "placeholders": {
-        "S": {
-            "placeholder_type": "stage_prop",
-            "archetype": "stair_down"
-        }
-    },
     "map": [
         [0,0,0,0,0,0,0],
         [0,0,3,3,3,0,0],
@@ -37,6 +16,6 @@
         [0,0,3,3,3,0,0],
         [0,0,3,3,3,0,0],
         [0,0,3,3,3,0,0],
-        [0,0,0,0,0,"S",0]
+        [0,0,0,0,0,0,0]
     ]
 }

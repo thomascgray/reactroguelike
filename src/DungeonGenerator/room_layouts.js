@@ -4,4 +4,6 @@ export default [
     ['L', 'TR', 'BR'],
     ['T', 'BL', 'BR'],
     ['B', 'TL', 'TR'],
+    ['T', 'B',],
+    ['L', 'R'],
 ]
