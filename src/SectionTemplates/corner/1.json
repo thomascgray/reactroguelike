@@ -7,6 +7,14 @@
                 "x": 2,
                 "y": 2
             }
+        },
+        {
+            "stageObjectType": "StageProp",
+            "archetype": "graveBroken",
+            "position": {
+                "x": 5,
+                "y": 2
+            }
         }
     ],
     "map": [

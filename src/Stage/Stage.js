@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './Stage.css'
 import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import PlayerRenderer from '../Player/PlayerRenderer'
-import Player from '../Player/Player'
 import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
 import InitialPlayerSetup from '../InitialPlayerSetup'
 import { generate } from '../DungeonGenerator/Gerty'
@@ -16,28 +15,22 @@ import PowersPrepRenderer from '../Powers/PowersPrepRenderer'
 
 import KeydownHandler from './KeydownHandler'
 
-const dungeon = generate({
-    theme: 'crypt',
-});
-
-window.stageObjects = dungeon.stageObjects;
-
 class Stage extends Component {
+    dungeon;
+    player;
+
     constructor (props) {
         super(props);
-        
-        window.player = new Player({
-            position: {
-                x: 4,
-                y: 5
-            },
-            archetype: this.props.playerArchetype
+
+        this.dungeon = generate({
+            theme: 'crypt',
+            floorCount: 1,
         });
+
+        this.player = this.props.player;
 
         this.state = {
             inputMode: 'playerStageDefault',
-            player: window.player.toState(),
-            stageObjects: window.stageObjects.map(o => o.toState()),
             logMessages: [],
             ui: {
                 inventory: false,
@@ -46,7 +39,7 @@ class Stage extends Component {
             isPlayerPreppingPower: false,
         }
 
-        InitialPlayerSetup(window.player);
+        InitialPlayerSetup(this.player);
     }
 
     componentDidMount () {
@@ -66,11 +59,11 @@ class Stage extends Component {
     handleKeyDown(keyEvent) {
         keyEvent = keyEvent || window.event;
         
-        KeydownHandler(this, keyEvent, dungeon);
+        KeydownHandler(this, keyEvent, this.dungeon);
 
         this.setState({
-            player: window.player.toState(),
-            stageObjects: window.stageObjects.map(o => o.toState()),
+            // player: window.player.toState(),
+            // stageObjects: window.stageObjects.map(o => o.toState()),
         })
     }
 
@@ -84,7 +77,7 @@ class Stage extends Component {
         return <div>
             <div className='ui-panel'>
                 <div className='character-sheet'>
-                    <CharacterSheet player={window.player} items={this.state.player.HasInventory}/>
+                    <CharacterSheet player={this.player} items={this.player.HasInventory}/>
                 </div>
                 <div className='log-wrapper'>
                     <Log messages={this.state.logMessages} />
@@ -92,15 +85,15 @@ class Stage extends Component {
             </div>
             
             <div className='stage' id='stage'>
-                {this.state.ui.inventory && <Inventory player={window.player} closeInventory={() => this.closeInventory()}/>}
+                {/* {this.state.ui.inventory && <Inventory player={this.player} closeInventory={() => this.closeInventory()}/>}
                 
-                <DungeonRenderer dungeon={dungeon} />
+                <DungeonRenderer dungeon={this.dungeon} activeFloorIndex={0} />
 
-                {this.state.isPlayerPreppingPower && <PowersPrepRenderer power={this.state.preppedPower} />}
+                <StageObjectsRenderer stageObjects={this.dungeon.floors[this.dungeon.activeFloorIndex].stageObjects} />
 
-                <PlayerRenderer player={this.state.player} />
+                {this.state.isPlayerPreppingPower && <PowersPrepRenderer power={this.state.preppedPower} />} */}
 
-                <StageObjectsRenderer stageObjects={this.state.stageObjects} />
+                <PlayerRenderer player={this.player} />
             </div>
         </div>
     }

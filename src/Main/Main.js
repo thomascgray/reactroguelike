@@ -1,38 +1,38 @@
 import React from 'react';
 import CharacterSelect from './CharacterSelect'
 import Stage from '../Stage/Stage'
+import Player from '../Player/Player'
 
 class Main extends React.Component {
+    player;
     constructor (props) {
         super(props);
-        const urlParams = new URLSearchParams(window.location.search);
-        let isDebug = urlParams.get('debug');
-        
         this.state = {
             playerArchetype: '', 
-            isInCharacterSelect: isDebug ? true : false,
             isInStage: false,
         }
     }
 
-    startNewGame () {
-        this.setState({
-            isInCharacterSelect: true
-        })
-    }
-
     onSelectArchetype (archetype) {
-        console.log('selected', archetype);
         this.setState({
             isInStage: true,
-            playerArchetype: archetype,
         })
+
+        this.player = new Player({
+            position: {
+                x: 4,
+                y: 5
+            },
+            archetype
+        });
     }
 
     render() {
         return (
             <div>
-                {this.state.isInStage && <Stage playerArchetype={this.state.playerArchetype} />}
+                {this.state.isInStage && <Stage
+                    player={this.player}
+                />}
 
                 {!this.state.isInStage && 
                     <div>
@@ -40,10 +40,9 @@ class Main extends React.Component {
         
                         <hr />
         
-                        <button onClick={() => this.startNewGame()}>New Game</button>
-        
-                        {this.state.isInCharacterSelect && <CharacterSelect onSelectArchetype={archetype => this.onSelectArchetype(archetype)}/>}
-
+                        <CharacterSelect
+                            onSelectArchetype={archetype => this.onSelectArchetype(archetype)}
+                        />
                     </div>
                 }
             </div>

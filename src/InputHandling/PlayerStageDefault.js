@@ -62,15 +62,17 @@ export default function (keyEvent, stageContext, dungeon) {
             break;
     }
 
+    const floor = dungeon.getActiveFloor();
+
     if (hasMoved) {
         window.player.HasDirection.setDirection(newDirection);
     }
 
-    if (dungeon.map[pos.position.x][pos.position.y] === 1 || dungeon.map[pos.position.x][pos.position.y] === 2) { // todo better way of knowing whats a wall
+    if (floor.map[pos.position.x][pos.position.y] === 1 || floor.map[pos.position.x][pos.position.y] === 2) { // todo better way of knowing whats a wall
         // TODO IMRPOVE
         // anything non 0 is a thing to hit
     } else {
-        const hitStageObject = window.stageObjects.find(obj => _.isEqual(obj.HasPosition.getPosition(), pos.position));
+        const hitStageObject = floor.stageObjects.find(obj => _.isEqual(obj.HasPosition.getPosition(), pos.position));
     
         if (hitStageObject) {
             PlayerStageObjectCollision(window.player, hitStageObject)
@@ -86,6 +88,6 @@ export default function (keyEvent, stageContext, dungeon) {
 
     stageContext.setState({
         player: window.player.toState(),
-        stageObjects: window.stageObjects.map(o => o.toState()),
+        // stageObjects: window.stageObjects.map(o => o.toState()),
     });
 }

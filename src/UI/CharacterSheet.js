@@ -16,7 +16,7 @@ class CharacterSheet extends Component {
 
         return (
             <div>
-                <p>{StringUtils.title(window.player.HasArchetype.getArchetype())}</p>
+                <p>{StringUtils.title(this.props.player.HasArchetype.getArchetype())}</p>
 
                 <div className='box'>
                     {Object.keys(bodyParts).map(bodyPartName => {
