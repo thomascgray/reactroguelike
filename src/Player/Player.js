@@ -8,7 +8,7 @@ import HasBody from '../Behaviours/HasBody'
 import HasPowers from '../Behaviours/HasPowers'
 
 import _ from 'lodash';
-import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
+import { attachBehaviours, toState, idHelper, attachEmitter } from '../Utils/EntityHelpers'
 
 class Player {
   /**
@@ -20,17 +20,19 @@ class Player {
    */
   constructor({ position, hp = 10, archetype, powers = [] }) {
     this.behaviours = [
-      new HasInventory(),
-      new HasHp(hp),
-      new HasPosition(position),
-      new HasId(),
-      new HasDirection(),
-      new HasArchetype(archetype),
-      new HasBody('humanoid', 'medium'),
-      new HasPowers(powers),
+      // new HasInventory(),
+      // new HasHp(hp),
+      new HasId(this),
+      new HasPosition(this, position),
+      new HasDirection(this),
+      new HasArchetype(this, archetype),
+      // new HasBody('humanoid', 'medium'),
+      // new HasPowers(powers),
     ]
 
-    attachFunctions(this, this.behaviours)
+    attachEmitter(this);
+
+    attachBehaviours(this, this.behaviours)
 
     this.dominantLimb = 'right';
   }

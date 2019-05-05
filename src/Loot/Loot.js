@@ -1,7 +1,7 @@
 import HasInventory from '../Behaviours/HasInventory'
 import HasPosition from '../Behaviours/HasPosition'
 import HasId from '../Behaviours/HasId'
-import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
+// import { attachFunctions, toState } from '../Utils/EntityHelpers'
 
 class LootEntity {
   constructor(position, items) {
@@ -11,11 +11,11 @@ class LootEntity {
       new HasId()
     ]
 
-    attachFunctions(this, this.behaviours)
+    // attachFunctions(this, this.behaviours)
   }
 
   toState () {
-    return toState(this.behaviours)
+    // return toState(this.behaviours)
   }
 }
 

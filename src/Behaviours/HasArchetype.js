@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 class HasArchetype {
-    constructor(archetype) {
+    constructor(entity, archetype) {
         this.archetype = _.clone(archetype);
 
         this.functions = {

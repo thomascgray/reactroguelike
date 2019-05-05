@@ -3,10 +3,18 @@ import './Player.css'
 import Tile from '../Tile/TileRenderer'
 
 class Player extends Component {
+    componentDidMount() {
+        this.props.player.emitter.on('stateChange', () => this.forceUpdate())
+    }
+
     render() {
-        console.log('this.props.player', this.props.player);
         return (
-            <Tile id='player' x={this.props.player.HasPosition.getPosition().x} y={this.props.player.HasPosition.getPosition().y} image={this.getPlayerImage()} />
+            <Tile
+                id='player'
+                x={this.props.player.HasPosition.getPosition().x}
+                y={this.props.player.HasPosition.getPosition().y}
+                image={this.getPlayerImage()}
+            />
         );
     }
 

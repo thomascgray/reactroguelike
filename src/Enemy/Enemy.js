@@ -5,24 +5,24 @@ import HasId from '../Behaviours/HasId'
 import HasArchetype from '../Behaviours/HasArchetype'
 import IsCollidable from '../Behaviours/IsCollidable'
 
-import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
+// import { attachBehaviours, toState } from '../Utils/EntityHelpers'
 
 class Enemy {
   constructor({ position, hp = 3, archetype, isCollidable = true }) {
     this.behaviours = [
+      new HasId(),
       new HasInventory(),
       new HasArchetype(archetype),
       new HasPosition(position),
-      new HasId(),
       new IsCollidable(isCollidable),
       new HasHp(hp),
     ]
 
-    attachFunctions(this, this.behaviours)
+    // attachBehaviours(this, this.behaviours)
   }
 
   toState() {
-    return toState(this.behaviours, 'Enemy')
+    // return toState(this.behaviours, 'Enemy')
   }
 }
 

@@ -159,8 +159,6 @@ const generateRoom = (map, template, offset) => {
       stageObjects.push(new StageProp({ ...stageObject }))
     })
 
-    console.log('room stageObjects', stageObjects);
-
     return stageObjects
   }
 

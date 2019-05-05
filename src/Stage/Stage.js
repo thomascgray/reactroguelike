@@ -6,6 +6,7 @@ import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
 import InitialPlayerSetup from '../InitialPlayerSetup'
 import { generate } from '../DungeonGenerator/Gerty'
 import _ from 'lodash';
+import PlayerStageDefault from '../InputHandling/PlayerStageDefault'
 
 import Inventory from '../UI/Inventory'
 import CharacterSheet from '../UI/CharacterSheet'
@@ -18,6 +19,7 @@ import KeydownHandler from './KeydownHandler'
 class Stage extends Component {
     dungeon;
     player;
+    logMessages = [];
 
     constructor (props) {
         super(props);
@@ -29,15 +31,15 @@ class Stage extends Component {
 
         this.player = this.props.player;
 
-        this.state = {
-            inputMode: 'playerStageDefault',
-            logMessages: [],
-            ui: {
-                inventory: false,
-                characterSheet: false
-            },
-            isPlayerPreppingPower: false,
-        }
+        // this.state = {
+        //     inputMode: 'playerStageDefault',
+        //     logMessages: [],
+        //     ui: {
+        //         inventory: false,
+        //         characterSheet: false
+        //     },
+        //     isPlayerPreppingPower: false,
+        // }
 
         InitialPlayerSetup(this.player);
     }
@@ -59,12 +61,8 @@ class Stage extends Component {
     handleKeyDown(keyEvent) {
         keyEvent = keyEvent || window.event;
         
-        KeydownHandler(this, keyEvent, this.dungeon);
-
-        this.setState({
-            // player: window.player.toState(),
-            // stageObjects: window.stageObjects.map(o => o.toState()),
-        })
+        console.log('player pos', this.player.HasPosition.getPosition());
+        PlayerStageDefault(keyEvent, this.dungeon, this.player);
     }
 
     closeInventory () {
@@ -80,7 +78,7 @@ class Stage extends Component {
                     <CharacterSheet player={this.player} items={this.player.HasInventory}/>
                 </div>
                 <div className='log-wrapper'>
-                    <Log messages={this.state.logMessages} />
+                    <Log messages={this.logMessages} />
                 </div>
             </div>
             

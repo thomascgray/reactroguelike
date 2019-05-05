@@ -4,9 +4,10 @@ import _ from 'lodash'
 import PlayerStageObjectCollision from '../Resolvers/PlayerStageObjectCollision'
 import { preparePower } from '../Utils/Powers'
 
-export default function (keyEvent, stageContext, dungeon) {
-    const pos = new HasPosition(window.player.HasPosition.getPosition())
-    const uiState = stageContext.state.ui;
+export default function (keyEvent, dungeon, player) {
+    console.log('player', player);
+    const pos = new HasPosition(player.HasPosition.getPosition())
+    // const uiState = stageContext.state.ui;
     let hasMoved = false;
     let newDirection;
     let power
@@ -33,29 +34,28 @@ export default function (keyEvent, stageContext, dungeon) {
             hasMoved = true;
             break;
         case keyMap.INVENTORY:
-            uiState.inventory = !uiState.inventory;
-            stageContext.setState({ ui: uiState })
+            // uiState.inventory = !uiState.inventory;
             break;
         case keyMap.NUMBER_ONE:
-            power = window.player.HasPowers.getPowers()[0];
+            power = player.HasPowers.getPowers()[0];
             if (power) {
-                stageContext.setState({
-                    inputMode: `power-${power.type}`,
-                    isPlayerPreppingPower: true,
-                    spellSlotPrepped: 1,
-                    preppedPower: preparePower(power)
-                })
+                // stageContext.setState({
+                //     inputMode: `power-${power.type}`,
+                //     isPlayerPreppingPower: true,
+                //     spellSlotPrepped: 1,
+                //     preppedPower: preparePower(power)
+                // })
             }
             break;
         case keyMap.NUMBER_TWO:
-            power = window.player.HasPowers.getPowers()[1];
+            power = player.HasPowers.getPowers()[1];
             if (power) {
-                stageContext.setState({
-                    inputMode: `power-${power.type}`,
-                    isPlayerPreppingPower: true,
-                    spellSlotPrepped: 1,
-                    preppedPower: preparePower(power)
-                })
+                // stageContext.setState({
+                //     inputMode: `power-${power.type}`,
+                //     isPlayerPreppingPower: true,
+                //     spellSlotPrepped: 1,
+                //     preppedPower: preparePower(power)
+                // })
             }
             break;
         default:
@@ -65,7 +65,7 @@ export default function (keyEvent, stageContext, dungeon) {
     const floor = dungeon.getActiveFloor();
 
     if (hasMoved) {
-        window.player.HasDirection.setDirection(newDirection);
+        player.HasDirection.setDirection(newDirection);
     }
 
     if (floor.map[pos.position.x][pos.position.y] === 1 || floor.map[pos.position.x][pos.position.y] === 2) { // todo better way of knowing whats a wall
@@ -75,19 +75,19 @@ export default function (keyEvent, stageContext, dungeon) {
         const hitStageObject = floor.stageObjects.find(obj => _.isEqual(obj.HasPosition.getPosition(), pos.position));
     
         if (hitStageObject) {
-            PlayerStageObjectCollision(window.player, hitStageObject)
+            PlayerStageObjectCollision(player, hitStageObject)
         }
 
         // if theres no stage object, OR
         // there is, but its collidable is false
         // we can move there
         if (!hitStageObject || (hitStageObject && hitStageObject.IsCollidable.getIsCollidable() === false)) {
-            window.player.HasPosition.setPosition(pos.position);
+            player.HasPosition.setPosition(pos.position);
         }
     }
 
-    stageContext.setState({
-        player: window.player.toState(),
-        // stageObjects: window.stageObjects.map(o => o.toState()),
-    });
+    // stageContext.setState({
+    //     player: player.toState(),
+    //     // stageObjects: window.stageObjects.map(o => o.toState()),
+    // });
 }

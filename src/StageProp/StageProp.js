@@ -4,7 +4,7 @@ import HasId from '../Behaviours/HasId'
 import HasArchetype from '../Behaviours/HasArchetype'
 import IsCollidable from '../Behaviours/IsCollidable'
 
-import { attachFunctions, toState } from '../Utils/BehaviourHelpers'
+// import { attachFunctions, toState } from '../Utils/EntityHelpers'
 
 class StageProp {
   constructor({ position, hp = 3, archetype, isCollidable = true }) {
@@ -16,11 +16,11 @@ class StageProp {
       new IsCollidable(isCollidable)
     ]
 
-    attachFunctions(this, this.behaviours)
+    // attachFunctions(this, this.behaviours)
   }
 
   toState () {
-    return toState(this.behaviours, 'StageProp')
+    // return toState(this.behaviours, 'StageProp')
   }
 }
 
