@@ -3,7 +3,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import { withKnobs, text, boolean, number, select } from '@storybook/addon-knobs';
-import PowersPrepAreaOfEffectRenderer from '../Powers/PowersPrepAreaOfEffectRenderer'
+import PowersPrepAreaOfEffectRenderer from './PowersPrepAreaOfEffectRenderer'
 import Player from '../Player/Player'
 
 import { preparePower } from '../Utils/Powers'

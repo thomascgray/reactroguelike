@@ -1,8 +1,9 @@
 import _ from 'lodash'
+import { attachProperty } from '../Utils/EntityHelpers'
 
 class HasHp {
-    constructor(hp) {
-        this.hp = _.clone(hp);
+    constructor(entity, hp) {
+        attachProperty(this, entity, 'hp', hp)
 
         this.functions = {
             addHp: value => {
@@ -16,12 +17,6 @@ class HasHp {
             getHp: () => {
                 return this.hp;
             }
-        }
-    }
-
-    toState() {
-        return {
-            hp: this.hp
         }
     }
 }

@@ -1,13 +1,14 @@
 import _ from 'lodash'
 import Uuid from 'uuid/v4'
+import { attachProperty } from '../Utils/EntityHelpers'
 
 class HasId {
-    constructor(id = null) {
+    constructor(entity, id = null) {
         if (!id) {
             id = Uuid();
         }
 
-        this.id = _.clone(id);
+        attachProperty(this, entity, 'id', id)
 
         this.functions = {
             getId: () => {
@@ -18,10 +19,6 @@ class HasId {
                 return this.id;
             }
         }
-    }
-
-    toState() {
-        return { id: this.id };
     }
 }
 

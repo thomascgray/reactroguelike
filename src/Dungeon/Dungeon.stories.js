@@ -2,7 +2,7 @@ import React from 'react';
 
 import { storiesOf } from '@storybook/react';
 import { generate as gertyGenerate } from '../DungeonGenerator/Gerty'
-import DungeonRenderer from '../Dungeon/DungeonRenderer'
+import DungeonRenderer from './DungeonRenderer'
 import { withKnobs, text, boolean, number, select } from '@storybook/addon-knobs';
 import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
 
@@ -22,7 +22,6 @@ stories
         const dungeon = gertyGenerate(dungeonTemplate);
         return <div>
             <DungeonRenderer dungeon={dungeon} activeFloorIndex={0} />
-            <StageObjectsRenderer stageObjects={dungeon.floors[dungeon.activeFloorIndex].stageObjects} />
         </div>
     })
     .add('Gerty - roomCodes [`TL`, `BL`, `R`]', () => {
@@ -79,5 +78,19 @@ stories
         }
         const dungeon = gertyGenerate(dungeonTemplate);
         return <DungeonRenderer dungeon={dungeon} activeFloorIndex={0} />
+    })
+    .add('Gerty - roomCodes [`L`, `TR`, `BR`] with stage props', () => {
+        const dungeonTemplate = {
+            theme: 'crypt',
+            floorCount: 1,
+            floorRoomCodes: [
+                ['L', 'TR', 'BR']
+            ]
+        }
+        const dungeon = gertyGenerate(dungeonTemplate);
+        return <div>
+            <DungeonRenderer dungeon={dungeon} activeFloorIndex={0} />
+            <StageObjectsRenderer stageObjects={dungeon.floors[dungeon.activeFloorIndex].stageObjects} />
+        </div>
     })
 

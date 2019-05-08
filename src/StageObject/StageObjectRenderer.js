@@ -5,7 +5,7 @@ import StagePropRenderer from '../StageProp/StagePropRenderer'
 
 class StageObjectRenderer extends Component {
     render() {
-        switch (this.props.stageObject.className) {
+        switch (this.props.stageObject.constructor.name) {
             case 'Enemy':
                 return <EnemyRenderer key={this.props.stageObject.HasId.id} enemy={this.props.stageObject} />
             case 'StageProp':

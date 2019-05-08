@@ -36,7 +36,7 @@ const attachEmitter = (entity) => {
 const attachProperty = (behaviour, entity, propertyName, propertyDefaultValue) => {
     const internalPropertyName = `_${propertyName}`;
 
-    behaviour[internalPropertyName] = propertyDefaultValue;
+    behaviour[internalPropertyName] = _.cloneDeep(propertyDefaultValue);
 
     Object.defineProperty(behaviour, propertyName, {
         get: function () {

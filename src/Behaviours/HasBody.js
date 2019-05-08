@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { LogMessage } from '../Log/LogActions'
 class HasBody {
-    constructor(bodyType, size, bodyParts = []) {
+    constructor(entity, bodyType, size, bodyParts = []) {
         this.body = {
             size,
             bodyParts: _.cloneDeep(require(`./BodyPartKits/${bodyType}`).default)

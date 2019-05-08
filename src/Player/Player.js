@@ -10,7 +10,7 @@ import HasPowers from '../Behaviours/HasPowers'
 import { composeEntity } from '../Utils/EntityHelpers'
 
 class Player {
-  constructor({ position, hp = 10, archetype, powers = [] }) {
+  constructor({ position, hp = 10, archetype = 'druid', powers = [] }) {
     composeEntity({
       entity: this,
       behaviours: [
@@ -18,7 +18,9 @@ class Player {
         new HasPosition(this, position),
         new HasDirection(this),
         new HasArchetype(this, archetype),
-        new HasHp(hp),
+        new HasHp(this, hp),
+        new HasInventory(this),
+        new HasBody(this),
       ]
     })
 
