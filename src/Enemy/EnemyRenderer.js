@@ -5,7 +5,11 @@ import Tile from '../Tile/TileRenderer'
 class Enemy extends Component {
     render() {
         return (
-            <Tile x={this.props.enemy.HasPosition.position.x} y={this.props.enemy.HasPosition.position.y} image={this.getImage()} />
+            <Tile
+                x={this.props.enemy.HasPosition.getPosition().x}
+                y={this.props.enemy.HasPosition.getPosition().y}
+                image={this.getImage()}
+            />
         );
     }
 
@@ -15,7 +19,7 @@ class Enemy extends Component {
             goblin: require('../Assets/td_monsters/td_monsters_goblin_captain_r1.png'),
         }
 
-        switch (this.props.enemy.HasArchetype.archetype) {
+        switch (this.props.enemy.HasArchetype.getArchetype()) {
             case 'skeleton':
                 return images.skeleton;
             case 'goblin':

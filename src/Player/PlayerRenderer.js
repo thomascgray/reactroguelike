@@ -19,12 +19,17 @@ class Player extends Component {
     }
 
     getPlayerImage () {
-        const direction = this.props.player.HasDirection.direction;
+        const direction = this.props.player.HasDirection.getDirection();
         const images = {
             up: require(`../Assets/td_monsters/td_monsters_${this.props.player.HasArchetype.getArchetype()}_u1.png`),
             down: require(`../Assets/td_monsters/td_monsters_${this.props.player.HasArchetype.getArchetype()}_d1.png`),
             left: require(`../Assets/td_monsters/td_monsters_${this.props.player.HasArchetype.getArchetype()}_l1.png`),
             right: require(`../Assets/td_monsters/td_monsters_${this.props.player.HasArchetype.getArchetype()}_r1.png`),
+            dead: require(`../Assets/td_world/td_world_tombstone.png`),
+        }
+
+        if (this.props.player.HasHp.getHp() === 0) {
+            return images.dead;
         }
 
         switch (direction) {

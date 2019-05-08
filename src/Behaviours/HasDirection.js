@@ -1,8 +1,9 @@
 import _ from 'lodash'
+import { attachProperty } from '../Utils/EntityHelpers'
 
 class HasDirection {
-    constructor(direction) {
-        this.direction = _.clone(direction);
+    constructor(entity, direction) {
+        attachProperty(this, entity, 'direction', direction)
 
         this.functions = {
             setDirection: value => {
@@ -12,12 +13,6 @@ class HasDirection {
             getDirection: () => {
                 return this.direction;
             }
-        }
-    }
-
-    toState() {
-        return {
-            direction: this.direction
         }
     }
 }

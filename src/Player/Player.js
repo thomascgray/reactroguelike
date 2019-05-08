@@ -7,32 +7,20 @@ import HasArchetype from '../Behaviours/HasArchetype'
 import HasBody from '../Behaviours/HasBody'
 import HasPowers from '../Behaviours/HasPowers'
 
-import _ from 'lodash';
-import { attachBehaviours, toState, idHelper, attachEmitter } from '../Utils/EntityHelpers'
+import { composeEntity } from '../Utils/EntityHelpers'
 
 class Player {
-  /**
-   * 
-   * @param {Object} object
-   * @param {Object} object.position
-   * @param {number} object.position.x
-   * @param {number} object.position.y
-   */
   constructor({ position, hp = 10, archetype, powers = [] }) {
-    this.behaviours = [
-      // new HasInventory(),
-      // new HasHp(hp),
-      new HasId(this),
-      new HasPosition(this, position),
-      new HasDirection(this),
-      new HasArchetype(this, archetype),
-      // new HasBody('humanoid', 'medium'),
-      // new HasPowers(powers),
-    ]
-
-    attachEmitter(this);
-
-    attachBehaviours(this, this.behaviours)
+    composeEntity({
+      entity: this,
+      behaviours: [
+        new HasId(this),
+        new HasPosition(this, position),
+        new HasDirection(this),
+        new HasArchetype(this, archetype),
+        new HasHp(hp),
+      ]
+    })
 
     this.dominantLimb = 'right';
   }
@@ -72,10 +60,6 @@ class Player {
     this.appendItemDataById(itemId, {
       isActive: true
     })
-  }
-
-  toState () {
-    return toState(this.behaviours)
   }
 }
 

@@ -2,28 +2,27 @@ import HasInventory from '../Behaviours/HasInventory'
 import HasHp from '../Behaviours/HasHp'
 import HasPosition from '../Behaviours/HasPosition'
 import HasId from '../Behaviours/HasId'
+import HasDirection from '../Behaviours/HasDirection'
 import HasArchetype from '../Behaviours/HasArchetype'
-import IsCollidable from '../Behaviours/IsCollidable'
+import HasBody from '../Behaviours/HasBody'
+import HasPowers from '../Behaviours/HasPowers'
 
-// import { attachBehaviours, toState } from '../Utils/EntityHelpers'
+import { composeEntity } from '../Utils/EntityHelpers'
 
 class Enemy {
   constructor({ position, hp = 3, archetype, isCollidable = true }) {
-    this.behaviours = [
-      new HasId(),
-      new HasInventory(),
-      new HasArchetype(archetype),
-      new HasPosition(position),
-      new IsCollidable(isCollidable),
-      new HasHp(hp),
-    ]
-
-    // attachBehaviours(this, this.behaviours)
+    composeEntity({
+      entity: this,
+      behaviours: [
+        new HasId(this),
+        new HasPosition(this, position),
+        new HasDirection(this),
+        new HasArchetype(this, archetype),
+        new HasHp(hp),
+      ]
+    })
   }
 
-  toState() {
-    // return toState(this.behaviours, 'Enemy')
-  }
 }
 
 export default Enemy;

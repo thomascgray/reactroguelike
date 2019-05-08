@@ -43,12 +43,6 @@ class HasPosition {
             },
         }
     }
-
-    toState() {
-        return {
-            position: this.position
-        }
-    }
 }
 
 export default HasPosition;

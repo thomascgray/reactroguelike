@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Tile from '../Tile/TileRenderer'
 
 class StageProp extends Component {
     render() {
         return (
-            <Tile x={this.props.stageProp.HasPosition.position.x} y={this.props.stageProp.HasPosition.position.y} image={this.getImage()} />
+            <Tile x={this.props.stageProp.HasPosition.getPosition().x} y={this.props.stageProp.HasPosition.getPosition().y} image={this.getImage()} />
         );
     }
 
@@ -18,8 +19,12 @@ class StageProp extends Component {
             graveBroken: require('../Assets/td_world/td_world_tombstone_broken.png')
         }
 
-        return images[this.props.stageProp.HasArchetype.archetype];
+        return images[this.props.stageProp.HasArchetype.getArchetype()];
     }
 }
+
+StageProp.propTypes = {
+    stageProp: PropTypes.object
+};
 
 export default StageProp;

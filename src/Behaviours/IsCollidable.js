@@ -1,8 +1,8 @@
-import _ from 'lodash'
+import { attachProperty } from '../Utils/EntityHelpers'
 
 class IsCollidable {
-    constructor(isCollidable) {
-        this.isCollidable = _.clone(isCollidable);
+    constructor(entity, isCollidable) {
+        attachProperty(this, entity, 'isCollidable', isCollidable)
 
         this.functions = {
             setIsCollidable: value => {
@@ -12,12 +12,6 @@ class IsCollidable {
             getIsCollidable: () => {
                 return this.isCollidable;
             }
-        }
-    }
-
-    toState() {
-        return {
-            isCollidable: this.isCollidable
         }
     }
 }

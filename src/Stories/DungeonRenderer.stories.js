@@ -4,7 +4,6 @@ import { storiesOf } from '@storybook/react';
 import { generate as gertyGenerate } from '../DungeonGenerator/Gerty'
 import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import { withKnobs, text, boolean, number, select } from '@storybook/addon-knobs';
-import { RefreshButton } from './StoryUtils'
 import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
 
 const stories = storiesOf('Dungeon Renderer', module);

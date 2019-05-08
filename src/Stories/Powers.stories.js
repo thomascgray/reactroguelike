@@ -3,7 +3,6 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import { withKnobs, text, boolean, number, select } from '@storybook/addon-knobs';
-import { RefreshButton } from './StoryUtils'
 import PowersPrepAreaOfEffectRenderer from '../Powers/PowersPrepAreaOfEffectRenderer'
 import Player from '../Player/Player'
 
@@ -44,7 +43,6 @@ stories
                 map
             }} />
             <PowersPrepAreaOfEffectRenderer power={preparePower(power)} />
-            <RefreshButton />
         </div>
     })
 

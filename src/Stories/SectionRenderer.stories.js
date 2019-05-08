@@ -4,7 +4,6 @@ import { storiesOf } from '@storybook/react';
 import { generate as gertyGenerate } from '../DungeonGenerator/Gerty'
 import DungeonRenderer from '../Dungeon/DungeonRenderer'
 import { withKnobs, text, boolean, number, select } from '@storybook/addon-knobs';
-import { RefreshButton } from './StoryUtils'
 import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
 import Enemy from '../Enemy/Enemy'
 import StageProp from '../StageProp/StageProp'
@@ -77,7 +76,6 @@ stories
                 map
             }} />
             <StageObjectsRenderer stageObjects={stageObjects.map(obj => obj.toState())} />
-            <RefreshButton />
         </div>
     })
 

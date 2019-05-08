@@ -47,8 +47,6 @@ const attachProperty = (behaviour, entity, propertyName, propertyDefaultValue) =
                 behaviour[internalPropertyName] = val;
                 entity.emitter.emit('stateChange')
             }
-            // behaviour[internalPropertyName] = val
-            // console.log(`setting ${propertyName} of ${behaviour.constructor.name} for entity ${entity.constructor.name}`);
             return behaviour;
         }
     });
@@ -68,9 +66,15 @@ const toState = (behaviours, className) => {
     return state;
 }
 
+const composeEntity = ({ entity, behaviours }) => {
+    attachEmitter(entity);
+    attachBehaviours(entity, behaviours)
+}
+
 export {
     attachBehaviours,
     toState,
     attachEmitter,
-    attachProperty
+    attachProperty,
+    composeEntity
 }

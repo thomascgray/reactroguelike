@@ -3,24 +3,21 @@ import HasPosition from '../Behaviours/HasPosition'
 import HasId from '../Behaviours/HasId'
 import HasArchetype from '../Behaviours/HasArchetype'
 import IsCollidable from '../Behaviours/IsCollidable'
-
-// import { attachFunctions, toState } from '../Utils/EntityHelpers'
+import { composeEntity } from '../Utils/EntityHelpers'
 
 class StageProp {
   constructor({ position, hp = 3, archetype, isCollidable = true }) {
-    this.behaviours = [
-      new HasInventory(),
-      new HasArchetype(archetype),
-      new HasPosition(position),
-      new HasId(),
-      new IsCollidable(isCollidable)
-    ]
 
-    // attachFunctions(this, this.behaviours)
-  }
-
-  toState () {
-    // return toState(this.behaviours, 'StageProp')
+    composeEntity({
+      entity: this,
+      behaviours: [
+        new HasId(this),
+        new HasInventory(this),
+        new HasArchetype(this, archetype),
+        new HasPosition(this, position),
+        new IsCollidable(this, isCollidable)
+      ]
+    })
   }
 }
 
