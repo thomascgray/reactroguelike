@@ -11,10 +11,10 @@ stories.addDecorator(withKnobs);
 stories.add('render', () => {
     const enemy = new Enemy({
         position: {
-            x: 2,
-            y: 2,
+            x: number('x position', 2),
+            y: number('y position', 2),
         },
-        hp: 10, 
+        hp: number('hp', 10), 
         archetype: 'goblin'
     });
 

@@ -1,17 +1,23 @@
 import HasBody from './HasBody'
 import { Weapon } from '../Item/ItemFactories'
 
+const mockEntity = {
+    emitter: {
+        emit: () => {}
+    }
+}
 
 describe.only('HasBody', () => {
     describe('getBodyPartHoldingItem()', () => {
         it('should get the item when its being held', () => {
-            const item = Weapon({ name: 'axe' });
-            const body = new HasBody('humanoid', 'medium');
+            const item = Weapon({ name: 'axe', id: 'abc123' });
+            const body = new HasBody(mockEntity, 'humanoid', 'medium');
+
             body.bodyParts['right hand'].isHolding.push(item);
 
             const match = body.getBodyPartHoldingItem(item.id);
             expect(match.bodyPartName).toBe('right hand')
-            expect(match.bodyPart.isHolding[0].id).toBe(item.id)
+            expect(match.bodyPart.isHolding[0].id).toBe('abc123')
         })
     })
 })

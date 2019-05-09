@@ -6,7 +6,7 @@ import StageObjectsRenderer from '../StageObject/StageObjectsRenderer'
 import InitialPlayerSetup from '../InitialPlayerSetup'
 import { generate } from '../DungeonGenerator/Gerty'
 import _ from 'lodash';
-import PlayerStageDefault from '../InputHandling/PlayerStageDefault'
+// import PlayerStageDefault from '../InputHandling/PlayerStageDefault'
 
 import Inventory from '../UI/Inventory'
 import CharacterSheet from '../UI/CharacterSheet'
@@ -17,10 +17,6 @@ import PowersPrepRenderer from '../Powers/PowersPrepRenderer'
 import KeydownHandler from './KeydownHandler'
 
 class Stage extends Component {
-    dungeon;
-    player;
-    logMessages = [];
-
     constructor (props) {
         super(props);
 
@@ -29,17 +25,9 @@ class Stage extends Component {
             floorCount: 1,
         });
 
-        this.player = this.props.player;
+        this.logMessages = [];
 
-        // this.state = {
-        //     inputMode: 'playerStageDefault',
-        //     logMessages: [],
-        //     ui: {
-        //         inventory: false,
-        //         characterSheet: false
-        //     },
-        //     isPlayerPreppingPower: false,
-        // }
+        this.player = this.props.player;
 
         InitialPlayerSetup(this.player);
     }
@@ -60,9 +48,7 @@ class Stage extends Component {
 
     handleKeyDown(keyEvent) {
         keyEvent = keyEvent || window.event;
-        
-        console.log('player pos', this.player.HasPosition.getPosition());
-        PlayerStageDefault(keyEvent, this.dungeon, this.player);
+        // PlayerStageDefault(keyEvent, this.dungeon, this.player);
     }
 
     closeInventory () {

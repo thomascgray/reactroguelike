@@ -4,6 +4,9 @@ import { LogMessage } from '../Log/LogActions';
 
 class HasBody {
   constructor(entity, bodyType, size, bodyParts = {}) {
+    if (Object.keys(bodyParts).length <= 0) {
+      bodyParts = require(`./BodyPartKits/${bodyType}.json`)
+    }
     attachProperty(this, entity, 'bodyType', bodyType);
     attachProperty(this, entity, 'size', size);
     attachProperty(this, entity, 'bodyParts', bodyParts);

@@ -2,12 +2,13 @@
 
 its a roguelike made in react. incomprehensibly WIP
 
+# getting started
 
-# start
+`yarn install`
 
-`npm i`
+`yarn start`
 
-`npm start`
+will get you into the game, but your best bet is to use the...
 
 # storybook
 
@@ -15,11 +16,13 @@ theres a storybook setup for showing off different components
 
 you can run it with
 
-`npm run storybook`
+`yarn storybook`
 
+# testing
+
+`yarn test <filename>`
 
 # glossary
-
 
 ### stage
 

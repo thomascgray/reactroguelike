@@ -20,7 +20,8 @@ class Player {
         new HasArchetype(this, archetype),
         new HasHp(this, hp),
         new HasInventory(this),
-        new HasBody(this),
+        new HasBody(this, 'humanoid', 'size'),
+        new HasPowers(this)
       ]
     })
 

@@ -5,8 +5,7 @@ import PlayerStageObjectCollision from '../Resolvers/PlayerStageObjectCollision'
 import { preparePower } from '../Utils/Powers'
 
 export default function (keyEvent, dungeon, player) {
-    console.log('player', player);
-    const pos = new HasPosition(player.HasPosition.getPosition())
+    const pos = new HasPosition(null, player.HasPosition.getPosition())
     // const uiState = stageContext.state.ui;
     let hasMoved = false;
     let newDirection;
@@ -14,22 +13,22 @@ export default function (keyEvent, dungeon, player) {
 
     switch (keyEvent.keyCode) {
         case keyMap.LEFT:
-            pos.functions.moveLeft();
+            pos.moveLeft();
             newDirection = 'left';
             hasMoved = true;
             break;
         case keyMap.RIGHT:
-            pos.functions.moveRight();
+            pos.moveRight();
             newDirection = 'right';
             hasMoved = true;
             break;
         case keyMap.UP:
-            pos.functions.moveUp();
+            pos.moveUp();
             newDirection = 'up';
             hasMoved = true;
             break;
         case keyMap.DOWN:
-            pos.functions.moveDown();
+            pos.moveDown();
             newDirection = 'down';
             hasMoved = true;
             break;
@@ -82,7 +81,7 @@ export default function (keyEvent, dungeon, player) {
         // there is, but its collidable is false
         // we can move there
         if (!hitStageObject || (hitStageObject && hitStageObject.IsCollidable.getIsCollidable() === false)) {
-            player.HasPosition.setPosition(pos.position);
+            player.HasPosition.setPosition(pos.getPosition());
         }
     }
 

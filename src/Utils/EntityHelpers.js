@@ -30,7 +30,9 @@ const attachProperty = (behaviour, entity, propertyName, propertyDefaultValue) =
         set: function(val) {
             if (behaviour[internalPropertyName] !== val) {
                 behaviour[internalPropertyName] = val;
-                entity.emitter.emit('stateChange')
+                if (entity) {
+                    entity.emitter.emit('stateChange')
+                }
             }
             return behaviour;
         }

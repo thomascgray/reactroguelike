@@ -1,0 +1,90 @@
+{
+    "left hand": {
+        "types": [
+            "gripPrimary",
+            "canGrip",
+            "canWear",
+            "hand"
+        ],
+        "isHolding": [],
+        "isWearing": [],
+        "holdCapacity": 1,
+        "wearCapacity": 9
+    },
+    "right hand": {
+        "types": [
+            "gripPrimary",
+            "canGrip",
+            "canWear",
+            "hand"
+        ],
+        "isHolding": [],
+        "isWearing": [],
+        "holdCapacity": 1,
+        "wearCapacity": 9
+    },
+    "left arm": {
+        "types": [
+            "canWear",
+            "arm"
+        ],
+        "isWearing": [],
+        "wearCapacity": 9
+    },
+    "right arm": {
+        "types": [
+            "canWear",
+            "arm"
+        ],
+        "isWearing": [],
+        "wearCapacity": 9
+    },
+    "left foot": {
+        "types": [
+            "canWear",
+            "foot"
+        ],
+        "isWearing": [],
+        "wearCapacity": 9
+    },
+    "right foot": {
+        "types": [
+            "canWear",
+            "foot"
+        ],
+        "isWearing": [],
+        "wearCapacity": 9
+    },
+    "left leg": {
+        "types": [
+            "canWear",
+            "leg"
+        ],
+        "isWearing": [],
+        "wearCapacity": 9
+    },
+    "right leg": {
+        "types": [
+            "canWear",
+            "leg"
+        ],
+        "isWearing": [],
+        "wearCapacity": 9
+    },
+    "head": {
+        "types": [
+            "canWear",
+            "head"
+        ],
+        "isWearing": [],
+        "wearCapacity": 9
+    },
+    "body": {
+        "types": [
+            "canWear",
+            "body"
+        ],
+        "isWearing": [],
+        "wearCapacity": 9
+    }
+}

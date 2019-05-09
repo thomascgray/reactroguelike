@@ -5,7 +5,9 @@ class Item {
     this.id = Uuid();
     this.name = 'item';
     this.type = 'weapon';
-    this.isHoldableBy.push('hand');
+    this.isHoldableBy = [
+      'hand'
+    ];
     this.damage = '1d2';
     this.damageType = 'bludgeoning';
     this.ac = 0;

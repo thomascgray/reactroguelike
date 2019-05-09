@@ -1,6 +1,8 @@
 import { Weapon, Armour } from '../../Item/ItemFactories'
 
 export default function (player) {
+
+    console.log('player', player);
     player.HasInventory.addItem(Weapon({
         name: 'broomstick',
         damage: '1d12',

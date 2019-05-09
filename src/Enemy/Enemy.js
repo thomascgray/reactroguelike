@@ -4,8 +4,8 @@ import HasPosition from '../Behaviours/HasPosition';
 import HasId from '../Behaviours/HasId';
 import HasDirection from '../Behaviours/HasDirection';
 import HasArchetype from '../Behaviours/HasArchetype';
-import HasBody from '../Behaviours/HasBody';
-import HasPowers from '../Behaviours/HasPowers';
+// import HasBody from '../Behaviours/HasBody';
+// import HasPowers from '../Behaviours/HasPowers';
 
 import { composeEntity } from '../Utils/EntityHelpers';
 
