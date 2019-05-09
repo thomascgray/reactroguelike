@@ -1,18 +1,17 @@
-import _ from 'lodash'
 import { attachProperty } from '../Utils/EntityHelpers'
+
 class HasArchetype {
     constructor(entity, archetype) {
         attachProperty(this, entity, 'archetype', archetype)
+    }
 
-        this.functions = {
-            setArchetype: value => {
-                this.archetype = value;
-                return this.archetype;
-            },
-            getArchetype: () => {
-                return this.archetype;
-            }
-        }
+    setArchetype (value) {
+        this.archetype = value;
+        return this.archetype;
+    }
+    
+    getArchetype () {
+        return this.archetype;
     }
 }
 

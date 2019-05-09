@@ -8,9 +8,7 @@ const images = {
 
 class PowersPrepAreaOfEffectRenderer extends Component {
     render() {
-        return this.props.power.tiles.map(tile => {
-            return <Tile className='fade-60' key={id} id={id} x={tile.x} y={tile.y} image={tile.image || this.getTileImage()} />
-        })
+        return null
     }
     
     getTileImage () {

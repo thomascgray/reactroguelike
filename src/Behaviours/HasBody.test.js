@@ -1,6 +1,22 @@
 import HasBody from './HasBody'
 import { Weapon } from '../Item/ItemFactories'
 
+
+describe.only('HasBody', () => {
+    describe('getBodyPartHoldingItem()', () => {
+        it('should get the item when its being held', () => {
+            const item = Weapon({ name: 'axe' });
+            const body = new HasBody('humanoid', 'medium');
+            body.bodyParts['right hand'].isHolding.push(item);
+
+            const match = body.getBodyPartHoldingItem(item.id);
+            expect(match.bodyPartName).toBe('right hand')
+            expect(match.bodyPart.isHolding[0].id).toBe(item.id)
+        })
+    })
+})
+
+/*
 describe('HasBody - getBodyPartHoldingItem', () => {
     const item = Weapon({ name: 'axe' });
     const itemId = item.id;
@@ -114,3 +130,4 @@ describe('HasBody - getEquippedItems', () => {
         expect(items.length).toEqual(4);
     })
 })
+*/

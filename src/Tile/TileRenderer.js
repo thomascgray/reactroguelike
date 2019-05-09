@@ -28,7 +28,7 @@ class TileRenderer extends Component {
     }
 }
 
-TileRenderer.proptypes = {
+TileRenderer.propTypes = {
     image: PropTypes.any,
     theme: PropTypes.string,
     id: PropTypes.string,

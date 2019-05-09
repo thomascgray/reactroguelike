@@ -10,6 +10,8 @@ class StageObjectRenderer extends Component {
                 return <EnemyRenderer key={this.props.stageObject.HasId.id} enemy={this.props.stageObject} />
             case 'StageProp':
                 return <StagePropRenderer key={this.props.stageObject.HasId.id} stageProp={this.props.stageObject} />
+            default:
+                return null;
         }
     }
 }

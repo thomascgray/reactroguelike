@@ -9,27 +9,12 @@ import mitt from 'mitt'
  */
 const attachBehaviours = (entity, behaviours) => {
     behaviours.forEach(behaviour => {
-        // for every behaviour class, make an empty object of the same name on the entity
-        entity[behaviour.constructor.name] = {}
-
-        // then for every function in that behaviour...
-        Object.keys(behaviour.functions).forEach(funcName => {
-            //...attach the function to the entity under the behaviour name
-            // as a new function that calls the original behaviour function PLUS
-            // some special sauce...
-            // entity[behaviour.constructor.name][funcName] = behaviour.functions[funcName]
-            // console.log('behaviour.functions[funcName]', behaviour.functions[funcName]);
-            entity[behaviour.constructor.name][funcName] = function () {
-                // document.dispatchEvent(new CustomEvent(`${entity.constructor.name}:${entity.id}`));
-                return behaviour.functions[funcName](...arguments)
-            }
-        })
-      });
+        entity[behaviour.constructor.name] = behaviour;
+    })
 }
 
 const attachEmitter = (entity) => {
     entity.emitter = mitt();
-
     return entity;
 }
 
@@ -67,8 +52,9 @@ const toState = (behaviours, className) => {
 }
 
 const composeEntity = ({ entity, behaviours }) => {
-    attachEmitter(entity);
+    entity.emitter = mitt();
     attachBehaviours(entity, behaviours)
+    return entity;
 }
 
 export {

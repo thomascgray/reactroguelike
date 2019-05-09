@@ -83,22 +83,18 @@ class Stage extends Component {
             </div>
             
             <div className='stage' id='stage'>
-                {/* {this.state.ui.inventory && <Inventory player={this.player} closeInventory={() => this.closeInventory()}/>}
+                {/* {this.state.ui.inventory && <Inventory player={this.player} closeInventory={() => this.closeInventory()}/>} */}
                 
                 <DungeonRenderer dungeon={this.dungeon} activeFloorIndex={0} />
 
-                <StageObjectsRenderer stageObjects={this.dungeon.floors[this.dungeon.activeFloorIndex].stageObjects} />
+                {/* <StageObjectsRenderer stageObjects={this.dungeon.floors[this.dungeon.activeFloorIndex].stageObjects} /> */}
 
-                {this.state.isPlayerPreppingPower && <PowersPrepRenderer power={this.state.preppedPower} />} */}
+                {/* {this.state.isPlayerPreppingPower && <PowersPrepRenderer power={this.state.preppedPower} />} */}
 
                 <PlayerRenderer player={this.player} />
             </div>
         </div>
     }
-}
-
-Stage.proptypes = {
-    
 }
 
 export default Stage;
